@@ -1,0 +1,92 @@
+body {
+    font-family:"Hiragino Sans GB", Palatino, "Palatino Linotype", "Wenquanyi Zen Hei", "Georgia", "Helvetica Neue", Helvetica, Arial, sans-serif; 
+    color: #222; 
+    font-size:14px; 
+    padding: 0; 
+    margin: 0;
+    background-color:#FFFFEA;
+}
+
+#wrapper { 
+    margin: 0 auto; 
+    width:54em; 
+}
+
+a { color:#AA0000; text-decoration:none; }
+
+
+blockquote, quote { padding-left: 8px; display: block; color: #0F7332; border-left: 4px solid #cccccc; }
+
+p code {padding:1px 5px;}
+code {background-color:#EEEEEE; color:#222222; margin:0 2px; padding:0 6px; font-size:14px; font-family: Monaco,Consolas,Menlo,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;}
+
+h6 {font-size: 1em;}
+
+#header { 
+    background-color: #F2984C; 
+    font-family: Georgia,"Times New Roman",Times,serif;
+}
+
+#header .wrapper { 
+    width:40em; 
+    margin:0 auto;
+}
+
+#header p { 
+    font-style: italic; 
+    font-size: 1.2em; 
+    margin: 0; 
+    padding-top:0.5em; 
+    padding-bottom:1em; 
+}
+
+#header p.title { 
+    padding-top: 0.8em;
+    padding-bottom:0; 
+    font-size: 240%; 
+    font-weight: bold; 
+}
+
+#menu { float:left; margin-top:0.6em; width:8em; font-size:1.2em; line-height:1.7em; }
+#menu ul { text-align:right; list-style: none; }
+#menu ul li a { text-decoration: underline; }
+
+#header-search { float: right; }
+#header-search input { 
+    font-size:0.8em;
+    text-align:right; 
+    width:90px; 
+    border:medium none; 
+    color:#AA0000;
+    background-color:#EEEEEE; 
+}
+
+#content { 
+    float:right; 
+    margin:1em auto 0; 
+    width:42em; 
+}
+
+#content a { color:#AA0000; }
+#content a:hover { color:#FFFFFF; background-color:#AA0000; }
+
+
+.entry {  margin-left: 10px; }
+.entry h1 { font-family:Georgia; font-size:20px; }
+.entry-content { line-height: 23px; font-size:16px; }
+.entry-content h2 { font-size:1.1em; }
+.entry-content a { color: #B51C1E; } 
+.entry-content a:hover { background-color: #B51C1E; color: #FFFFFF; }
+.entry-meta { font-size: 13px; margin-top: 20px; }
+
+#footer { 
+    clear: both; 
+    padding-top:2em; 
+    padding-bottom:2em; 
+    font-size:12px; 
+    text-align:center; 
+}
+
+.cg { color: green; }
+.cr { color: red; }
+.cb { color: blue; }

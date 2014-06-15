@@ -1,6 +1,6 @@
 Hello <a href="http://twitter.com/mitnk">@mitnk</a>,
 
-You did a **great** job!
+We have **great** job to do!
 
 这是一个测试中文
 

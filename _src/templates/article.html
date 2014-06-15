@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">{{ title|safe }}</h1>
+        <div class="entry-content">
+            {{ content|safe }}
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at {{ time_added|date:"N j, Y" }}
+    </div>
+
+</div>
+{% endblock %}

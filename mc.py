@@ -37,9 +37,8 @@ def create(title):
     _create_md_file(title)
 
 
-def _create_html_file(title):
-    today = datetime.date.today()
-    dir_ = Path('./{:04d}/{:02d}/{}/'.format(today.year, today.month, title))
+def _create_html_file(title, year, month):
+    dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title))
     if not dir_.exists():
         dir_.mkdir(parents=True)
         print('created dir: {}'.format(dir_.absolute()))
@@ -48,7 +47,10 @@ def _create_html_file(title):
 
 
 def make_html(md_file):
-    title = _parse_title(md_file.split('/')[-1])
+    strings = md_file.split('/')
+    title = _parse_title(strings[-1])
+    month = int(strings[-2])
+    year = int(strings[-3])
     with open(md_file, 'r') as f:
         content = f.read()
     context = {
@@ -57,14 +59,28 @@ def make_html(md_file):
         'time_added': datetime.datetime.now(),
     }
     html = render_to_string('article.html', context)
-    file_html = _create_html_file(title)
+    file_html = _create_html_file(title, year, month)
     with open(file_html, 'w') as f:
         f.write(html)
     print('html generated: {}'.format(file_html))
 
 
+def find_md_file_list():
+    md_list = []
+    for root, dirs, files in os.walk("./_src/docs/"):
+        for file in files:
+            if file.endswith(".md") or file.endswith(".MD"):
+                md_list.append(os.path.join(root, file))
+    return md_list
+
+
 def compile(md_file):
-    html = make_html(md_file)
+    if md_file == 'all':
+        md_list = find_md_file_list()
+        for f in md_list:
+            make_html(f)
+    else:
+        html = make_html(md_file)
 
 
 if __name__ == '__main__':

@@ -26,8 +26,16 @@
             <!--
             <li><a href="/about/">About</a></li>
             <li><a href="/category/">Archives</a></li>
-            <li> {% include "blog/google_cse.html" %} </li>
             -->
+            <li>
+                <div id="header-search">
+                <form id="cse-form" action="http://www.google.com/cse">
+                  <input type="hidden" name="siteurl" value="mitnk.com" />
+                  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+                  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+                </form>
+                </div>
+            </li>
         </ul>
     </div>
 

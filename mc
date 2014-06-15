@@ -38,7 +38,7 @@ def add(title):
 
 
 def _create_html_file(title, year, month):
-    dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title))
+    dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
     if not dir_.exists():
         dir_.mkdir(parents=True)
         print('created dir: {}'.format(dir_.absolute()))

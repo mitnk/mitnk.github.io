@@ -28,7 +28,7 @@ python 测试
 这是一个C代码测试
 
     :::c
-    include <stdio.h>
+    #include <stdio.h>
 
     int main()
     {

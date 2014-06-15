@@ -32,7 +32,7 @@ def _create_md_file(title):
     print("created file: {}".format(file_.absolute()))
 
 
-def create(title):
+def add(title):
     title = _parse_title(title)
     _create_md_file(title)
 
@@ -86,11 +86,11 @@ def compile(md_file):
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2:
-        print("Usage: mc.py create <title name>")
+        print("Usage: mc.py add <article title>")
         exit(1)
-    if sys.argv[1].lower() == 'create':
+    if sys.argv[1].lower() == 'add':
         title = ' '.join(sys.argv[2:])
-        create(title)
+        add(title)
     elif sys.argv[1].lower() == 'compile':
         title = ' '.join(sys.argv[2:])
         compile(title)

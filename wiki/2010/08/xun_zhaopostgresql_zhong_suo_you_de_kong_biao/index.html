@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Xun Zhaopostgresql Zhong Suo You De Kong Biao</h1>
+        <div class="entry-content">
+            <ol>
+<li>
+<p>psql db_name -c "\dt" &gt; all_tables.txt
+   修改之，使每行只有表名</p>
+</li>
+<li>
+<p>创建一个sh文件如下：</p>
+</li>
+</ol>
+<h1>!/bin/bash</h1>
+<p>fname="all_tables.txt"
+var=<code>cat $fname</code></p>
+<p>for name in $var
+do
+    msg="select count(*) from $name;select '$name';"
+    echo $msg
+done</p>
+<p>运行这个脚本：
+./find_e_table.sh &gt; t.sql</p>
+<p>再运行psql：
+psql db_name -f t.sql
+运行后得到以下内容：
+ count </p>
+<hr/>
+<div class="highlight"><pre> 0
+</pre></div>
+<p>(1 row)</p>
+<h2>?column?</h2>
+<p>auth_group
+(1 row)</p>
+<h2>count</h2>
+<div class="highlight"><pre> 0
+</pre></div>
+<p>(1 row)</p>
+<div class="highlight"><pre>    ?column?
+</pre></div>
+<hr/>
+<p>auth_group_permissions
+(1 row)</p>
+<h2>count</h2>
+<div class="highlight"><pre> 0
+</pre></div>
+<p>(1 row)</p>
+<h2>?column?</h2>
+<p>auth_message
+(1 row)</p>
+<h2>count</h2>
+<p>303
+(1 row)</p>
+<div class="highlight"><pre>?column?
+</pre></div>
+<hr/>
+<p>auth_permission
+(1 row)</p>
+<h2>count</h2>
+<div class="highlight"><pre> 3
+</pre></div>
+<p>(1 row)</p>
+<h2>?column?</h2>
+<p>auth_user
+(1 row)</p>
+<h2>count</h2>
+<div class="highlight"><pre> 0
+</pre></div>
+<p>(1 row)</p>
+<div class="highlight"><pre> ?column?
+</pre></div>
+<hr/>
+<p>auth_user_groups
+(1 row)</p>
+<p>以上内容存为t.txt</p>
+<ol>
+<li>用grep整理
+  grep "[^a-z]count[^a-z]\|[^a-z]column[^a-z]\|--\|^$\|row)" . -rvn --include=t.txt &gt; tt.txt</li>
+</ol>
+<p>tt.txt 内容如下：
+     0
+ auth_group
+     0
+ auth_group_permissions
+     0
+ auth_message
+   303
+ auth_permission
+     3
+ auth_user
+     0
+ auth_user_groups</p>
+<ol>
+<li>用vim打开tt.txt，搜索/[1-9] 回车 dj 直到找不到结果为止。
+   最后用grep 删除0行即可：
+grep "0" . -rvn --include=tt.txt &gt; empty.txt</li>
+</ol>
+<p>这是我对postgresql和linux命令行编程不熟的解决方案。
+肯定有更方便的方式，如果谁有，请告诉我谢谢。
+About里有我的信箱地址。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

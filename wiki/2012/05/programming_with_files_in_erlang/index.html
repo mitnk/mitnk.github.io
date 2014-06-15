@@ -1,0 +1,209 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Programming With Files In Erlang</h1>
+        <div class="entry-content">
+            <h2>Organization of the Libraries</h2>
+<p>The functions for file manipulation are organized into four modules:</p>
+<ul>
+<li>
+<p>file </p>
+<ul>
+<li>This has routines for opening, closing, reading, and writing files; listing directories; and so on. <a href="http://www.erlang.org/doc/man/file.html">docs</a></li>
+</ul>
+</li>
+<li>
+<p>filename</p>
+<ul>
+<li>This module has routines that manipulate filenames in a platform- independent manner, so you can run the same code on a number of different operating systems. <a href="http://www.erlang.org/doc/man/filename.html">docs</a></li>
+</ul>
+</li>
+<li>
+<p>filelib</p>
+<ul>
+<li>This module is an extension to file, which contains a number of utilities for listing files, checking file types, and so on. Most of these are written using the functions in file. <a href="http://www.erlang.org/doc/man/filelib.html">docs</a></li>
+</ul>
+</li>
+<li>
+<p>io</p>
+<ul>
+<li>This module has routines that work on opened files. It contains routines for parsing data in a file and writing formatted data to a file. <a href="http://www.erlang.org/doc/man/io.html">docs</a></li>
+</ul>
+</li>
+</ul>
+<h2>The Different Ways of Reading a File</h2>
+<p>Content of <code>data.txt</code></p>
+<div class="highlight"><pre>{person, "joe", "armstrong",
+    [{occupation, programmer},
+     {favoriteLanguage, erlang}]}.
+
+{cat,
+    {name, "zorro"},
+    {owner, "joe"}}.
+</pre></div>
+<p><strong>Reading All the Terms in the File</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">consult</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">).</span>
+<span class="go">{ok,[{person,"joe","armstrong",</span>
+<span class="go">             [{occupation,programmer},{favoriteLanguage,erlang}]},</span>
+<span class="go">     {cat,{name,"zorro"},{owner,"joe"}}]}</span>
+</pre></div>
+<p><strong>Reading the Terms in the File One at a Time</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">,</span> <span class="n">read</span><span class="p">).</span>
+<span class="go">{ok,&lt;0.33.0&gt;}</span>
+<span class="gp">2&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">{ok,{person,"joe","armstrong",</span>
+<span class="go">            [{occupation,programmer},{favoriteLanguage,erlang}]}}</span>
+<span class="gp">3&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">{ok,{cat,{name,"zorro"},{owner,"joe"}}}</span>
+<span class="gp">4&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">eof</span>
+<span class="gp">5&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">eof</span>
+<span class="gp">6&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">S</span><span class="p">).</span>
+<span class="go">ok</span>
+<span class="gp">7&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">read</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">{error,terminated}</span>
+</pre></div>
+<p><strong>Which lib</strong></p>
+<div class="highlight"><pre>1&gt; code:which(file).
+"/usr/local/lib/erlang/lib/kernel-2.15/ebin/file.beam"
+</pre></div>
+<p><strong>Reading the Lines in a File One at a Time</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">,</span> <span class="n">read</span><span class="p">).</span>
+<span class="go">{ok,&lt;0.33.0&gt;}</span>
+<span class="gp">2&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"{person, \"joe\", \"armstrong\",\n"</span>
+<span class="gp">3&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"    [{occupation, programmer},\n"</span>
+<span class="gp">4&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"     {favoriteLanguage, erlang}]}.\n"</span>
+<span class="gp">5&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"\n"</span>
+<span class="gp">6&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"{cat,\n"</span>
+<span class="gp">7&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"    {name, \"zorro\"},\n"</span>
+<span class="gp">8&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"    {owner, \"joe\"}}.\n"</span>
+<span class="gp">9&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">"\n"</span>
+<span class="gp">10&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">get_line</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="err">''</span><span class="p">).</span>
+<span class="go">eof</span>
+<span class="gp">11&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">S</span><span class="p">).</span>    
+<span class="go">ok</span>
+</pre></div>
+<p><strong>Reading the Entire File into a Binary</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">read_file</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">).</span>
+<span class="go">{ok,&lt;&lt;"{person, \"joe\", \"armstrong\",\n    [{occupation, programmer},\n     {favoriteLanguage, erlang}]}.\n\n{cat,\n    {n"...&gt;&gt;}</span>
+</pre></div>
+<p><strong>Reading a File with Random Access</strong></p>
+<p>If the file we want to read is very large or if it contains binary data in some externally defined format, then we can open the file in raw mode and read any portion of it using file:pread.</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="s">"data.txt"</span><span class="p">,</span> <span class="p">[</span><span class="n">read</span><span class="p">,</span> <span class="n">binary</span><span class="p">,</span> <span class="n">raw</span><span class="p">]).</span>
+<span class="go">{ok,{file_descriptor,prim_file,{#Port&lt;0.574&gt;,11}}}</span>
+<span class="gp">2&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">pread</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="mi">22</span><span class="p">,</span> <span class="mi">46</span><span class="p">).</span>
+<span class="go">{ok,&lt;&lt;"rong\",\n        [{occupation, programmer},\n    "&gt;&gt;}</span>
+<span class="gp">3&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">pread</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span>
+<span class="go">{ok,&lt;&lt;"person, \"j"&gt;&gt;}</span>
+<span class="gp">4&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">pread</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">10</span><span class="p">).</span>
+<span class="go">{ok,&lt;&lt;"erson, \"jo"&gt;&gt;}</span>
+<span class="gp">5&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">S</span><span class="p">).</span>
+<span class="go">ok</span>
+</pre></div>
+<h2>The Different Ways of Writing to a File</h2>
+<p><strong>Write a List of Terms to a File</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="s">"output.txt"</span><span class="p">,</span> <span class="n">write</span><span class="p">).</span>
+<span class="go">{ok,&lt;0.33.0&gt;}</span>
+<span class="gp">2&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[{</span><span class="n">name</span><span class="p">,</span> <span class="n">tom</span><span class="p">},</span> <span class="p">{</span><span class="n">age</span><span class="p">,</span> <span class="mi">2</span><span class="p">}].</span>
+<span class="go">[{name,tom},{age,2}]</span>
+<span class="gp">3&gt;</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">foreach</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="s">"</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">X</span><span class="p">])</span> <span class="k">end</span><span class="p">,</span> <span class="nv">L</span><span class="p">).</span>
+<span class="go">ok</span>
+</pre></div>
+<p><strong>Writing to a Random-Access File</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">file</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="s">"..."</span><span class="p">,</span> <span class="p">[</span><span class="n">raw</span><span class="p">,</span><span class="n">write</span><span class="p">,</span><span class="n">binary</span><span class="p">])</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="p">...}</span>
+<span class="gp">2&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">pwrite</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="o">&lt;&lt;</span><span class="s">"new"</span><span class="o">&gt;&gt;</span><span class="p">)</span>
+<span class="go">ok</span>
+</pre></div>
+<h2>Finding Information About a File</h2>
+<div class="highlight"><pre><span class="gp">2&gt;</span> <span class="nn">file</span><span class="p">:</span><span class="nf">read_file_info</span><span class="p">(</span><span class="s">"output.txt"</span><span class="p">).</span>
+<span class="go">{ok,{file_info,19,regular,read_write,</span>
+<span class="go">           {{2012,5,19},{18,5,2}},</span>
+<span class="go">           {{2012,5,19},{18,4,56}},</span>
+<span class="go">           {{2012,5,19},{18,4,56}},</span>
+<span class="go">           33188,1,234881026,0,1740577,502,20}}</span>
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

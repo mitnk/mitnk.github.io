@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Lisp Yu Yan Scheme Bi Ji Yi</h1>
+        <div class="entry-content">
+            <p>复合过程</p>
+<div class="highlight"><pre><span class="o">#</span><span class="nv">lang</span> <span class="nv">racket</span>
+
+<span class="c1">; run it with "racket xxx.scm"</span>
+<span class="c1">; the outputs are:</span>
+<span class="c1">; 49</span>
+<span class="c1">; 25</span>
+<span class="c1">; #f</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">* </span><span class="nv">x</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sum-of-squares</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nf">square</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nf">square</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">square</span> <span class="mi">7</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">sum-of-squares</span> <span class="mi">3</span> <span class="mi">4</span><span class="p">)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="nv">x</span> <span class="mi">100</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="mi">99</span><span class="p">)</span>
+</pre></div>
+<p>条件表达式</p>
+<div class="highlight"><pre><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">abs1</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">&gt; </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">= </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="mi">0</span><span class="p">)</span>
+        <span class="p">((</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="nv">x</span><span class="p">))))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">abs2</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">cond </span><span class="p">((</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">- </span><span class="nv">x</span><span class="p">))</span>
+        <span class="p">(</span><span class="k">else </span><span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">abs3</span> <span class="nv">x</span><span class="p">)</span>
+  <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="mi">0</span><span class="p">)</span>
+      <span class="p">(</span><span class="nb">- </span><span class="nv">x</span><span class="p">)</span>
+      <span class="nv">x</span><span class="p">))</span>
+</pre></div>
+<p>运算符为复合表达式</p>
+<div class="highlight"><pre><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">a-plus-abs-b</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+    <span class="p">((</span><span class="k">if </span><span class="p">(</span><span class="nb">&lt; </span><span class="nv">b</span> <span class="mi">0</span><span class="p">)</span> <span class="nv">-</span> <span class="nv">+</span><span class="p">)</span> <span class="nv">a</span> <span class="nv">b</span><span class="p">)</span>
+
+<span class="p">(</span><span class="nf">a-plus-abs-b</span> <span class="mi">4</span> <span class="mi">3</span><span class="p">)</span> <span class="c1">; =&gt; 7</span>
+<span class="p">(</span><span class="nf">a-plus-abs-b</span> <span class="mi">4</span> <span class="mi">-3</span><span class="p">)</span> <span class="c1">; =&gt; 7</span>
+</pre></div>
+<p>谓词</p>
+<div class="highlight"><pre><span class="c1">; the outputs are:</span>
+<span class="c1">; #t</span>
+<span class="c1">; #f</span>
+<span class="c1">; #t</span>
+<span class="c1">; #t</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">between</span> <span class="nv">n</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">n</span> <span class="nv">x</span><span class="p">)</span> <span class="p">(</span><span class="nb">&lt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="k">=&gt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">or </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="p">(</span><span class="nb">= </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">=&lt;</span> <span class="nv">x</span> <span class="nv">y</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">not </span><span class="p">(</span><span class="nb">&gt; </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="nf">between</span> <span class="mi">7</span> <span class="mi">5</span> <span class="mi">10</span><span class="p">)</span>
+<span class="p">(</span><span class="k">=&gt; </span><span class="mi">7</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">=&lt;</span> <span class="mi">7</span> <span class="mi">8</span><span class="p">)</span>
+<span class="p">(</span><span class="k">and </span><span class="p">(</span><span class="nb">&gt; </span><span class="mi">1</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&gt; </span><span class="mi">2</span> <span class="mi">0</span><span class="p">)</span> <span class="p">(</span><span class="nb">&gt; </span><span class="mi">3</span> <span class="mi">0</span><span class="p">))</span>
+</pre></div>
+<p>牛顿法：</p>
+<div class="highlight"><pre><span class="c1">; 牛顿法求平方根</span>
+<span class="c1">; 如果对x的平方根的值有了一个猜测y，</span>
+<span class="c1">; 那么通过一个简单操作可以得到一个更好的猜测：</span>
+<span class="c1">; 只需要求出 y 和 x/y 的平均值</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">diff</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">* </span><span class="nv">y</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">improve</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">+ </span><span class="nv">y</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">))</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nf">diff</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span> <span class="mf">0.00001</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt-iter</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span>
+        <span class="nv">guess</span>
+        <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="p">(</span><span class="nf">improve</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt2</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="mf">1.0</span> <span class="nv">x</span><span class="p">))</span>
+
+<span class="p">(</span><span class="nf">sqrt2</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+<p>当开方数值非常小或非常大时，如 <code>0.123e-7</code> 或 <code>2e30</code>，上面检测good-enough时就不好使了，更好的办法是检测猜测数值变化的比率。</p>
+<div class="highlight"><pre><span class="c1">; 牛顿法求平方根 （改进版）</span>
+<span class="c1">; 如果对x的平方根的值有了一个猜测y，</span>
+<span class="c1">; 那么通过一个简单操作可以得到一个更好的猜测：</span>
+<span class="c1">; 只需要求出 y 和 x/y 的平均值</span>
+<span class="c1">; sqrt() is a BIF (Built-in Function)</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">grow-rate</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">* </span><span class="nv">y</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">improve</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">+ </span><span class="nv">y</span> <span class="p">(</span><span class="nb">/ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">))</span> <span class="mi">2</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nf">grow-rate</span> <span class="nv">y</span> <span class="nv">x</span><span class="p">)</span> <span class="mf">0.00001</span><span class="p">))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt-iter</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span>
+        <span class="nv">guess</span>
+        <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="p">(</span><span class="nf">improve</span> <span class="nv">guess</span> <span class="nv">x</span><span class="p">)</span> <span class="nv">x</span><span class="p">)))</span>
+
+<span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt2</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="mf">1.0</span> <span class="nv">x</span><span class="p">))</span>
+
+
+<span class="p">(</span><span class="nf">sqrt2</span> <span class="mi">2</span><span class="nv">e30</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">sqrt </span><span class="mi">2</span><span class="nv">e30</span><span class="p">)</span>
+<span class="p">(</span><span class="nf">sqrt2</span> <span class="mf">1.23</span><span class="nv">e-7</span><span class="p">)</span>
+<span class="p">(</span><span class="nb">sqrt </span><span class="mf">1.23</span><span class="nv">e-7</span><span class="p">)</span>
+</pre></div>
+<p>为了解决潜在的命令空间污染问题，可以用<strong>块结构</strong>将函数重写</p>
+<div class="highlight"><pre><span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt2</span> <span class="nv">x</span><span class="p">)</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">sqrt-iter</span> <span class="nv">guess</span><span class="p">)</span>
+        <span class="p">(</span><span class="k">if </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span><span class="p">)</span>
+            <span class="nv">guess</span>
+            <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="p">(</span><span class="nf">improve</span> <span class="nv">guess</span><span class="p">))))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">good-enough?</span> <span class="nv">guess</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">&lt; </span><span class="p">(</span><span class="nb">abs </span><span class="p">(</span><span class="nb">- </span><span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">* </span><span class="nv">guess</span> <span class="nv">guess</span><span class="p">)</span> <span class="nv">x</span><span class="p">)</span> <span class="mi">1</span><span class="p">))</span> <span class="mf">0.00001</span><span class="p">))</span>
+    <span class="p">(</span><span class="k">define </span><span class="p">(</span><span class="nf">improve</span> <span class="nv">y</span><span class="p">)</span>
+        <span class="p">(</span><span class="nb">/ </span><span class="p">(</span><span class="nb">+ </span><span class="p">(</span><span class="nb">/ </span><span class="nv">x</span> <span class="nv">y</span><span class="p">)</span> <span class="nv">y</span><span class="p">)</span> <span class="mi">2</span><span class="p">))</span>
+    <span class="p">(</span><span class="nf">sqrt-iter</span> <span class="mf">1.0</span><span class="p">))</span>
+</pre></div>
+<p>注意，在这个函数里我们省略了 <code>sqrt-iter</code>, <code>good-enough?</code>, 和 <code>improve</code>的形参中的x，因为在这些过程中可以直接用由<code>sqrt2</code>传入的自由变量x</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

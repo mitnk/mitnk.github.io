@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Ruan Jian Ce Shi De Qi Yuan Yu Fa Zhan</h1>
+        <div class="entry-content">
+            <p>软件测试是伴随着软件的产生而产生的。早期的软件开发过程中，那时软件规模都很小、复杂程度低，软件开发的过程混乱无序、相当随意，测试的含义比较狭窄，开发人员将测试等同于“调试”，目的是纠正软件中已经知道的故障，常常由开发人员自己完成这部分的工作。对测试的投入极少，测试介入也晚，常常是等到形成代码，产品已经基本完成时才进行测试。</p>
+<p>直到1957年，软件测试才开始与调试区别开来，作为一种发现软件缺陷的活动。由于一直存在着 “为了让我们看到产品在工作，就得将测试工作往后推一点”的思想，潜意识里对测试的目的就理解为“使自己确信产品能工作”。测试活动始终后于开发的活动，测试通常被做为软件生命周期中最后一项活动而进行。当时也缺乏有效的测试方法，主要依靠“错误推测 Error Guessing”来寻找软件中的缺陷。因此，大量软件交付后，仍存在很多问题，软件产品的质量无法保证。</p>
+<p>到了20世纪70年代，这个阶段开发的软件仍然不复杂，但人们已开始思考软件开发流程的问题，尽管对“软件测试”的真正含义还缺乏共识，但这一词条已经频繁出现，一些软件测试的探索者们建议在软件生命周期的开始阶段就根据需求制订测试计划，这时也涌现出一批软件测试的宗师，Bill Hetzel 博士就是其中的领导者。1972年，软件测试领域的先驱Bill Hetzel博士（代表论著《The Complete Guide to Software Testing》），在美国的北卡罗来纳大学组织了历史上第一次正式的关于软件测试的会议。在1973年，他首先给软件测试一个这样的定义：“就是建立一种信心，认为程序能够按预期的设想运行。Establish confidence that a program does what it is supposed to do. ”后来在1983年他又将定义修订为：“评价一个程序和系统的特性或能力，并确定它是否达到预期的结果。软件测试就是以此为目的的任何行为。Any activities aimed at evaluating an attribute or capability of a program or system. ”在他的定义中的“设想”和“预期的结果”其实就是我们现在所说的用户需求或功能设计。他还把软件的质量定义为“符合要求”。他的思想的核心观点是：测试方法是试图验证软件是“工作的”，所谓“工作的”就是指软件的功能是按照预先的设计执行的，以正向思维，针对软件系统的所有功能点，逐个验证其正确性。软件测试业界把这种方法看作是的软件测试的第一类方法。</p>
+<p>尽管如此，这一方法还是受到很多业界权威的质疑和挑战。代表人物是 Glenford J. Myers（代表论著《The Art of Software Testing》）。他认为测试不应该着眼于验证软件是工作的，相反应该首先认定软件是有错误的，然后用逆向思维去发现尽可能多的错误。他还从人的心理学的角度论证，如果将 “验证软件是工作的”作为测试的目的，非常不利于测试人员发现软件的错误。于是他于1979年提出了他对软件测试的定义：“测试是为发现错误而执行的一个程序或者系统的过程。The process of executing a program or system with the intent of finding errors.”这个定义，也被业界所认可，经常被引用。除此之外， Myers还给出了与测试相关的三个重要观点，那就是：</p>
+<p>测试是为了证明程序有错，而不是证明程序无错误；
+一个好的测试用例是在于它能发现至今未发现的错误；
+一个成功的测试是发现了至今未发现的错误的测试；
+这就是软件测试的第二类方法，简单地说就是验证软件是“不工作的”，或者说是有错误的。Myers认为，一个成功的测试必须是发现Bug的测试，不然就没有价值。这就如同一个病人（假定此人确有病），到医院做一项医疗检查，结果各项指标都正常，那说明该项医疗检查对于诊断该病人的病情是没有价值的，是失败的。Myers提出的“测试的目的是证伪”这一概念，推翻了过去“为表明软件正确而进行测试”的错误认识，为软件测试的发展指出了方向，软件测试的理论、方法在之后得到了长足的发展。第二类软件测试方法在业界也很流行，受到很多学术界专家的支持。
+　　
+　然而，对Glenford Myers先生“测试的目的是证伪”这一概念的理解也不能太过于片面。在很多软件工程学、软件测试方面的书籍中都提到一个概念：“测试的目的是寻找错误，并且是尽最大可能找出最多的错误”。这很容易让人们认为测试人员就是“挑毛病”的，而由此带来诸多问题。大家熟悉的Ron Patton在《软件测试》（中文版由机械工业出版社出版，此书是目前国内测试新手入门的经典教材）一书的第10页，有一个明确而简洁的定义：“软件测试人员的目标是找到软件缺陷，尽可能早一些，并确保其得以修复。”这样的定义具有一定的片面性，带来的结果是：</p>
+<p>若测试人员以发现缺陷为唯一目标，而很少去关注系统对需求的实现，测试活动往往会存在一定的随意性和盲目性；
+若有些软件企业接受了这样的方法，以Bug数量来做为考核测试人员业绩的唯一指标，也不太科学。
+总的来说，第一类测试可以简单抽象地描述为这样的过程：在设计规定的环境下运行软件的功能，将其结果与用户需求或设计结果相比较，如果相符则测试通过，如果不相符则视为Bug。这一过程的终极目标是将软件的所有功能在所有设计规定的环境全部运行，并通过。在软件行业中一般把第一类方法奉为主流和行业标准。第一类测试方法以需求和设计为本，因此有利于界定测试工作的范畴，更便于部署测试的侧重点，加强针对性。这一点对于大型软件的测试，尤其是在有限的时间和人力资源情况下显得格外重要。</p>
+<p>而第二类测试方法与需求和设计没有必然的关联，更强调测试人员发挥主观能动性，用逆向思维方式，不断思考开发人员理解的误区、不良的习惯、程序代码的边界、无效数据的输入以及系统各种的弱点，试图破坏系统、摧毁系统，目标就是发现系统中各种各样的问题。这种方法往往能够发现系统中存在的更多缺陷。</p>
+<p>到了上世纪80年代初期，软件和IT行业进入了大发展，软件趋向大型化、高复杂度，软件的质量越来越重要。这个时候，一些软件测试的基础理论和实用技术开始形成，并且人们开始为软件开发设计了各种流程和管理方法，软件开发的方式也逐渐由混乱无序的开发过程过渡到结构化的开发过程，以结构化分析与设计、结构化评审、结构化程序设计以及结构化测试为特征。人们还将 “质量”的概念融入其中，软件测试定义发生了改变，测试不单纯是一个发现错误的过程，而且将测试作为软件质量保证（SQA）的主要职能，包含软件质量评价的内容，Bill Hetzel在《软件测试完全指南》（Complete Guide of Software Testing）一书中指出：“测试是以评价一个程序或者系统属性为目标的任何一种活动。测试是对软件质量的度量。”这个定义至今仍被引用。软件开发人员和测试人员开始坐在一起探讨软件工程和测试问题。软件测试已有了行业标准（IEEE/ANSI ），1983年IEEE提出的软件工程术语中给软件测试下的定义是：“使用人工或自动的手段来运行或测定某个软件系统的过程，其目的在于检验它是否满足规定的需求或弄清预期结果与实际结果之间的差别”。这个定义明确指出：软件测试的目的是为了检验软件系统是否满足需求。它再也不是一个一次性的，而且只是开发后期的活动，而是与整个开发流程融合成一体。软件测试已成为一个专业，需要运用专门的方法和手段，需要专门人才和专家来承担。</p>
+<p>软件测试成熟度</p>
+<p>随着软件产业界对软件过程的不断研究，美国工业界和政府部门开始认识到，软件过程能力的不断改进才是增进软件开发组织的开发能力和提高软件质量的第一要素。在这种背景下，由美国卡内基-梅隆大学软件工程研究所（SEI）研制并推出了软件能力成熟度模型SW-CMM，CMM逐渐成为了评估软件开发过程的管理以及工程能力的标准。从80年代中期开始，软件生产开始进入以个体软件过程PSP(Personal Software Process)、过程成熟度模型CMM和群组软件过程TSP(Team Software Process)为标志的、以过程为中心的第二阶段。</p>
+<p>但是令人遗憾的是，CMM 没有充分的定义软件测试，没有提及测试成熟度的概念，没有对测试过程改进进行充分说明，在 KPA 中没有定义测试问题，与质量相关的测试问题如可测性，充分测试标准，测试计划等方面也没有满意的阐述。仅在第三级的软件产品工程（SPE）KPA中提及软件测试职能，但对于如何有效提高机构的测试能力和水平没有提供相应指导，无疑是一种不足。为此，许多研究机构和测试服务机构从不同角度出发提出有关软件测试方面的能力成熟度模型，作为SEI-CMM的有效补充，比较有代表性的包括：美国国防部提出一个CMM软件评估和测试KPA建议；Gelper博士提出一个测试支持模型（TSM）评估测试小组所处环境对于他们的支持程度；Burgess/Drabick I.T.I.公司提出的测试能力成熟度模型（Testing Capability Maturity Model）则提供了与CMM完全一样的5级模型。Burnstein博士提出了测试成熟度模型（TMM），依据CMM的框架提出测试的5个不同级别，关注于测试的成熟度模型。它描述了测试过程，是项目测试部分得到良好计划和控制的基础。 TMM 测试成熟度分解为 5 级别，关注于 5 个成熟度级别递增：</p>
+<p>Phase 0 ：测试和调试没有区别，初了支持调试外，测试没有其他目的
+Phase 1 ：测试的目的是为了表明软件能够工作
+Phase 2 ：测试的目的是为了表明软件不能够能够正常工作
+Phase 3 ：测试的目的不是要证明什么，而是为了把软件不能正常工作的预知风险降低到能够接受的程度
+Phase 4 ： 测试不是行为，而是一种自觉的约束 (mental discipline) ，不用太多的测试投入产生低风险的软件上的 。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">How Do I Convert Between Unix And Windows Text Files</h1>
+        <div class="entry-content">
+            <p>How do I convert between Unix and Windows text files?</p>
+<p>The format of Windows and Unix text files differs slightly. In Windows, lines end with both the line feed and carriage return ASCII characters, but Unix uses only a line feed. As a consequence, some Windows applications will not show the line breaks in Unix-format files. Likewise, Unix programs may display the carriage returns in Windows text files with Ctrl-m ( ^M ) characters at the end of each line.</p>
+<p>There are many ways to solve this problem. This document provides instructions for using FTP, screen capture, unix2dos and dos2unix, tr, awk, Perl, and vi to do the conversion. To use these utilities, the files you are converting must be on a Unix computer.</p>
+<p>Note: In the instructions below, replace unixfile.txt with the name of your Unix file, and replace winfile.txt with the Windows filename..</p>
+<p>FTP
+When using an FTP program to move a text file between Unix and Windows, be sure the file is transferred in ASCII format, so the document is transformed into a text format appropriate for the host. Some FTP programs, especially graphical applications (e.g., Hummingbird FTP), do this automatically. If you are using command line FTP, before you begin the transfer, enter:</p>
+<p>ascii
+Note: You need to use a client that supports secure FTP to transfer files to and from Indiana University's central systems. For more, see At IU, what SSH/SFTP clients are supported and where can I get them?</p>
+<p>dos2unix and unix2dos
+The utilities dos2unix and unix2dos are available for converting files from the Unix command line.</p>
+<p>To convert a Windows file to a Unix file, enter:</p>
+<p>dos2unix winfile.txt unixfile.txt
+To convert a Unix file to Windows, enter:</p>
+<p>unix2dos unixfile.txt winfile.txt
+tr
+You can use tr to remove all carriage returns and Ctrl-z ( ^Z ) characters from a Windows file:</p>
+<p>tr -d '\15\32' &lt; winfile.txt &gt; unixfile.txt
+However, you cannot use tr to convert a document from Unix format to Windows.</p>
+<p>awk
+To use awk to convert a Windows file to Unix, enter:</p>
+<p>awk '{ sub("\r$", ""); print }' winfile.txt &gt; unixfile.txt
+To convert a Unix file to Windows, enter:</p>
+<p>awk 'sub("$", "\r")' unixfile.txt &gt; winfile.txt
+Older versions of awk do not include the sub function. In such cases, use the same command, but replace awk with gawk or nawk.</p>
+<p>Perl
+To convert a Windows text file to a Unix text file using Perl, enter:</p>
+<p>perl -p -e 's/\r$//' &lt; winfile.txt &gt; unixfile.txt
+To convert from a Unix text file to a Windows text file, enter:</p>
+<p>perl -p -e 's/\n/\r\n/' &lt; unixfile.txt &gt; winfile.txt
+You must use single quotation marks in either command line. This prevents your shell from trying to evaluate anything inside.</p>
+<p>vi
+In vi, you can remove carriage return ( ^M ) characters with the following command:</p>
+<p>:1,$s/^M//g</p>
+<p>Note: To input the ^M character, press Ctrl-v , and then press Enter or return.</p>
+<p>In vim, use :set ff=unix to convert to Unix; use :set ff=dos to convert to Windows.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

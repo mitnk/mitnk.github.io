@@ -1,0 +1,122 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Whats New In Python 3.1</h1>
+        <div class="entry-content">
+            <h2>PEPs</h2>
+<ul>
+<li>Added <code>OrderedDict</code> in collections module- Built-in <code>format()</code>: format(1234567.89, ',.2f') =&gt; '1,234,567.89'</li>
+</ul>
+<h2>Other Language Changes</h2>
+<ul>
+<li>Directories and zip archives containing a <code>__main__.py</code> file can be executed by passing their names to the interpreter.</li>
+<li><code>bit_length()</code>: <code>n = 2**123-1; n.bit_length()</code> =&gt; <code>123</code></li>
+<li><code>'Sir {} of {}'.format('Foo', 'Bar')'</code></li>
+<li>string.maketrans() was replaced by <code>bytes.maketrans()</code></li>
+<li>with statement: <code>with open('a.txt') as infile, open('b.txt') as outfile:</code></li>
+<li>round(x, n) now returns integer if x is an integer</li>
+<li>repr(1.1) now is '1.1', previously, it's '1.1000000000000001'</li>
+</ul>
+<h2>New, Improved, and Deprecated Modules</h2>
+<ul>
+<li>Added collections.<code>Counter</code> class to support counting of unique items in a sequence.</li>
+<li>Added a new module <code>tkinter.ttk</code> for access to the Tk themed widget set.</li>
+<li>The <code>gzip.GzipFile</code> and <code>bz2.BZ2File</code> classes now support the context manager protocol (the <code>with</code> .. <code>as</code> statement)</li>
+<li>The <code>decimal</code> module now supports methods for creating a decimal from <code>float</code>: <code>Decimal.from_float(1.1)</code></li>
+<li>The <code>itertools</code> module grew two new functions. The <code>itertools.combinations_with_replacement()</code> for generating combinatorics including permutations and Cartesian products. The <code>itertools.compress()</code> mimics namesake from APL.</li>
+<li>Added the <code>rename</code> argument for <code>collections.namedtuple()</code></li>
+<li>The <code>re.sub(), re.subn()</code> and <code>re.split()</code> now accept a flags parameter.</li>
+<li>The <code>logging</code> module now implements a simple <code>logging.NullHandler</code> class.</li>
+<li>The <code>runny</code> which supports the <code>-m</code> switch now supports the execution the <code>__main__</code> when a package name is supplied.</li>
+<li>The <code>pdb</code> now support <code>zipimport</code> codes</li>
+<li><code>functools.partial</code> objects can now be pickled.</li>
+<li>The <code>unit test</code> module now supports skipping individual tests or classes of tests. And it supports marking a test as a expected failure. <code>@unittest.skipUnless(sys.platform.startswith("win"), "requires Windows")</code> and <code>@unittest.expectedFailure</code></li>
+<li>Also, tests for exceptions have been builtout to use <code>with</code> statement. More assertion methods were added like <code>assertTupleEqual(), assertSequenceEqual()</code>, etc.</li>
+<li>The <code>io</code> module has three new constants for the <code>seek()</code> method. <code>SEEK_SET</code>, etc</li>
+<li>A new module <code>importlib</code> was added. It provides a complete, portable, pure Python reference implementation of the <code>import</code> and <code>__import__()</code>.</li>
+</ul>
+<h2>Optimizations</h2>
+<p>Major performance enhancements have been added:</p>
+<ul>
+<li>The I/O library has been entirely rewritten in C and is 2 to 20 times faster than it in Python 3.0 (The python version is still available at <code>_pyio</code> for experimentation purposes.</li>
+<li>Added a heuristic so that tuples and dicts containing only untrackable objects are not tracked by the garbage collector.</li>
+<li>The decoding of UTF-8, UTF-16, and LATIN-1 is now two to four times faster.</li>
+<li>The <code>json</code> module now has a C extension to substantially improve its performance.</li>
+<li>Unpickling now interns the attribute names of pickled objects. This save memory and allow pickles to be smaller.</li>
+</ul>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

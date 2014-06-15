@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">How To Add Swap On Ubuntu 12.04</h1>
+        <div class="entry-content">
+            <h2>About Linux Swapping</h2>
+<p>Linux RAM is composed of chunks of memory called pages. To free up pages of RAM, a “linux swap” can occur and a page of memory is copied from the RAM to preconfigured space on the hard disk. Linux swaps allow a system to harness more memory than was originally physically available. </p>
+<p>However, swapping does have disadvantages. Because hard disks have a much slower memory than RAM, virtual private server performance may slow down considerably. Additionally, swap thrashing can begin to take place if the system gets swamped from too many files being swapped in and out.</p>
+<h2>Check for Swap Space</h2>
+<p>Before we proceed to set up a swap file, we need to check if any swap files have been enabled on the VPS by looking at the summary of swap usage.</p>
+<div class="highlight"><pre>swapon -s
+</pre></div>
+<p>An empty list will confirm that you have no swap files enabled:</p>
+<div class="highlight"><pre>Filename                Type        Size    Used    Priority
+</pre></div>
+<h2>Check the File System</h2>
+<p>After we know that we do not have a swap file enabled on the virtual server, we can check how much space we have on the server with the df command. The swap file will take 512MB— since we are only using up about 8% of the /dev/sda, we can proceed.</p>
+<div class="highlight"><pre>df
+
+Filesystem     1K-blocks    Used Available Use% Mounted on
+/dev/sda        20907056 1437188  18421292   8% /
+udev              121588       4    121584   1% /dev
+tmpfs              49752     208     49544   1% /run
+none                5120       0      5120   0% /run/lock
+none              124372       0    124372   0% /run/shm
+</pre></div>
+<h2>Create and Enable the Swap File</h2>
+<p>Now it’s time to create the swap file itself using the dd command :</p>
+<div class="highlight"><pre>sudo dd if=/dev/zero of=/swapfile bs=1024 count=512k
+</pre></div>
+<p>“of=/swapfile” designates the file’s name. In this case the name is swapfile. </p>
+<p>Subsequently we are going to prepare the swap file by creating a linux swap area:
+sudo mkswap /swapfile</p>
+<p>The results display:</p>
+<div class="highlight"><pre>Setting up swapspace version 1, size = 262140 KiB
+no label, UUID=103c4545-5fc5-47f3-a8b3-dfbdb64fd7eb
+</pre></div>
+<p>Finish up by activating the swap file:</p>
+<div class="highlight"><pre>sudo swapon /swapfile
+</pre></div>
+<p>You will then be able to see the new swap file when you view the swap summary.</p>
+<div class="highlight"><pre>swapon -s
+
+Filename                Type        Size    Used    Priority
+/swapfile                               file        262140  0   -1
+</pre></div>
+<p>This file will last on the virtual private server until the machine reboots. You can ensure that the swap is permanent by adding it to the fstab file.</p>
+<p>Open up the file:</p>
+<div class="highlight"><pre>sudo nano /etc/fstab
+</pre></div>
+<p>Paste in the following line:</p>
+<div class="highlight"><pre>/swapfile       none    swap    sw      0       0
+</pre></div>
+<p>To prevent the file from being world-readable, you should set up the correct permissions on the swap file:</p>
+<div class="highlight"><pre>sudo chown root:root /swapfile 
+sudo chmod 0600 /swapfile
+</pre></div>
+<p>From <a href="https://www.digitalocean.com/community/articles/how-to-add-swap-on-ubuntu-12-04">Digital Ocean</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

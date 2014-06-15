@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Robot Framework On Mac Os X</h1>
+        <div class="entry-content">
+            <p>Download robot framework source package from here:
+http://code.google.com/p/robotframework/downloads/list
+like robotframework-2.6.1.tar.gz</p>
+<p>Un-tar it and install it with
+sudo python setup.py install</p>
+<p>Link pybot into bin directory
+sudo ln -s /System/Library/Frameworks/Python.framework/Versions/2.6/bin/pybot /usr/local/bin/pybot</p>
+<p>You can try command now:
+pybot --version</p>
+<p>Look up key works from here:
+http://robotframework-seleniumlibrary.googlecode.com/hg/doc/SeleniumLibrary.html?r=2.8</p>
+<p>Download robotframework-seleniumlibrary from here:
+http://code.google.com/p/robotframework-seleniumlibrary/downloads/list
+like    robotframework-seleniumlibrary-2.8.tar.gz</p>
+<p>Un-tar it and install it with
+sudo python setup.py install</p>
+<p>Write Cases</p>
+<p>==============</p>
+<p><strong><em> Settings </em></strong>
+Library    Selenium Library    30
+Test setup    Start Selenium Server
+Test teardown    Stop Selenium Server</p>
+<p><strong><em> Testcases </em></strong>
+TestCseSearchBoxDefaultValue    [Documentation]    Search box default value
+  Open Browser    http://mitnk.com/commands/    firefox
+  Textfield Value Should Be    cse-input    Search
+  Close Browser</p>
+<p>TestCseSearchBoxBlur    [Documentation]    Search box blur event
+  Open Browser    http://mitnk.com/commands/    firefox
+  Input Text    cse-input    abc
+  Simulate    cse-input    blur
+  Textfield Value Should Be    cse-input    abc
+  Input Text    cse-input    \
+  Simulate    cse-input    blur
+  Textfield Value Should Be    cse-input    Search
+  Close Browser</p>
+<p>TestCseSearchBoxFocus    [Documentation]    Search box focus event
+  Open Browser    http://mitnk.com/commands/    firefox
+  Textfield Value Should Be    cse-input    Search
+  Simulate    cse-input    focus
+  Textfield Value Should Be    cse-input    \
+  Input Text    cse-input    abc
+  Simulate    cse-input    blur
+  Simulate    cse-input    focus
+  Textfield Value Should Be    cse-input    abc
+  Close Browser</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

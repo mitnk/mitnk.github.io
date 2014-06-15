@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Erlang Docs And Man Pages</h1>
+        <div class="entry-content">
+            <p>Assuming that we have installed erlang from source using <code>sudo make install</code>.
+Then we can <a href="http://www.erlang.org/doc/installation_guide/INSTALL.html#The-ErlangOTP-Documentation">install docs like this</a>:</p>
+<div class="highlight"><pre>$ cd otp_src_R15B
+$ export PATH=/usr/local/lib/erlang/bin:$PATH
+$ make docs
+$ sudo make install-docs
+$ cd /usr/local/lib/erlang/doc
+$ open index.html
+</pre></div>
+<p>Download Erlang man page from here:
+<a href="http://www.erlang.org/download.html">http://www.erlang.org/download.html</a></p>
+<p>Check manpath</p>
+<div class="highlight"><pre>$ manpath
+/usr/local/share/man:/usr/share/man:/usr/X11/man:/usr/local/git/share/man
+</pre></div>
+<p>Copy man pages to man path:</p>
+<div class="highlight"><pre>$ tar xfz otp_doc_man_R15B01.tar.gz
+$ ls man
+man1 man3 man4 man6 man7
+$ sudo cp -r man/* /usr/local/share/man/
+</pre></div>
+<p>Test:</p>
+<div class="highlight"><pre>$ man erl
+</pre></div>
+<p>Updated: Erlang's man pages may not need to download, since there is already a copy at <code>/usr/local/lib/erlang/man</code>. Just copy them into manpath.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

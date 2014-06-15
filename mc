@@ -37,8 +37,12 @@ def add(title):
     _create_md_file(title)
 
 
-def _create_html_file(title, year, month):
-    dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
+def _create_html_file(title, year, month, wiki=False):
+    if wiki:
+        dir_ = Path('./wiki/{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
+    else:
+        dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
+
     if not dir_.exists():
         dir_.mkdir(parents=True)
         print('created dir: {}'.format(dir_.absolute()))
@@ -46,7 +50,7 @@ def _create_html_file(title, year, month):
     return '{}'.format(file_.absolute())
 
 
-def make_html(md_file):
+def make_html(md_file, wiki=False):
     strings = md_file.split('/')
     title = _parse_title(strings[-1])
     month = int(strings[-2])
@@ -59,28 +63,29 @@ def make_html(md_file):
         'time_added': datetime.datetime.now(),
     }
     html = render_to_string('article.html', context)
-    file_html = _create_html_file(title, year, month)
+    file_html = _create_html_file(title, year, month, wiki=wiki)
     with open(file_html, 'w') as f:
         f.write(html)
     print('html generated: {}'.format(file_html))
 
 
-def find_md_file_list():
+def find_md_file_list(wiki=False):
     md_list = []
-    for root, dirs, files in os.walk("./_src/docs/"):
+    dir_ = './_src/wiki/' if wiki else './_src/docs/'
+    for root, dirs, files in os.walk(dir_):
         for file in files:
             if file.endswith(".md") or file.endswith(".MD"):
                 md_list.append(os.path.join(root, file))
     return md_list
 
 
-def compile(md_file):
+def compile(md_file, wiki=False):
     if md_file == 'all':
-        md_list = find_md_file_list()
+        md_list = find_md_file_list(wiki)
         for f in md_list:
-            make_html(f)
+            make_html(f, wiki=wiki)
     else:
-        html = make_html(md_file)
+        html = make_html(md_file, wiki=wiki)
 
 
 if __name__ == '__main__':
@@ -94,5 +99,11 @@ if __name__ == '__main__':
     elif sys.argv[1].lower() == 'compile':
         title = ' '.join(sys.argv[2:])
         compile(title)
+    if sys.argv[1].lower() == 'addwiki':
+        title = ' '.join(sys.argv[2:])
+        add(title)
+    elif sys.argv[1].lower() == 'compilewiki':
+        title = ' '.join(sys.argv[2:])
+        compile(title, wiki=True)
     else:
         raise NotImplementedError()

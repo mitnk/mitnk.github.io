@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Nginx Memcached Auto Run On Mac Os X</h1>
+        <div class="entry-content">
+            <h2>nginx</h2>
+<p>Install nginx with <code>brew install nginx</code></p>
+<p>Config files at: <code>/usr/local/etc/nginx/</code></p>
+<p>nginx at: <code>/usr/local/sbin/nginx -v</code></p>
+<p>Output after installing:</p>
+<p>In the interest of allowing you to run <code>nginx</code> without <code>sudo</code>, the default
+port is set to localhost:8080.</p>
+<p>If you want to host pages on your local machine to the public, you should
+change that to localhost:80, and run <code>sudo nginx</code>. You'll need to turn off
+any other web servers running port 80, of course.</p>
+<p>You can start nginx automatically on login running as your user with:</p>
+<div class="highlight"><pre>mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/nginx/1.2.2/homebrew.mxcl.nginx.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.nginx.plist
+</pre></div>
+<p>Though note that if running as your user, the launch agent will fail if you
+try to use a port below 1024 (such as http's default of 80.)</p>
+<h2>memcached</h2>
+<p>You can enable memcached to automatically load on login with:</p>
+<div class="highlight"><pre>mkdir -p ~/Library/LaunchAgents
+cp /usr/local/Cellar/memcached/1.4.14/homebrew.mxcl.memcached.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+</pre></div>
+<p>If this is an upgrade and you already have the homebrew.mxcl.memcached.plist loaded:</p>
+<div class="highlight"><pre>launchctl unload -w ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+cp /usr/local/Cellar/memcached/1.4.14/homebrew.mxcl.memcached.plist ~/Library/LaunchAgents/
+launchctl load -w ~/Library/LaunchAgents/homebrew.mxcl.memcached.plist
+</pre></div>
+<p>Or start it manually:</p>
+<div class="highlight"><pre>/usr/local/bin/memcached
+</pre></div>
+<p>Add "-d" to start it as a daemon.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

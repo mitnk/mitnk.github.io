@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Fix The Bogon Issue On Mac Os X For Rpccall</h1>
+        <div class="entry-content">
+            <p>For the following code:</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">kvs</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">store</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">lookup</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">register</span><span class="p">(</span><span class="n">kvs</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">loop</span><span class="p">()</span> <span class="k">end</span><span class="p">)).</span>
+
+<span class="nf">store</span><span class="p">(</span><span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">({</span><span class="n">store</span><span class="p">,</span> <span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">}).</span>
+
+<span class="nf">lookup</span><span class="p">(</span><span class="nv">Key</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">({</span><span class="n">lookup</span><span class="p">,</span> <span class="nv">Key</span><span class="p">}).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="n">kvs</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">kvs</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">Response</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">lookup</span><span class="p">,</span> <span class="nv">Key</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nv">Value</span> <span class="o">=</span> <span class="nb">get</span><span class="p">(</span><span class="nv">Key</span><span class="p">),</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="n">kvs</span><span class="p">,</span> <span class="nv">Value</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">store</span><span class="p">,</span> <span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nb">put</span><span class="p">(</span><span class="nv">Key</span><span class="p">,</span> <span class="nv">Value</span><span class="p">),</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="n">kvs</span><span class="p">,</span> <span class="n">ok</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">()</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>When we start a shell to run:</p>
+<div class="highlight"><pre><span class="go">$ erl -sname tom</span>
+<span class="go">(tom@bogon)1&gt; kvs:start().</span>
+<span class="go">true</span>
+</pre></div>
+<p>Then we start a second shell to run:</p>
+<div class="highlight"><pre><span class="go">$ erl -sname cat</span>
+<span class="go">(cat@bogon)1&gt; rpc:call(tom@bogon, kvs, store, [name, hi]).</span>
+</pre></div>
+<p>But it doesn't work.</p>
+<p>We can add the follow code into <code>/etc/hosts</code> to fix this problem.</p>
+<div class="highlight"><pre>127.0.0.1   bogon
+</pre></div>
+<p>Done.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

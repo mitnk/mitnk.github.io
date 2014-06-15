@@ -1,0 +1,436 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Erlang Sequential Programming</h1>
+        <div class="entry-content">
+            <h2>Chapter 2 Getting Started</h2>
+<p><strong>2.5 Simple Integer Arithmetic</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">.</span>
+<span class="go">14</span>
+</pre></div>
+<p>Uses base 16 and base 32 notation</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2#111</span> <span class="o">*</span> <span class="mi">10#3</span>
+<span class="go">21</span>
+<span class="gp">2&gt;</span> <span class="mi">16#cafe</span> <span class="o">*</span> <span class="mi">32#sugar</span><span class="p">.</span>
+<span class="go">1577682511434</span>
+</pre></div>
+<p><strong>2.6 Variables</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">1234567</span><span class="p">.</span>
+<span class="go">1234567</span>
+<span class="gp">2&gt;</span> <span class="nv">X</span><span class="p">.</span>
+<span class="go">1234567</span>
+<span class="gp">3&gt;</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span><span class="p">.</span>
+<span class="go">1881672302290562263</span>
+<span class="gp">4&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">.</span>
+<span class="gt">** exception error: no match of right hand side value 1234</span>
+</pre></div>
+<p><strong>2.7 Floating-Point Numbers</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">3</span><span class="p">.</span>
+<span class="go">1.66667</span>
+<span class="gp">2&gt;</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span>
+<span class="go">2.00000</span>
+<span class="gp">3&gt;</span> <span class="mi">5</span> <span class="ow">div</span> <span class="mi">3</span><span class="p">.</span>
+<span class="go">1</span>
+<span class="gp">4&gt;</span> <span class="mi">5</span> <span class="ow">rem</span> <span class="mi">3</span><span class="p">.</span>
+<span class="go">2</span>
+<span class="gp">5&gt;</span> <span class="mi">4</span> <span class="ow">div</span> <span class="mi">2</span><span class="p">.</span>
+<span class="go">2</span>
+</pre></div>
+<p><strong>2.8 Atoms</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">hello</span><span class="p">.</span>
+<span class="go">hello</span>
+</pre></div>
+<p>Like code:</p>
+<div class="highlight"><pre><span class="cp">#define NULL 0</span>
+</pre></div>
+<p>in C programming Language.</p>
+<p>Atoms start with lowercase letters, followed by a sequence of alphanumeric chars or the _ or @ sign.</p>
+<p>Atoms can also be quoted with <code>'</code> char, e.g. 'Name', '+', 'Hello', or 'a'</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">'Name'</span><span class="p">.</span>
+<span class="go">'Name'</span>
+<span class="gp">2&gt;</span> <span class="n">'a'</span><span class="p">.</span>
+<span class="go">a</span>
+<span class="gp">3&gt;</span> <span class="n">'a'</span> <span class="o">==</span> <span class="n">a</span><span class="p">.</span>
+<span class="go">true</span>
+</pre></div>
+<p><strong>2.9 Tuples</strong></p>
+<p>Like struct in C:</p>
+<div class="highlight"><pre><span class="k">struct</span> <span class="n">point</span> <span class="p">{</span>
+  <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
+  <span class="kt">int</span> <span class="n">y</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">P</span><span class="p">;</span>
+<span class="n">P</span><span class="p">.</span><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span><span class="p">;</span> <span class="n">P</span><span class="p">.</span><span class="n">y</span> <span class="o">=</span> <span class="mi">45</span><span class="p">;</span>
+</pre></div>
+<p>In Erlang it is:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">P</span> <span class="o">=</span> <span class="p">{</span><span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">}</span>
+<span class="go">{10,45}</span>
+<span class="gp">2&gt;</span> <span class="nv">Point</span> <span class="o">=</span> <span class="p">{</span><span class="n">point</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">45</span><span class="p">}.</span>
+<span class="go">{point,10,45}</span>
+<span class="gp">3&gt;</span> <span class="p">{</span><span class="n">point</span><span class="p">,</span> <span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">}</span> <span class="o">=</span> <span class="nv">Point</span><span class="p">.</span>
+<span class="go">{point,10,45}</span>
+<span class="gp">4&gt;</span> <span class="nv">X</span><span class="p">.</span>
+<span class="go">10</span>
+<span class="gp">5&gt;</span> <span class="nv">Y</span><span class="p">.</span>
+<span class="go">45</span>
+<span class="gp">6&gt;</span> <span class="p">{_,</span> <span class="p">_,</span> <span class="nv">Y2</span><span class="p">}</span> <span class="o">=</span> <span class="nv">Point</span><span class="p">.</span>
+<span class="go">{point,10,45}</span>
+<span class="gp">7&gt;</span> <span class="nv">Y2</span><span class="p">.</span>
+<span class="go">45</span>
+</pre></div>
+<p>The number of elements is said to be the size of the tuple.</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nb">tuple_size</span><span class="p">({</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">,</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">,</span> <span class="mi">20</span><span class="p">}).</span>
+<span class="go">5</span>
+</pre></div>
+<p><strong>2.10 Lists</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span>
+<span class="go">[1,3,5]</span>
+<span class="gp">2&gt;</span> <span class="nv">ThingsToBuy</span> <span class="o">=</span> <span class="p">[{</span><span class="n">apples</span><span class="p">,</span> <span class="mi">10</span><span class="p">},</span> <span class="p">{</span><span class="n">pears</span><span class="p">,</span> <span class="mi">6</span><span class="p">},</span> <span class="p">{</span><span class="n">milk</span><span class="p">,</span> <span class="mi">3</span><span class="p">}].</span>
+<span class="go">[{apples, 10},{pears,6},{milk,3}]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">]</span> <span class="o">=</span> <span class="nv">L</span><span class="p">.</span>
+<span class="go">[1,3,5]</span>
+<span class="gp">4&gt;</span> <span class="nv">H</span><span class="p">.</span>
+<span class="go">1</span>
+<span class="gp">5&gt;</span> <span class="nv">T</span><span class="p">.</span>
+<span class="go">[3,5]</span>
+<span class="gp">6&gt;</span> <span class="n">f</span><span class="p">().</span>
+<span class="go">ok</span>
+<span class="gp">7&gt;</span> <span class="p">[</span><span class="nv">H1</span><span class="p">,</span> <span class="nv">H2</span> <span class="p">|</span> <span class="nv">T</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">9</span><span class="p">].</span>
+<span class="go">[1,3,5,7,9]</span>
+<span class="gp">8&gt;</span> <span class="p">{</span><span class="nv">H1</span><span class="p">,</span> <span class="nv">H2</span><span class="p">,</span> <span class="nv">T</span><span class="p">}</span>
+<span class="go">{1, 3, [5,7,9]}</span>
+</pre></div>
+<p><strong>2.11 Strings</strong></p>
+<p>There are no strings in Erlang. They are the list of integers.</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Name</span> <span class="o">=</span> <span class="s">"Hello"</span><span class="p">.</span>
+<span class="go">"Hello"</span>
+<span class="gp">2&gt;</span> <span class="p">[</span><span class="mi">83</span><span class="p">,</span><span class="mi">117</span><span class="p">,</span><span class="mi">114</span><span class="p">,</span><span class="mi">112</span><span class="p">,</span><span class="mi">114</span><span class="p">,</span><span class="mi">105</span><span class="p">,</span><span class="mi">115</span><span class="p">,</span><span class="mi">101</span><span class="p">].</span>
+<span class="go">"Surprise"</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">83</span><span class="p">,</span><span class="mi">117</span><span class="p">,</span><span class="mi">114</span><span class="p">,</span><span class="mi">112</span><span class="p">,</span><span class="mi">114</span><span class="p">,</span><span class="mi">105</span><span class="p">,</span><span class="mi">115</span><span class="p">,</span><span class="mi">101</span><span class="p">].</span>
+<span class="go">[1,83,117,114,112,114,105,115,101]</span>
+</pre></div>
+<p>Dollar syntax</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">I</span> <span class="o">=</span> <span class="sc">$s</span><span class="p">.</span>
+<span class="go">115</span>
+<span class="gp">2&gt;</span> <span class="p">[</span><span class="nv">I</span><span class="o">-</span><span class="mi">32</span><span class="p">,</span><span class="sc">$u</span><span class="p">,</span><span class="sc">$r</span><span class="p">,</span><span class="sc">$p</span><span class="p">,</span><span class="sc">$r</span><span class="p">,</span><span class="sc">$i</span><span class="p">,</span><span class="sc">$s</span><span class="p">,</span><span class="sc">$e</span><span class="p">].</span>
+<span class="go">"Surprise"</span>
+</pre></div>
+<h2>Chapter 3 Sequential Programming</h2>
+<p><strong>3.1 Modules</strong></p>
+<p>Modules are the basic unit of code in Erlang. All the functions we write are stored in modules.</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">geometry</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">area</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+<span class="nf">area</span><span class="p">({</span><span class="n">rectangle</span><span class="p">,</span> <span class="nv">Width</span><span class="p">,</span> <span class="nv">Ht</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="nv">Width</span> <span class="o">*</span> <span class="nv">Ht</span><span class="p">;</span>
+<span class="nf">area</span><span class="p">({</span><span class="n">square</span><span class="p">,</span> <span class="nv">X</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span><span class="p">;</span>
+<span class="nf">area</span><span class="p">({</span><span class="n">circle</span><span class="p">,</span> <span class="nv">R</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="p">.</span><span class="mi">14159</span> <span class="o">*</span> <span class="nv">R</span> <span class="o">*</span> <span class="nv">R</span><span class="p">.</span>
+</pre></div>
+<p>Usage</p>
+<div class="highlight"><pre><span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">geometry</span><span class="p">).</span>
+<span class="go">{ok,geometry}</span>
+<span class="gp">2&gt;</span> <span class="nn">geometry</span><span class="p">:</span><span class="nf">area</span><span class="p">({</span><span class="n">rectangle</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">5</span><span class="p">}).</span>
+<span class="go">50</span>
+<span class="gp">3&gt;</span> <span class="nn">geometry</span><span class="p">:</span><span class="nf">area</span><span class="p">({</span><span class="n">circle</span><span class="p">,</span> <span class="mi">1</span><span class="p">.</span><span class="mi">4</span><span class="p">}).</span>
+<span class="go">6.15752</span>
+</pre></div>
+<p><strong>3.3 Functions with the same name and different Arity</strong></p>
+<div class="highlight"><pre><span class="nf">sum</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sum</span><span class="p">(</span><span class="nv">L</span><span class="p">,</span> <span class="mi">0</span><span class="p">).</span>
+
+<span class="nf">sum</span><span class="p">([],</span> <span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">N</span><span class="p">;</span>
+<span class="nf">sum</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">],</span> <span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">sum</span><span class="p">(</span><span class="nv">T</span><span class="p">,</span> <span class="nv">H</span><span class="o">+</span><span class="nv">N</span><span class="p">).</span>
+</pre></div>
+<p><strong>3.4 Funs</strong></p>
+<p>funs are anonymous functions.</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Z</span> <span class="o">=</span> <span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">2</span> <span class="o">*</span> <span class="nv">X</span> <span class="k">end</span><span class="p">.</span>
+<span class="go">#Fun&lt;erl_eval.6.34545567&gt;</span>
+<span class="gp">2&gt;</span> <span class="nv">Z</span><span class="p">(</span><span class="mi">2</span><span class="p">).</span>
+<span class="go">4</span>
+<span class="gp">3&gt;</span> <span class="nv">Double</span> <span class="o">=</span> <span class="nv">Z</span><span class="p">.</span>
+<span class="go">#Fun&lt;erl_eval.6.30202343&gt;</span>
+<span class="gp">4&gt;</span> <span class="nv">Double</span><span class="p">(</span><span class="mi">4</span><span class="p">).</span>
+<span class="go">8</span>
+<span class="gp">5&gt;</span> <span class="nv">Temp</span> <span class="o">=</span> <span class="k">fun</span><span class="p">({</span><span class="n">c</span><span class="p">,</span> <span class="nv">C</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">f</span><span class="p">,</span> <span class="mi">32</span> <span class="o">+</span> <span class="nv">C</span><span class="o">*</span><span class="mi">9</span><span class="o">/</span><span class="mi">5</span><span class="p">};</span>
+<span class="gp">5&gt;</span>        <span class="p">({</span><span class="n">f</span><span class="p">,</span> <span class="nv">F</span><span class="p">})</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">c</span><span class="p">,</span> <span class="p">(</span><span class="nv">F</span><span class="o">-</span><span class="mi">32</span><span class="p">)</span> <span class="o">*</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">9</span><span class="p">}</span>
+<span class="gp">5&gt;</span>        <span class="k">end</span><span class="p">.</span>
+<span class="go">#Fun&lt;erl_erval.6.56003434&gt;</span>
+<span class="gp">6&gt;</span> <span class="nv">Temp</span><span class="p">({</span><span class="n">f</span><span class="p">,</span> <span class="mi">212</span><span class="p">}).</span>
+<span class="go">{c,100.000}</span>
+</pre></div>
+<p>Defining Your Own Control Abstractions</p>
+<div class="highlight"><pre><span class="nf">for</span><span class="p">(</span><span class="nv">Max</span><span class="p">,</span> <span class="nv">Max</span><span class="p">,</span> <span class="nv">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nv">F</span><span class="p">(</span><span class="nv">Max</span><span class="p">)];</span>
+<span class="nf">for</span><span class="p">(</span><span class="nv">I</span><span class="p">,</span> <span class="nv">Max</span><span class="p">,</span> <span class="nv">F</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nv">F</span><span class="p">(</span><span class="nv">I</span><span class="p">)</span> <span class="p">|</span> <span class="n">for</span><span class="p">(</span><span class="nv">I</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Max</span><span class="p">,</span> <span class="nv">F</span><span class="p">)].</span>
+</pre></div>
+<p><code>for(1, 10, F)</code> creates he list <code>[F(1),F(2), ..., F(10)]</code>.</p>
+<p><strong>3.6 List Comprehensions</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">].</span>
+<span class="go">[1,2,3,4,5]</span>
+<span class="gp">2&gt;</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">map</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="o">*</span><span class="nv">X</span> <span class="k">end</span><span class="p">,</span> <span class="nv">L</span><span class="p">).</span>
+<span class="go">[2,4,6,8,10]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="nv">X</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">L</span><span class="p">].</span>
+<span class="go">[2,4,6,8,10]</span>
+</pre></div>
+<p>Quicksort</p>
+<div class="highlight"><pre><span class="nf">qsort</span><span class="p">([])</span> <span class="o">-&gt;</span> <span class="p">[];</span>
+<span class="nf">qsort</span><span class="p">([</span><span class="nv">Pivot</span><span class="p">|</span><span class="nv">T</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="n">qsort</span><span class="p">([</span><span class="nv">X</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">T</span><span class="p">,</span> <span class="nv">X</span> <span class="o">&lt;</span> <span class="nv">Pivot</span><span class="p">])</span>
+    <span class="o">++</span> <span class="p">[</span><span class="nv">Pivot</span><span class="p">]</span> <span class="o">++</span>
+    <span class="n">qsort</span><span class="p">([</span><span class="nv">X</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">T</span><span class="p">,</span> <span class="nv">X</span> <span class="o">&gt;=</span> <span class="nv">Pivot</span><span class="p">]).</span>
+</pre></div>
+<p>Pythagorean Triplets</p>
+<div class="highlight"><pre><span class="nf">pythag</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">[{</span><span class="nv">A</span><span class="p">,</span> <span class="nv">B</span><span class="p">,</span> <span class="nv">C</span><span class="p">}</span> <span class="p">||</span>
+        <span class="nv">A</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span><span class="p">),</span>
+        <span class="nv">B</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span><span class="p">),</span>
+        <span class="nv">C</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span><span class="p">),</span>
+        <span class="nv">A</span> <span class="o">+</span> <span class="nv">B</span> <span class="o">+</span> <span class="nv">C</span> <span class="o">=&lt;</span> <span class="nv">N</span><span class="p">,</span>
+        <span class="nv">A</span><span class="o">*</span><span class="nv">A</span> <span class="o">+</span> <span class="nv">B</span><span class="o">*</span><span class="nv">B</span> <span class="o">=:=</span> <span class="nv">C</span><span class="o">*</span><span class="nv">C</span>
+    <span class="p">].</span>
+</pre></div>
+<p>Usage</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">pythag</span><span class="p">(</span><span class="mi">30</span><span class="p">).</span>
+<span class="go">[{3,4,5},{5,12,13},{6,8,10}]</span>
+</pre></div>
+<p>Anagrams</p>
+<p><code>X--Y</code> is the list subtraction operator. It subtracts the elements in Y from X</p>
+<div class="highlight"><pre><span class="nf">perms</span><span class="p">([])</span> <span class="o">-&gt;</span> <span class="p">[[]];</span>
+<span class="nf">perms</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">]</span> <span class="p">||</span> <span class="nv">H</span> <span class="o">&lt;-</span> <span class="nv">L</span><span class="p">,</span> <span class="nv">T</span> <span class="o">&lt;-</span> <span class="n">perms</span><span class="p">(</span><span class="nv">L</span><span class="o">--</span><span class="p">[</span><span class="nv">H</span><span class="p">])].</span>
+</pre></div>
+<p>Usage</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">lib_misc</span><span class="p">:</span><span class="nf">perms</span><span class="p">(</span><span class="s">"234"</span><span class="p">).</span>
+<span class="go">["234","243","324","342","423","432"]</span>
+</pre></div>
+<p>List Operations <code>++</code> and <code>--</code></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">++</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">6</span><span class="p">].</span>
+<span class="go">[1,2,3,4,5,6]</span>
+<span class="gp">2&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">--</span> <span class="p">[</span><span class="mi">1</span><span class="p">].</span>
+<span class="go">[a,b,c,1,d,1]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">--</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">].</span>
+<span class="go">[a,b,c,d,1]</span>
+<span class="gp">4&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">--</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">].</span>
+<span class="go">[a,b,c,d]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="n">a</span><span class="p">,</span><span class="n">b</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">c</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="n">d</span><span class="p">,</span><span class="mi">1</span><span class="p">]</span> <span class="o">--</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">,</span><span class="mi">1</span><span class="p">].</span>
+<span class="go">[a,b,c,d]</span>
+</pre></div>
+<p><strong>3.7 Arithmetic Expressions</strong></p>
+<div class="highlight"><pre>+X
+-X
+X*Y
+X/Y (floating-point division)
+bnot X (Bitwise not of X)
+X div Y (Integer division of X and Y)
+X rem Y (Integer remainder of X divided by Y)
+X band Y (Bitwise and of X and Y)
+X+Y
+X-Y
+X bor Y (Bitwise or of X and Y)
+X bxor Y (Bitwise xor of X and Y)
+X bsl N (Arithmetic bitshift left of X by N bits)
+X bsr N (Bitshift right of X by N bits)
+</pre></div>
+<p><strong>3.8 Guards</strong></p>
+<div class="highlight"><pre><span class="nf">max</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">)</span> <span class="k">when</span> <span class="nv">X</span> <span class="o">&gt;</span> <span class="nv">Y</span> <span class="o">-&gt;</span> <span class="nv">X</span><span class="p">;</span>
+<span class="nf">max</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Y</span><span class="p">.</span>
+</pre></div>
+<p>Examples</p>
+<div class="highlight"><pre><span class="nf">f</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">Y</span><span class="p">)</span> <span class="k">when</span> <span class="nb">is_integer</span><span class="p">(</span><span class="nv">X</span><span class="p">),</span> <span class="nv">X</span> <span class="o">&gt;</span> <span class="nv">Y</span><span class="p">,</span> <span class="nv">Y</span> <span class="o">&lt;</span> <span class="mi">6</span> <span class="o">-&gt;</span> <span class="p">...</span>
+
+<span class="nb">is_tuple</span><span class="p">(</span><span class="nv">T</span><span class="p">),</span> <span class="nb">size</span><span class="p">(</span><span class="nv">T</span><span class="p">)</span> <span class="o">=:=</span> <span class="mi">6</span><span class="p">,</span> <span class="nb">abs</span><span class="p">(</span><span class="nb">element</span><span class="p">(</span><span class="mi">3</span><span class="p">,</span> <span class="c">%)) &gt; 5</span>
+
+<span class="nb">element</span><span class="p">(</span><span class="mi">4</span><span class="p">,</span> <span class="nv">X</span><span class="p">)</span> <span class="o">=:=</span> <span class="nb">hd</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span>
+
+<span class="nv">A</span> <span class="o">&gt;=</span> <span class="o">-</span><span class="mi">1</span><span class="p">.</span><span class="mi">0</span> <span class="ow">andalso</span> <span class="nv">A</span><span class="o">+</span><span class="mi">1</span> <span class="o">&gt;</span> <span class="nv">B</span>
+
+<span class="nb">is_atom</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="ow">orelse</span> <span class="p">(</span><span class="nb">is_list</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="ow">andalso</span> <span class="nb">length</span><span class="p">(</span><span class="nv">L</span><span class="p">)</span> <span class="o">&gt;</span> <span class="mi">2</span><span class="p">)</span>
+</pre></div>
+<p>The comma, which separates the test in the guard, means "and".</p>
+<p>Guard predicates</p>
+<div class="highlight"><pre><span class="nb">is_atom</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_binary</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nf">is_constant</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_float</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_function</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_function</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span> <span class="nv">N</span><span class="p">)</span>
+<span class="nb">is_integer</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_list</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_number</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_pid</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_port</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_reference</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_tuple</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+<span class="nb">is_record</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Tag</span><span class="p">)</span>
+<span class="nb">is_record</span><span class="p">(</span><span class="nv">X</span><span class="p">,</span><span class="nv">Tag</span><span class="p">,</span><span class="nv">N</span><span class="p">)</span>
+</pre></div>
+<p>The True Guard</p>
+<div class="highlight"><pre><span class="k">if</span>
+  <span class="nv">Guard</span> <span class="o">-&gt;</span> <span class="nv">Expressions</span><span class="p">;</span>
+  <span class="nv">Guard</span> <span class="o">-&gt;</span> <span class="nv">Expressions</span><span class="p">;</span>
+  <span class="p">...</span>
+  <span class="n">true</span> <span class="o">-&gt;</span> <span class="nv">Expressions</span>
+<span class="k">end</span>
+</pre></div>
+<p>Guard built-in functions</p>
+<div class="highlight"><pre>abs(X)
+Absolute value of X.
+
+element(N,X)
+Element N of X. Note X must be a tuple.
+
+float(X)
+Convert X, which must be a number, to a float.
+
+hd(X)
+The head of the list X.
+
+length(X)
+The length of the list X.
+
+node()
+The current node.
+
+node(X)
+The node on which X was created.  X can be a process.
+An identifier, a reference, or a port.
+
+round(X)
+Converts X, which must be a number, to an integer.
+
+self()
+The process identifier of the current process.
+
+size(X)
+The size of X. X can be a tuple or a binary.
+
+trunc(X)
+Truncates X, which must be a number, to an integer.
+
+tl(X)
+The tail of the list X.
+</pre></div>
+<p><strong>3.9 Records</strong></p>
+<p>Records provide a method for associating a name with a particular element in a tuple.</p>
+<p>in records.hrl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">record</span><span class="p">(</span><span class="nl">todo</span><span class="p">,</span> <span class="p">{</span><span class="n">status</span><span class="o">=</span><span class="n">reminder</span><span class="p">,</span> <span class="n">who</span><span class="o">=</span><span class="n">joe</span><span class="p">,</span> <span class="n">text</span><span class="p">})</span>
+</pre></div>
+<p>Usage</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">rr</span><span class="p">(</span><span class="s">"records.hrl"</span><span class="p">).</span>
+<span class="go">[todo]</span>
+<span class="gp">2&gt;</span> <span class="nv">X</span><span class="o">=</span><span class="nl">#todo</span><span class="p">{}.</span>
+<span class="go">#todo{status = reminder,who = joe,text = undefined} </span>
+<span class="gp">3&gt;</span> <span class="nv">X1</span> <span class="o">=</span> <span class="nl">#todo</span><span class="p">{</span><span class="n">status</span><span class="o">=</span><span class="n">urgent</span><span class="p">,</span> <span class="n">text</span><span class="o">=</span><span class="s">"Fix errata in book"</span><span class="p">}.</span>
+<span class="go">#todo{status = urgent,who = joe,text = "Fix errata in book"} </span>
+<span class="gp">4&gt;</span> <span class="nv">X2</span> <span class="o">=</span> <span class="nv">X1</span><span class="nl">#todo</span><span class="p">{</span><span class="n">status</span><span class="o">=</span><span class="n">done</span><span class="p">}.</span>
+<span class="go">#todo{status = done,who = joe,text = "Fix errata in book"}</span>
+<span class="gp">5&gt;</span> <span class="nv">X2</span><span class="nl">#todo.text</span><span class="p">.</span>
+<span class="go">"Fix errata in book"</span>
+</pre></div>
+<p>3.10 case and if Expressions</p>
+<div class="highlight"><pre><span class="k">case</span> <span class="nv">Expression</span> <span class="k">of</span>
+    <span class="nv">Pattern1</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expr_seq1</span><span class="p">;</span>
+    <span class="nv">Pattern2</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard2</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expr_seq2</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="k">end</span>
+</pre></div>
+<p>Function filter(P, L) returns a list of all those elements X in L
+for which P(X) is true.</p>
+<div class="highlight"><pre><span class="nf">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="n">filter1</span><span class="p">(</span><span class="nv">P</span><span class="p">(</span><span class="nv">H</span><span class="p">),</span> <span class="nv">H</span><span class="p">,</span> <span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">);</span>
+<span class="nf">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="p">[])</span> <span class="o">-&gt;</span> <span class="p">[].</span>
+
+<span class="nf">filter1</span><span class="p">(</span><span class="n">true</span><span class="p">,</span> <span class="nv">H</span><span class="p">,</span> <span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="n">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">)];</span>
+<span class="nf">filter1</span><span class="p">(</span><span class="n">false</span><span class="p">,</span> <span class="nv">H</span><span class="p">,</span> <span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">).</span>
+</pre></div>
+<p>Using case expression:</p>
+<div class="highlight"><pre><span class="nf">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nv">P</span><span class="p">(</span><span class="nv">H</span><span class="p">)</span> <span class="k">of</span>
+        <span class="n">true</span> <span class="o">-&gt;</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="n">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">)];</span>
+        <span class="n">flase</span> <span class="o">-&gt;</span> <span class="n">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="nv">T</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">;</span>
+<span class="nf">filter</span><span class="p">(</span><span class="nv">P</span><span class="p">,</span> <span class="p">[])</span> <span class="o">-&gt;</span>
+    <span class="p">[].</span>
+</pre></div>
+<p>if Expressions</p>
+<div class="highlight"><pre><span class="k">if</span>
+    <span class="nv">Guard1</span> <span class="o">-&gt;</span>
+        <span class="nv">Expr_seq1</span><span class="p">;</span>
+    <span class="nv">Guard2</span> <span class="o">-&gt;</span>
+        <span class="nv">Expr_seq2</span><span class="p">;</span>
+    <span class="p">...</span>
+    <span class="n">true</span> <span class="o">-&gt;</span>
+        <span class="nv">Expr_final</span><span class="p">;</span>
+<span class="k">end</span>
+</pre></div>
+<p>At least one of the guards in the if expression must evaluate to true; otherwise, an exception will be raised.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

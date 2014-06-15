@@ -1,0 +1,314 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Programming With Sockets In Erlang</h1>
+        <div class="entry-content">
+            <p>A socket is a communication endpoint that allows machines to communicate over the Internet using the Internet Pro- tocol (IP).
+There are two main libraries for programming with sockets: <code>gen_tcp</code> and <code>gen_upd</code>.</p>
+<h2>Using TCP</h2>
+<p><strong>Fetching Data from a Server</strong></p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">download_page</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">get_url</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+
+<span class="nf">get_url</span><span class="p">(</span><span class="nv">Host</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">connect</span><span class="p">(</span><span class="nv">Host</span><span class="p">,</span> <span class="mi">80</span><span class="p">,</span> <span class="p">[</span><span class="n">binary</span><span class="p">,</span> <span class="p">{</span><span class="n">packet</span><span class="p">,</span> <span class="mi">0</span><span class="p">}]),</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="s">"GET / HTTP/1.0</span><span class="se">\r\n\r\n</span><span class="s">"</span><span class="p">),</span>
+    <span class="n">receive_data</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="p">[]).</span>
+
+<span class="nf">receive_data</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">SoFar</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">tcp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="n">receive_data</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="p">[</span><span class="nv">Bin</span><span class="p">|</span><span class="nv">SoFar</span><span class="p">]);</span>
+        <span class="p">{</span><span class="n">tcp_closed</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nb">list_to_binary</span><span class="p">(</span><span class="nn">lists</span><span class="p">:</span><span class="nf">reverse</span><span class="p">(</span><span class="nv">SoFar</span><span class="p">))</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>Test:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">B</span> <span class="o">=</span> <span class="nn">download_page</span><span class="p">:</span><span class="nf">get_url</span><span class="p">(</span><span class="s">"mitnk.com"</span><span class="p">).</span>
+<span class="go">&lt;&lt;"HTTP/1.1 301 Moved Permanently\r\nServer: nginx/1.0.12\r\nDate: Sat, 19 May 2012 10:56:06 GMT\r\nContent-Type: text/html\r\n"...&gt;&gt;</span>
+<span class="gp">2&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">B</span><span class="p">]).</span>
+<span class="go">&lt;&lt;"HTTP/1.1 301 Moved Permanently\r\nServer: nginx/1.0.12\r\nDate: Sat, 19 May 2012 10:56:06 GMT\r\nContent-Type: text/html\r\nContent-Length: 185\r\nConnection: close\r\nLocation: http://mitnk.com/\r\n\r\n&lt;html&gt;\r\n&lt;head&gt;&lt;title&gt;301 Moved Permanently&lt;/title&gt;&lt;/head&gt;\r\n&lt;body bgcolor=\"white\"&gt;\r\n&lt;center&gt;&lt;h1&gt;301 Moved Permanently&lt;/h1&gt;&lt;/center&gt;\r\n&lt;hr&gt;&lt;center&gt;nginx/1.0.12&lt;/center&gt;\r\n&lt;/body&gt;\r\n&lt;/html&gt;\r\n"&gt;&gt;</span>
+<span class="go">ok</span>
+<span class="gp">3&gt;</span> <span class="nn">string</span><span class="p">:</span><span class="nf">tokens</span><span class="p">(</span><span class="nb">binary_to_list</span><span class="p">(</span><span class="nv">B</span><span class="p">),</span> <span class="s">"</span><span class="se">\r\n</span><span class="s">"</span><span class="p">).</span>
+<span class="go">["HTTP/1.1 301 Moved Permanently","Server: nginx/1.0.12",</span>
+<span class="go"> "Date: Sat, 19 May 2012 10:56:06 GMT",</span>
+<span class="go"> "Content-Type: text/html","Content-Length: 185",</span>
+<span class="go"> "Connection: close","Location: http://mitnk.com/","&lt;html&gt;",</span>
+<span class="go"> "&lt;head&gt;&lt;title&gt;301 Moved Permanently&lt;/title&gt;&lt;/head&gt;",</span>
+<span class="go"> "&lt;body bgcolor=\"white\"&gt;",</span>
+<span class="go"> "&lt;center&gt;&lt;h1&gt;301 Moved Permanently&lt;/h1&gt;&lt;/center&gt;",</span>
+<span class="go"> "&lt;hr&gt;&lt;center&gt;nginx/1.0.12&lt;/center&gt;","&lt;/body&gt;","&lt;/html&gt;"]</span>
+</pre></div>
+<p>You might think that it would be better to write the code to accumulate the fragments like this:</p>
+<div class="highlight"><pre><span class="nf">receive_data</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">SoFar</span><span class="p">)</span> <span class="o">-&gt;</span>
+<span class="k">receive</span>
+    <span class="p">{</span><span class="n">tcp</span><span class="p">,</span><span class="nv">Socket</span><span class="p">,</span><span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+        <span class="n">receive_data</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nb">list_to_binary</span><span class="p">([</span><span class="nv">SoFar</span><span class="p">,</span><span class="nv">Bin</span><span class="p">]));</span>
+    <span class="p">{</span><span class="n">tcp_closed</span><span class="p">,</span><span class="nv">Socket</span><span class="p">}</span> <span class="o">-&gt;</span>
+        <span class="nv">SoFar</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>This code is correct but less efficient than the original version. The reason is that in the latter version we are continually appending a new binary to the end of the buffer, which involves a lot of copying of data. It’s much better to accumulate all the fragments in a list (which will end up in the wrong order) and then reverse the entire list and concatenate all the fragments in one operation.</p>
+<h2>A Simple TCP Server</h2>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">nano_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Listen</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">listen</span><span class="p">(</span><span class="mi">2345</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="n">binary</span><span class="p">,</span> <span class="p">{</span><span class="n">packet</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="n">reuseaddr</span><span class="p">,</span> <span class="n">true</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="n">active</span><span class="p">,</span> <span class="n">true</span><span class="p">}]),</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">accept</span><span class="p">(</span><span class="nv">Listen</span><span class="p">),</span>
+    <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">Listen</span><span class="p">),</span>
+    <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">tcp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server received binary = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Bin</span><span class="p">]),</span>
+            <span class="nv">Str</span> <span class="o">=</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">),</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"server (unpacked) </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Str</span><span class="p">]),</span>
+            <span class="nv">Reply</span> <span class="o">=</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="s">"I got it."</span><span class="p">,</span> <span class="nv">Str</span><span class="p">},</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server replying = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Reply</span><span class="p">]),</span>
+            <span class="nn">gen_tcp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Reply</span><span class="p">)),</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">);</span>
+        <span class="p">{</span><span class="n">tcp_close</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server socket closed</span><span class="si">~n</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>This is the simplest of servers that illustrates how to package and encode the application data. It accepts a request, computes a reply, sends the reply, and terminates.</p>
+<p>Client:</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">nano_client</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">connect</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">connect</span><span class="p">(</span><span class="nv">Str</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">connect</span><span class="p">(</span><span class="s">"localhost"</span><span class="p">,</span> <span class="mi">2345</span><span class="p">,</span> <span class="p">[</span><span class="n">binary</span><span class="p">,</span> <span class="p">{</span><span class="n">packet</span><span class="p">,</span> <span class="mi">4</span><span class="p">}]),</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Str</span><span class="p">)),</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">tcp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Client received binary = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Bin</span><span class="p">]),</span>
+            <span class="nv">Val</span> <span class="o">=</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">),</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Client result = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Val</span><span class="p">]),</span>
+            <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>Test:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">nano_client</span><span class="p">:</span><span class="nf">connect</span><span class="p">(</span><span class="s">"To test our code, we'll run both the client and the server on the same machine"</span><span class="p">).</span>
+<span class="go">Client received binary = &lt;&lt;131,104,3,100,0,2,111,107,107,0,9,73,32,103,111,116,</span>
+<span class="go">                       32,105,116,46,107,0,78,84,111,32,116,101,115,116,32,</span>
+<span class="go">                       111,117,114,32,99,111,100,101,44,32,119,101,39,108,</span>
+<span class="go">                       108,32,114,117,110,32,98,111,116,104,32,116,104,101,</span>
+<span class="go">                       32,99,108,105,101,110,116,32,97,110,100,32,116,104,</span>
+<span class="go">                       101,32,115,101,114,118,101,114,32,111,110,32,116,</span>
+<span class="go">                       104,101,32,115,97,109,101,32,109,97,99,104,105,110,</span>
+<span class="go">                       101&gt;&gt;</span>
+<span class="go">Client result = {ok,"I got it.",</span>
+<span class="go">                "To test our code, we'll run both the client and the server on the same machine"}</span>
+<span class="go">ok</span>
+</pre></div>
+<p><strong>A Parallel Server</strong></p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">nano_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Listen</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">listen</span><span class="p">(</span><span class="mi">2345</span><span class="p">,</span>
+                                  <span class="p">[</span><span class="n">binary</span><span class="p">,</span> <span class="p">{</span><span class="n">packet</span><span class="p">,</span> <span class="mi">4</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="n">reuseaddr</span><span class="p">,</span> <span class="n">true</span><span class="p">},</span>
+                                  <span class="p">{</span><span class="n">active</span><span class="p">,</span> <span class="n">true</span><span class="p">}]),</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">par_connect</span><span class="p">(</span><span class="nv">Listen</span><span class="p">)</span> <span class="k">end</span><span class="p">).</span>
+
+<span class="nf">par_connect</span><span class="p">(</span><span class="nv">Listen</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">accept</span><span class="p">(</span><span class="nv">Listen</span><span class="p">),</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">par_connect</span><span class="p">(</span><span class="nv">Listen</span><span class="p">)</span> <span class="k">end</span><span class="p">),</span>
+    <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">tcp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server received binary = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Bin</span><span class="p">]),</span>
+            <span class="nv">Str</span> <span class="o">=</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">),</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"server (unpacked) </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Str</span><span class="p">]),</span>
+            <span class="nv">Reply</span> <span class="o">=</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="s">"I got it."</span><span class="p">,</span> <span class="nv">Str</span><span class="p">},</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server replying = </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Reply</span><span class="p">]),</span>
+            <span class="nn">gen_tcp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Reply</span><span class="p">)),</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">);</span>
+        <span class="p">{</span><span class="n">tcp_close</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server socket closed</span><span class="si">~n</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>After we have accepted a connection, it’s a good idea to explicitly set the required socket options, like this:</p>
+<div class="highlight"><pre><span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_tcp</span><span class="p">:</span><span class="nf">accept</span><span class="p">(</span><span class="nv">Listen</span><span class="p">),</span>
+<span class="nn">inet</span><span class="p">:</span><span class="nf">setopts</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="p">[{</span><span class="n">packet</span><span class="p">,</span><span class="mi">4</span><span class="p">},</span><span class="n">binary</span><span class="p">,</span>
+                   <span class="p">{</span><span class="n">nodelay</span><span class="p">,</span><span class="n">true</span><span class="p">},{</span><span class="n">active</span><span class="p">,</span> <span class="n">true</span><span class="p">}]),</span>
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span>
+</pre></div>
+<h2>Error Handling with Sockets</h2>
+<p>Error handling with sockets is extremely easy—basically you don’t have to do anything. As we said earlier, each socket has a controlling process (that is, the process that created the socket). If the controlling process dies, then the socket will be automatically closed.</p>
+<p>This means that if we have, for example, a client and a server and the server dies because of a programming error, the socket owned by the server will be automatically closed, and the client will be sent a {tcp_closed, Socket} message.</p>
+<h2>UDP</h2>
+<p>Writing a UDP client and server in Erlang is much easier than writ- ing in the TCP case since we don’t have to worry about maintaining connections to the server.</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">udp_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="mi">2345</span><span class="p">,</span> <span class="p">[</span><span class="n">binary</span><span class="p">]),</span>
+    <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">udp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="nv">Host</span><span class="p">,</span> <span class="nv">Port</span><span class="p">,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">N</span> <span class="o">=</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">),</span>
+            <span class="nv">Fac</span> <span class="o">=</span> <span class="n">fac</span><span class="p">(</span><span class="nv">N</span><span class="p">),</span>
+            <span class="nn">gen_udp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">Host</span><span class="p">,</span> <span class="nv">Port</span><span class="p">,</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Fac</span><span class="p">)),</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Socket</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">fac</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nf">fac</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">N</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">).</span>
+</pre></div>
+<p>Client side:</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">udp_client</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">conn</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">conn</span><span class="p">(</span><span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">binary</span><span class="p">]),</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="s">"localhost"</span><span class="p">,</span> <span class="mi">2345</span><span class="p">,</span> <span class="nb">term_to_binary</span><span class="p">(</span><span class="nv">Request</span><span class="p">)),</span>
+    <span class="nv">Value</span> <span class="o">=</span> <span class="k">receive</span>
+            <span class="p">{</span><span class="n">udp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+                <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">)}</span>
+            <span class="k">after</span> <span class="mi">2000</span> <span class="o">-&gt;</span>
+                <span class="n">error</span>
+            <span class="k">end</span><span class="p">,</span>
+    <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">Socket</span><span class="p">),</span>
+    <span class="nv">Value</span><span class="p">.</span>
+</pre></div>
+<p><strong>Additional Notes on UDP</strong></p>
+<p>A UDP packet can be delivered twice (which surprises some people), so you have to be careful writing code for remote procedure calls. It might happen that the reply to a second query was in fact a duplicated answer to the first query. To avoid this, we could modify the client code to include a unique reference and check that this reference is returned by the server.</p>
+<div class="highlight"><pre><span class="nf">client</span><span class="p">(</span><span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="p">[</span><span class="n">binary</span><span class="p">]),</span>
+    <span class="nv">Ref</span> <span class="o">=</span> <span class="n">make_ref</span><span class="p">(),</span> <span class="c">%% make a unique reference</span>
+    <span class="nv">B1</span> <span class="o">=</span> <span class="nb">term_to_binary</span><span class="p">({</span><span class="nv">Ref</span><span class="p">,</span> <span class="nv">Request</span><span class="p">}),</span>
+    <span class="n">ok</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="s">"localhost"</span><span class="p">,</span> <span class="mi">4000</span><span class="p">,</span> <span class="nv">B1</span><span class="p">),</span>
+    <span class="n">wait_for_ref</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">Ref</span><span class="p">).</span>
+
+<span class="nf">wait_for_ref</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">Ref</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">udp</span><span class="p">,</span> <span class="nv">Socket</span><span class="p">,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="nv">Bin</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="k">case</span> <span class="nb">binary_to_term</span><span class="p">(</span><span class="nv">Bin</span><span class="p">)</span> <span class="k">of</span>
+                <span class="p">{</span><span class="nv">Ref</span><span class="p">,</span> <span class="nv">Val</span><span class="p">}</span> <span class="o">-&gt;</span>
+                     <span class="c">%% got the correct value</span>
+                     <span class="nv">Val</span><span class="p">;</span>
+                <span class="p">{_</span><span class="nv">SomeOtherRef</span><span class="p">,</span> <span class="p">_}</span> <span class="o">-&gt;</span>
+                    <span class="c">%% some other value throw it away</span>
+                    <span class="n">wait_for_ref</span><span class="p">(</span><span class="nv">Socket</span><span class="p">,</span> <span class="nv">Ref</span><span class="p">)</span>
+            <span class="k">end</span><span class="p">;</span>
+    <span class="k">after</span> <span class="mi">1000</span> <span class="o">-&gt;</span>
+        <span class="p">...</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<h2>Broadcasting to Multiple Machines</h2>
+<p>For completeness, I’ll show you how to set up a broadcast channel. This code is rather rare, but one day you might need it.</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">broadcast</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">compile</span><span class="p">(</span><span class="n">export_all</span><span class="p">).</span>
+
+<span class="nb">send</span><span class="p">(</span><span class="nv">IoList</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nn">inet</span><span class="p">:</span><span class="nf">ifget</span><span class="p">(</span><span class="s">"eth0"</span><span class="p">,</span> <span class="p">[</span><span class="n">broadaddr</span><span class="p">])</span> <span class="k">of</span>
+        <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="p">[{</span><span class="n">broadaddr</span><span class="p">,</span> <span class="nv">Ip</span><span class="p">}]}</span> <span class="o">-&gt;</span>
+            <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span>  <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="mi">5010</span><span class="p">,</span> <span class="p">[{</span><span class="n">broadcast</span><span class="p">,</span> <span class="n">true</span><span class="p">}]),</span>
+            <span class="nn">gen_udp</span><span class="p">:</span><span class="nb">send</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">Ip</span><span class="p">,</span> <span class="mi">6000</span><span class="p">,</span> <span class="nv">IoList</span><span class="p">),</span>
+            <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">close</span><span class="p">(</span><span class="nv">S</span><span class="p">);</span>
+        <span class="p">_</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Bad interface name, or</span><span class="se">\n</span><span class="s">"</span>
+                      <span class="s">"broadcasting not supported</span><span class="se">\n</span><span class="s">"</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">listen</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nv">S</span><span class="p">}</span> <span class="o">=</span> <span class="nn">gen_udp</span><span class="p">:</span><span class="nf">open</span><span class="p">(</span><span class="mi">6000</span><span class="p">),</span>
+    <span class="n">loop</span><span class="p">(</span><span class="nv">S</span><span class="p">).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">S</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="nv">Any</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"received:</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Any</span><span class="p">]),</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">S</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<h2>Digging Deeper</h2>
+<p>We have looked at only the most commonly used functions for manipulating sockets. You can find more information about the socket APIs in the manual pages for gen_tcp, gen_udp, and inet.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

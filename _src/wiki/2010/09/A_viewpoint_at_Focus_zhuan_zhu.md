@@ -1,0 +1,5 @@
+Worst of all, this onslaught is keeping us from doing the one thing that makes most of us the happiest... being in flow. Flow requires a depth of thinking and a focus of attention that all that context-switching prevents. Flow requires a challenging use of our knowledge and skills, and that's quite different from mindless tasks we can multitask (eating and watching tv, etc.) Flow means we need a certain amount of time to load our knowledge and skills into our brain RAM. And the more big or small interruptions we have, the less likely we are to ever get there.
+
+And not only are we stopping ourselves from ever getting in flow, we're stopping ourselves from ever getting really good at something. From becoming experts. The brain scientists now tell us that becoming an expert is not a matter of being a prodigy, it's a matter of being able to focus.
+
+From： http://headrush.typepad.com/creating_passionate_users/2006/12/httpwww37signal.html

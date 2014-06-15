@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Check System Activity On Mac Os X In Terminal</h1>
+        <div class="entry-content">
+            <p>From: <a href="http://betabug.ch/blogs/ch-athens/227">http://betabug.ch/blogs/ch-athens/227</a></p>
+<p>So I'm logging into a Mac OS X machine (Server or not) remotely by ssh to do some maintenance and check on the health of the system. What I might be interested in is how CPU, memory and disk usage is coping with the jobs the server has to do. If I was sitting in front of the machine I could open "Activity Monitor" and click my way through the GUI. Not an option for this machine, since there is no GUI level remote access. So what do I do? There are some command line tools to give me the information I need, let me show you <code>top</code>, <code>vm_stat</code> and <code>iostat</code> ...</p>
+<p>On my OpenBSD box "systat vmstat" is what I use for a full overview. That is not available for OS X, but some other tools are there. Most often used is "top", followed by "vm_stat" and "iostat".</p>
+<h2>top</h2>
+<p>"top" is well known and you likely have heard about it and probably used it before. The version on OS X is quite useable. After switching to "compatibility mode" (with 'x'), one can see only the processes of a single user (with 'U' and entering the user id or name). Top is good for checking what eats all the CPU time.</p>
+<h2>vm_stat</h2>
+<p>If it comes to memory usage, especially for the question "how much swap space am I using", then vm_stat can help. On Mac OS X that's vm_stat with an underscore, not vmstat. You just give vm_stat a delay in seconds (by calling it like "vm_stat 10" on the command line) and it updates the display repeatedly. Go on, try that out and then open a bunch of applications to see if pageouts are going up (which would mean that your machine has to page memory out on disk to make room for the new ones).</p>
+<div class="highlight"><pre>$ vm_stat 5
+</pre></div>
+<p>...looks like my workstation is OK, even with starting up Acrobat Reader and a bunch of smaller programs at once.</p>
+<h2>iostat</h2>
+<p>It took me longer to discover iostat. The man page says that "Iostat displays kernel I/O statistics on terminal, device and cpu operations." Which is quite a lot and probably more than I usually want. I just use it with a line like:</p>
+<div class="highlight"><pre>$ iostat -d -K -w 5
+</pre></div>
+<p>to show me only devices (-d), kilobytes instead of blocks (-K), and have a wait interval of 5 seconds (-w 5). Go ahead, try it and watch it while doing a find for "foobar" on your disks. As usual with all command line tools, read the fine man pages.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

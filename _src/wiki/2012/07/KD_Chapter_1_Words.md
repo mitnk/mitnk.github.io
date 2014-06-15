@@ -1,0 +1,125 @@
+authentication        25      
+primitive             12    [ˈprimitiv] n. 原始的；发展水平低的；落后的；[生物学]原生的；    
+subordinate           11    [səˈbɔ:dinit] adj. 级别或职位较低的；下级的；次要的；附属的；    
+involve               10    [inˈvɔlv] vt. 包含；使参与，牵涉；围绕，缠绕；使专心于；    
+intellectual          10    [ˌɪntiˈlektjuəl] n. 智力的；有才智的；需用智力的；智力发达的；    
+consensual            10    [kənˈsensjuəl] adj. 经双方同意的，一致同意的；    
+civilize               9    [ˈsivilaiz] vi. 使文明；使开化；教化；启发；    
+decisionmaking         9        
+sequential             8    [sɪˈkwenʃəl] adj. 按次序的，相继的，构成连续镜头的；    
+economic               8    [ˌɪkəˈnɔmik] adj. 经济的；经济学的；合算的；有经济效益的；    
+advantage              8    [ədˈvɑ:ntidʒ] vi. 有利条件；益处；优越（性）；处于支配地位；    
+respective             8    [risˈpektiv] adj. 各自的，分别的；    
+acquire                7    [əˈkwaiə] vt. 获得，取得；学到；    
+metaphor               6    [ˈmetəfə] n. 隐喻，暗喻；象征；    
+enormous               6    [iˈnɔ:məs] adj. 巨大的；庞大的；极恶的；凶暴的；    
+systematic             6    [ˌsistəˈmætik] adj. 有系统的，有规则的；有条不紊的；有步骤的；一贯的，惯常的；    
+speck                  5    [spek] n. 污点；微粒；    
+regulatory             5    [ˈreɡjulətəri] adj. 调整的；    
+regulate               5    [ˈreɡjuleit] vt. 调节，调整；校准；控制，管理；；    
+sufficient             5    [səˈfiʃənt] n. 足够的，充足的；[逻辑学]（条件）必然的；〈古〉有能力的，能胜任的，够资格的；    
+pearl                  4    [pə:l] vi. 珍珠；珍品；人造珍珠；珠状物；    
+subordination          4    [səbˌɔ:dɪˈneɪʃən] n. 放置在次级；次级；附属；主从关系；    
+savage                 4    [ˈsævidʒ] adj. 未开化的；野蛮的；凶猛的；残忍的；    
+imply                  4    [imˈplai] vt.& vi 暗示；意味；隐含；说明，表明；    
+course                 4    [kɔː(r)s] vi. 科目；进程；课程；方针；    
+depict                 4    [diˈpikt] vt. 描绘，描画；描述；    
+mutual                 4    [ˈmju:tʃuəl] adj. 共有的；共同的；相互的；彼此的；    
+sustain                3    [səˈstein] vt. 维持；支撑，支持；遭受，忍受；供养；    
+survive                3    [səˈvaiv] vt.& vi. 幸存，活下来；    
+reform                 3    [riˈfɔ:m] vt.& vi. 改革，改良，改造；改正；    
+series                 3    [ˈsiəri:z] n. 系列，连续；串联；（广播或电视上题材或角色相同的）系列节目；级数；    
+crucial                3    [ˈkru:ʃəl] adj. 关键性的，极其显要的；决定性的；十字形的；    
+effectiveness          3    [əˈfektɪvnɪs] n. 有效，有力；    
+penalty                3    [ˈpenəlti] n. 惩罚；刑罚；害处；足球点球；    
+progressive            3    [prəˈɡresiv] n. 不断前进的；进步的；进行的；    
+approach               3    [əˈproʊtʃ] vt.& vi. 接近，走近，靠近；    
+sweep                  3    [swi:p] vi. 打扫，清理；扫除；彻底搜索；掠过；    
+matte                  3    [mæt] n. 不光滑的；    
+empirical              3    [emˈpirikəl] adj. 凭经验的；经验主义的；以观察或实验为依据的；    
+evolve                 3    [iˈvɔlv] vi. 使发展；使进化；设计，制订出；发出，散发；    
+establish              3    [isˈtæbliʃ] vt. 建立，创建；确立或使安全；使被安排好；使成为；    
+substitute             3    [ˈsʌbstitju:t] vt.& vi. 代替，替换，代用；    
+scatter                3    [ˈskætə] vi. （使）散开，（使）分散，驱散；    
+ignorant               3    [ˈiɡnərənt] adj. 无知的，愚昧的；由无知引起的；无学识的；    
+mechanism              3    [ˈmekənizəm] n. [生]机制，机能，[乐]机理；（机械）结构，机械装置[作用]，（故事的）结构；[艺]手法，技巧，途径；机械作用；    
+merit                  3    [ˈmerit] vi. 价值，优点；[宗教]（行善得到的）功德；功绩，功勋；荣誉；    
+soviet                 3    [ˈsəuviət,ˈsɔviət] n. 代表会议；劳工代表会议；苏联；苏维埃；    
+cease                  3    [si:s] vi. 停止，终止，结束；    
+aspect                 3    [ˈæspekt] n. 方面；面貌；方位，方向；形势；    
+encompass              3    [enˈkʌmpəs] vt. 围绕，包围；包含或包括某事物；完成；    
+catastrophe            2    [kəˈtæstrəfi] n. 大灾难；惨败；悲剧的结局；地表突然而猛烈的变动，灾变；    
+rational               2    [ˈræʃənl] n. 神智清楚的；理性的；理智的；合理的；    
+emptiness              2    [ˈemptɪnɪs] n. 空虚；空腹；无知；无能；    
+religious              2    [riˈlidʒəs] n. 虔诚的；笃信宗教的；宗教的；谨慎的；    
+duplicate              2    [ˈdju:plikit] adj. 复制的，副本的；成对的，二倍的；（与另一个）完全相同的；[游戏]复局的，复式的；    
+arena                  2    [əˈri:nə] n. 表演场地，舞台；竞技场；活动或斗争的场所或场面；古罗马圆形剧场中央的竞技场；    
+criticism              2    [ˈkritisizəm] n. 批评，批判；鉴定，审定，考证，校勘；苛求，[哲]批判主义；评论，评论文章；    
+readily                2    [ˈredili] adv. 乐意地；快捷地；轻而易举地；便利地；    
+assessment             2    [əˈsesmənt] n. 评估；评价；（应偿付金额的）估定；（为征税对财产所作的）估价；    
+continual              2    [kənˈtinjuəl] adj. 不间断的；不停的；多次重复的；频繁的；    
+era                    2    [ˈiərə] n. 纪元，年代；历史时期，时代；重大事件；    
+spontaneous            2    [spɔnˈteiniəs] adj. 自发的；自然的；天然产生的；无意识的；    
+classify               2    [ˈklæsifai] vt. 分类，归类；把……列为密件；    
+compulsory             2    [kəmˈpʌlsəri] adj. 必须做的，强制性的；义务的；必修的；    
+versus                 2    [ˈvə:səs] prep. （表示两队或双方对阵）对；（比较两种不同想法、选择等）与……相对；对抗；    
+demerit                2    [dɪˈmerɪt] n. 缺点，过失，短处；    
+piecemeal              2    [ˈpi:sˌmi:l] adv. 逐渐地；零碎地；一件一件；    
+construct              2    [kənˈstrʌkt] n. 修建，建造；构成；创立；[数]作图；    
+genesis                2    [ˈdʒenɪsɪs] n. 创始，起源，发生；    
+contrary               2    [ˈkɔntrəri] adv. 相反的；违反的，反对的；对立的；顽固的，任性的；    
+entail                 2    [inˈteil] n. 使蒙受，使产生；必须，使承担；[法]限定（继承人）；遗留给，转给（弊害等）；    
+spectrum               2    [ˈspektrəm] n. [物理学]谱，光谱：辐射源，能谱；光谱相片；范围；系列，范围，幅度；    
+disintegrate           2    [dɪsˈɪntɪˌgreɪt] vi. （使某物碎裂，崩裂；使某物衰微，瓦解，分崩离析；    
+implication            2    [ˌɪmpliˈkeiʃən] n. 含义；含蓄，含意，言外之意；卷入，牵连，牵涉，纠缠；[逻辑学]蕴涵，蕴含；    
+disaster               2    [diˈzɑ:stə] n. 灾难；彻底的失败；不幸；祸患；    
+bare                   2    [bɛə] adj. 光秃秃的；（房间、柜子等）空的；赤裸的；刚好够的；    
+sketch                 2    [sketʃ] n. 草图；素描；梗概；    
+consume                2    [kənˈsju:m] vt. 消耗，消费；耗尽，毁灭；吃光，喝光；烧毁；    
+emphasize              2    [ˈemfəsaiz] vt. 强调，着重；加强语气；使突出；    
+consistency            2    [kənˈsɪstənsi:] n. 连贯；符合；前后一致；浓度；    
+evaluate               2    [iˈvæljueit] vi. 评价；求……的值（或数）；对……评价；[数学、逻辑学]求……的数值；    
+systematically         2    [ˌsɪstəˈmætɪkəlɪ] adv. 有系统地；有组织地；有条不紊地；    
+plausible              2    [ˈplɔ:zəbl] adj. 貌似真实的；貌似有理的；花言巧语的；    
+represent              2    [ˌrepriˈzent] vi. 表现，象征；代表，代理；扮演；作为示范；    
+casualty               2    [ˈkæʒjuəlti] n. 伤亡（人数）；事故，横祸；受害者，死伤者；损坏；    
+civil                  2    [ˈsivl] adj. 公民的，市民的；文明的，有礼貌的；民用的，国民间的；[法]民事的，根据民法的；    
+evidence               2    [ˈevidəns] n. 证词；证据；迹象；明显；    
+expertise              2    [ˌekspəˈti:z] n. 专门知识或技能；专家的意见；专家评价，鉴定；    
+authenticate           2    [ɔ:ˈθentɪˌkeɪt] vt. 证明是真实的、可靠的或有效的；鉴定，使生效；    
+vietnam                2    [ˌviətˈnæm]  越南；    
+intricate              2    [ˈintrikit] adj. 错综复杂的；难理解的；    
+grape                  2    [ɡreip] n. 葡萄；深紫色，葡萄紫；    
+discrete               2    [disˈkri:t] adj. 分离的，不相关联的；    
+implicit               2    [imˈplisit] adj. 不言明[含蓄]的；无疑问的，绝对的；成为一部份的；内含的；    
+central                2    [ˈsentrəl] n. 电话总局；电话转接员；    
+december               2    [diˈsembə] n. 12月；    
+explicit               2    [iksˈplisit] adj. 明确的，清楚的；直言的；详述的；不隐瞒的；    
+institutional          2    [ˌɪnstiˈtju:ʃənəl] adj. 由来已久的； 习以为常的； 公共机构的； 慈善机构的；    
+statistical            2    [stəˈtɪstɪkəl] adj. 统计的；统计学的；    
+agricultural           2        
+criminal               2    [ˈkriminəl] n. 罪犯，犯人；    
+deplore                2    [diˈplɔ:] vt. 悲悼，哀叹；谴责，强烈反对；    
+especial               2    [ɪˈspeʃəl] adj. 特别的，突出的；    
+hazard                 2    [ˈhæzəd] n. 冒险；使遭受危险；    
+prospective            2    [prəsˈpektiv] adj. 预期的；未来的；可能的；有希望的；    
+device                 2    [diˈvais] n. 装置，设备；设计；策略；图案；    
+barn                   2    [bɑ:n] n. 谷仓，粮仓；牲口棚；（公共汽车、卡车等的）车库；一种特别大且空荡的房屋；    
+pail                   2    [peɪl] n. 桶，提桶；一桶的量；    
+hierarchical           2    [ˌhaiəˈrɑ:kikəl] adj. 按等级划分的，等级（制度）的；分层的；    
+atmosphere             2    [ˈætməsfiə] n. 大气，空气；大气层；风格，基调；气氛；    
+utter                  2    [ˈʌtə] vt. 发出声音；说，讲；出版（书籍）等；[法]流通使用；    
+pitfall                2    [ˈpitfɔ:l] n. 陷阱；圈套；诱惑；    
+evolution              2    [ˌi:vəˈlu:ʃən] n. 演变，发生；进化论；（天体的）形成；（气体等的）放出；    
+observable             2    [əbˈzə:vəbl] adj. 观察得到的，应遵守的，应庆祝的；    
+temper                 2    [ˈtempə] vi. 性情，脾气；特征；（钢等）回火；怒气；    
+swift                  2    [swift] adv. 迅速的；敏捷的；立刻的；突然发生的；    
+permit                 2    [pəˈmit] vi. 许可，准许；默许，放任；允许，容许；    
+annual                 2    [ˈænjuəl] n. 每年的；一年的；[植物]一年生的；    
+instantaneous          2    [ˌɪnstənˈteinjəs] adj. 瞬间的；即刻的；猝发的；    
+economical             2    [ˌɪkəˈnɔmikəl] adj. 节约的；经济的；合算的；    
+posterity              2    [pɔˈsterɪti:] n. 后代，后世；子孙；后裔；    
+chronic                2    [ˈkrɔnik] adj. 慢性的；长期的；习惯性的；    
+grasp                  2    [ɡrɑ:sp] vi. 抓住；了解；急忙抓住；急切（或贪婪）地抓住；    
+bribe                  2    [braib] vt.& vi. 贿赂，行贿；    
+variation              2    [ˌveərɪˈeɪʃ(ə)n] n. 变化，变动；变异，演变；变奏曲；变量；    

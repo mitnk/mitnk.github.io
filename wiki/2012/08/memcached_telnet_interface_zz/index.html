@@ -1,0 +1,289 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Memcached Telnet Interface Zz</h1>
+        <div class="entry-content">
+            <div class="articleContent">
+<p>This is a short summary of everything important that helps to 
+inspect a running <a href="http://www.danga.com/memcached/">memcached</a> instance.</p>
+<p class="title">How To Connect</p>
+<p>
+Use "ps -ef" to find out which IP and port was passed when memcached was started and use the same with telnet to connect to memcache. Example:
+</p><pre>telnet 10.10.1.24 23456</pre>
+<p></p>
+<p class="title">Supported Commands</p>
+<p>
+The supported commands (the official ones and some unofficial) are documented in the <a href="http://code.sixapart.com/svn/memcached/trunk/server/doc/protocol.txt">doc/protocol.txt</a> document.
+</p>
+<p>
+Sadly the syntax description isn't really clear and a simple help command listing the existing commands would be much better. Here is an overview of the commands you can find in the <a href="http://code.sixapart.com/svn/memcached/trunk/server/memcached.c">source</a> (as of 16.12.2008):
+</p><p>
+<table border="1">
+<tbody><tr>
+<th>Command</th>
+<th>Description</th>
+<th>Example</th>
+</tr>
+<tr>
+<td>get</td>
+<td>Reads a value</td>
+<td>get mykey</td>
+</tr>
+<tr>
+<td>set</td>
+<td>Set a key unconditionally</td>
+<td>set mykey 0 60 5</td>
+</tr>
+<tr>
+<td>add</td>
+<td>Add a new key</td>
+<td>add newkey 0 60 5</td>
+</tr>
+<tr>
+<td>replace</td>
+<td>Overwrite existing key</td>
+<td>replace key 0 60 5</td>
+</tr>
+<tr>
+<td>append</td>
+<td>Append data to existing key</td>
+<td>append key 0 60 15</td>
+</tr>
+<tr>
+<td>prepend</td>
+<td>Prepend data to existing key</td>
+<td>prepend key 0 60 15</td>
+</tr>
+<tr>
+<td>incr</td>
+<td>Increments numerical key value by given number</td>
+<td>incr mykey 2</td>
+</tr>
+<tr>
+<td>decr</td>
+<td>Decrements numerical key value by given number</td>
+<td>decr mykey 5</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>Deletes an existing key</td>
+<td>delete mykey</td>
+</tr>
+<tr>
+<td rowspan="2">flush_all</td>
+<td>Invalidate specific items immediately</td>
+<td>flush_all</td>
+</tr>
+<tr>
+<td>Invalidate all items in n seconds</td>
+<td>flush_all 900</td>
+</tr>
+<tr>
+<td rowspan="7">stats</td>
+<td>Prints general statistics</td>
+<td>stats</td>
+</tr>
+<tr>
+<td>Prints memory statistics</td>
+<td>stats slabs</td>
+</tr>
+<tr>
+<td>Prints memory statistics</td>
+<td>stats malloc</td>
+</tr>
+<tr>
+<td>Print higher level allocation statistics</td>
+<td>stats items</td>
+</tr>
+<tr>
+<td></td>
+<td>stats detail</td>
+</tr>
+<tr>
+<td></td>
+<td>stats sizes</td>
+</tr>
+<tr>
+<td>Resets statistics</td>
+<td>stats reset</td>
+</tr>
+<tr>
+<td>version</td>
+<td>Prints server version.</td>
+<td>version</td>
+</tr>
+<tr>
+<td>verbosity</td>
+<td>Increases log level</td>
+<td>verbosity</td>
+</tr>
+<tr>
+<td>quit</td>
+<td>Terminate telnet session</td>
+<td>quit</td>
+</tr></tbody></table>
+</p><p class="title">Traffic Statistics</p>
+<p>
+You can query the current traffic statistics using the command </p><pre>stats</pre> You will get a listing which serves the number of connections, bytes in/out and much more.
+<p></p>
+<p>Example Output:
+</p><pre>STAT pid 14868
+STAT uptime 175931
+STAT time 1220540125
+STAT version 1.2.2
+STAT pointer_size 32
+STAT rusage_user 620.299700
+STAT rusage_system 1545.703017
+STAT curr_items 228
+STAT total_items 779
+STAT bytes 15525
+STAT curr_connections 92
+STAT total_connections 1740
+STAT connection_structures 165
+STAT cmd_get 7411
+STAT cmd_set 28445156
+STAT get_hits 5183
+STAT get_misses 2228
+STAT evictions 0
+STAT bytes_read 2112768087
+STAT bytes_written 1000038245
+STAT limit_maxbytes 52428800
+STAT threads 1
+END
+</pre>
+<p></p>
+<p class="title">Memory Statistics</p>
+<p>
+You can query the current memory statistics using </p><pre>stats slabs</pre>
+<p></p>
+<p>Example Output:
+</p><pre>STAT 1:chunk_size 80
+STAT 1:chunks_per_page 13107
+STAT 1:total_pages 1
+STAT 1:total_chunks 13107
+STAT 1:used_chunks 13106
+STAT 1:free_chunks 1
+STAT 1:free_chunks_end 12886
+STAT 2:chunk_size 100
+STAT 2:chunks_per_page 10485
+STAT 2:total_pages 1
+STAT 2:total_chunks 10485
+STAT 2:used_chunks 10484
+STAT 2:free_chunks 1
+STAT 2:free_chunks_end 10477
+[...]
+STAT active_slabs 3
+STAT total_malloced 3145436
+END
+</pre>
+<p></p>
+<p class="title">Which Keys Are Used?</p>
+<p>
+There seems to be no builtin function to determine the currently set keys. However you can use the </p><pre>stats items</pre> command to determine how many keys do exist.
+<pre>stats items
+STAT items:1:number 220
+STAT items:1:age 83095
+STAT items:2:number 7
+STAT items:2:age 1405
+[...]
+END
+</pre>
+This at least helps to see if any keys are used. To dump the key names from a PHP script that already does the memcache access you can use the PHP code from
+<a href="http://100days.de/serendipity/archives/55-Dumping-MemcacheD-Content-Keys-with-PHP.html">100days.de</a>.
+<p></p>
+<p class="title">Never Set a Timeout &gt; 30 Days!</p>
+<p>
+While this has nothing to do with the telnet access this is a problem you
+might run into. If you try to "set" or "add" a key with a timeout bigger
+than the allowed maximum you might not get what you expect because memcached
+then treats the value as a Unix timestamp. Also if the timestamp is in the
+past it will do nothing at all. Your command will silently fail.  
+</p>
+<p>
+So if you want to use the maximum lifetime specify 2592000. Example:
+</p>
+<pre>set my_key 0 2592000 1
+1
+</pre>
+<p class="title">Disappearing Keys on Overflow</p>
+<p>
+Despite the documentation saying something about wrapping around 64bit overflowing a value using "incr" causes the value to disappear. It needs to be created using "add"/"set" again.
+</p>
+</div>
+<p>From: <a href="http://lzone.de/articles/memcached.htm">http://lzone.de/articles/memcached.htm</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

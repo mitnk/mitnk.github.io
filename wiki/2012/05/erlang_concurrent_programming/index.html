@@ -1,0 +1,252 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Erlang Concurrent Programming</h1>
+        <div class="entry-content">
+            <p>Chapter 8 Concurrent Programming</p>
+<p>In Erlang, processes belong to the programming language and NOT the operating system.</p>
+<p>In Erlang:</p>
+<ul>
+<li>Creating and destroying processes is very fast.</li>
+<li>Sending messages between processes is very fast.</li>
+<li>Processes behave the same way on all operating systems.</li>
+<li>We can have very large numbers of processes.</li>
+<li>Processes share no memory and are completely independent.</li>
+<li>The only way for processes to interact is through message passing.</li>
+</ul>
+<p>For these reasons Erlang is sometimes called a pure message passing language.</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">area_server0</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">loop</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">loop</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">rectangle</span><span class="p">,</span> <span class="nv">Width</span><span class="p">,</span> <span class="nv">Ht</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Area of rectangle is </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Width</span> <span class="o">*</span> <span class="nv">Ht</span><span class="p">]),</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="p">{</span><span class="n">circle</span><span class="p">,</span> <span class="nv">R</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Area of circle is </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="mi">3</span><span class="p">.</span><span class="mi">14159</span> <span class="o">*</span> <span class="nv">R</span> <span class="o">*</span> <span class="nv">R</span><span class="p">]),</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="nv">Other</span> <span class="o">-&gt;</span>
+            <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"I don't know what the area of a </span><span class="si">~p</span><span class="s"> is </span><span class="si">~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[</span><span class="nv">Other</span><span class="p">]),</span>
+            <span class="n">loop</span><span class="p">()</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>We can create a process that evaluates loop/0 in the shell:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span> <span class="nn">area_server0</span><span class="p">:</span><span class="n">loop</span><span class="o">/</span><span class="mi">0</span><span class="p">).</span>
+<span class="go">&lt;0.36.0&gt;</span>
+<span class="gp">2&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">rectangle</span><span class="p">,</span> <span class="mi">6</span><span class="p">,</span> <span class="mi">10</span><span class="p">}.</span>
+<span class="go">Area of rectangle is 60</span>
+<span class="go">{rectangle,6,10}</span>
+<span class="gp">3&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">circle</span><span class="p">,</span> <span class="mi">23</span><span class="p">}.</span>
+<span class="go">Area of circle is 1661.90</span>
+<span class="go">{circle,23}</span>
+<span class="gp">4&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">triangle</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">}.</span>
+<span class="go">I don't know what the area of a {triangle,2,4,5} is {triangle,2,4,5}</span>
+</pre></div>
+<p>A better pattern to write a server:</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">area_server_final</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">area</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span> <span class="n">loop</span><span class="o">/</span><span class="mi">0</span><span class="p">).</span>
+
+<span class="nf">area</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">What</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="n">rpc</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">What</span><span class="p">).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">Response</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">rectangle</span><span class="p">,</span> <span class="nv">Width</span><span class="p">,</span> <span class="nv">Ht</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Width</span> <span class="o">*</span> <span class="nv">Ht</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">circle</span><span class="p">,</span> <span class="nv">R</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nv">From</span> <span class="o">!</span>  <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="mi">3</span><span class="p">.</span><span class="mi">14159</span> <span class="o">*</span> <span class="nv">R</span> <span class="o">*</span> <span class="nv">R</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="nv">Other</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="p">{</span><span class="n">error</span><span class="p">,</span><span class="nv">Other</span><span class="p">}},</span>
+            <span class="n">loop</span><span class="p">()</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>rpc short for remote pro- cedure call.</p>
+<p>Implementing a Timer</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">stimer</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">cancel</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">timer</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="k">end</span><span class="p">).</span>
+
+<span class="nf">cancel</span><span class="p">(</span><span class="nv">Pid</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="n">cancel</span><span class="p">.</span>
+
+<span class="nf">timer</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span>
+<span class="k">receive</span>
+    <span class="n">cancel</span> <span class="o">-&gt;</span>
+        <span class="n">void</span>
+    <span class="k">after</span> <span class="nv">Time</span> <span class="o">-&gt;</span>
+        <span class="nv">Fun</span><span class="p">()</span>
+<span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>Test it:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Pid</span> <span class="o">=</span> <span class="nn">stimer</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"timer event</span><span class="si">~n</span><span class="s">"</span><span class="p">)</span> <span class="k">end</span><span class="p">).</span>
+<span class="go">&lt;0.42.0&gt;</span>
+<span class="go">timer event</span>
+</pre></div>
+<p>receive works as follows:</p>
+<ol>
+<li>
+<p>When we enter a receive statement, we start a timer
+(but only if an after section is present in the expression).</p>
+</li>
+<li>
+<p>Take the first message in the mailbox and try to match it against Pattern1,
+Pattern2, and so on. If the match succeeds, the message is removed from
+the mailbox, and the expressions following the pattern are evaluated.</p>
+</li>
+<li>
+<p>If none of the patterns in the receive statement matches the first message
+in the mailbox, then the first message is removed from the mailbox and put
+into a “save queue.” The second message in the mailbox is then tried.
+This procedure is repeated until a matching message is found or until
+all the messages in the mail- box have been examined.</p>
+</li>
+<li>
+<p>If none of the messages in the mailbox matches, then the process is
+suspended and will be rescheduled for execution the next time a new
+message is put in the mailbox. Note that when a new message arrives,
+the messages in the save queue are not rematched; only the new message
+is matched.</p>
+</li>
+<li>
+<p>As soon as a message has been matched, then all messages that have been
+put into the save queue are reentered into the mailbox in the order in which
+they arrived at the process. If a timer was set, it is cleared.</p>
+</li>
+<li>
+<p>If the timer elapses when we are waiting for a message, then evaluate
+the expressions ExpressionsTimeout and put any saved messages back into
+the mailbox in the order in which they arrived at the process.</p>
+</li>
+</ol>
+<p>Registered processes</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">clock</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">stop</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">register</span><span class="p">(</span><span class="n">clock</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">tick</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="k">end</span><span class="p">)).</span>
+
+<span class="nf">stop</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">clock</span> <span class="o">!</span> <span class="n">stop</span><span class="p">.</span>
+
+<span class="nf">tick</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="n">stop</span> <span class="o">-&gt;</span>
+            <span class="n">void</span>
+        <span class="k">after</span> <span class="nv">Time</span> <span class="o">-&gt;</span> <span class="nv">Fun</span><span class="p">(),</span>
+            <span class="n">tick</span><span class="p">(</span><span class="nv">Time</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>Test it:</p>
+<div class="highlight"><pre><span class="gp">3&gt;</span> <span class="nn">clock</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="mi">5000</span><span class="p">,</span> <span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"TICK </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,[</span><span class="nn">erlang</span><span class="p">:</span><span class="nf">now</span><span class="p">()])</span> <span class="k">end</span><span class="p">).</span>
+<span class="go">true</span>
+<span class="go">TICK {1164,553538,392266}</span>
+<span class="go">TICK {1164,553543,393084}</span>
+<span class="go">TICK {1164,553548,394083}</span>
+</pre></div>
+<p>Pattern of writing Concurrent Programs:</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">ctemplate</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">compile</span><span class="p">(</span><span class="n">export_all</span><span class="p">).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">loop</span><span class="p">([])</span> <span class="k">end</span><span class="p">).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+        <span class="k">receive</span>
+            <span class="p">{</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span>
+                <span class="nv">Response</span>
+        <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="nv">Any</span> <span class="o">-&gt;</span>
+        <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Received:</span><span class="si">~p~n</span><span class="s">"</span> <span class="p">,[</span><span class="nv">Any</span><span class="p">]),</span> <span class="n">loop</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

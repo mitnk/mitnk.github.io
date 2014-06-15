@@ -1,0 +1,154 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Uwsgi On Ubuntu Server</h1>
+        <div class="entry-content">
+            <div class="highlight"><pre>sudo apt-get install python-setuptools libxml2-dev build-essential python-dev
+sudo pip install uwsgi
+</pre></div>
+<p>uwsgi.ini example:</p>
+<div class="highlight"><pre>[uwsgi]
+chdir=/home/mitnk/projects/foo
+module = django.core.handlers.wsgi:WSGIHandler()
+env = DJANGO_SETTINGS_MODULE=foo.settings
+master=True
+limit-as=256
+pidfile=/tmp/foo.pid
+vacuum=True
+max-requests=3000
+buffer-size=32768
+daemonize=/home/mitnk/uwsgi/foo.log
+socket=127.0.0.1:38717
+processes=2
+</pre></div>
+<p>这里注意  limit-as 不要太小了。我在一个内存为1G的机器上设了 64 结果 uwsgi 报错（但在另一个vps上设64则没事），调了半天才发现是这个参数的事。下面是报的错：</p>
+<div class="highlight"><pre>spawned uWSGI worker 2 (pid: 22350, cores: 1)
+Traceback (most recent call last):
+  File "/usr/lib/python2.6/dist-packages/django/core/handlers/wsgi.py", line 241, in __call__
+    response = self.get_response(request)
+  File "/usr/lib/python2.6/dist-packages/django/core/handlers/base.py", line 179, in get_response
+    response = self.handle_uncaught_exception(request, resolver, sys.exc_info())
+  File "/usr/lib/python2.6/dist-packages/django/core/handlers/base.py", line 224, in handle_uncaught_exception
+    if resolver.urlconf_module is None:
+  File "/usr/lib/python2.6/dist-packages/django/core/urlresolvers.py", line 323, in urlconf_module
+    self._urlconf_module = import_module(self.urlconf_name)
+  File "/usr/lib/python2.6/dist-packages/django/utils/importlib.py", line 35, in import_module
+    __import__(name)
+  File "./foo/urls.py", line 3, in &lt;module&gt;
+    from django.contrib import admin
+  File "/usr/lib/python2.6/dist-packages/django/contrib/admin/__init__.py", line 3, in &lt;module&gt;
+    from django.contrib.admin.helpers import ACTION_CHECKBOX_NAME
+  File "/usr/lib/python2.6/dist-packages/django/contrib/admin/helpers.py", line 2, in &lt;module&gt;
+    from django.contrib.admin.util import (flatten_fieldsets, lookup_field,
+  File "/usr/lib/python2.6/dist-packages/django/contrib/admin/util.py", line 1, in &lt;module&gt;
+    from django.db import models
+  File "/usr/lib/python2.6/dist-packages/django/db/__init__.py", line 40, in &lt;module&gt;
+    backend = load_backend(connection.settings_dict['ENGINE'])
+  File "/usr/lib/python2.6/dist-packages/django/db/__init__.py", line 34, in __getattr__
+    return getattr(connections[DEFAULT_DB_ALIAS], item)
+  File "/usr/lib/python2.6/dist-packages/django/db/utils.py", line 92, in __getitem__
+    backend = load_backend(db['ENGINE'])
+  File "/usr/lib/python2.6/dist-packages/django/db/utils.py", line 24, in load_backend
+    return import_module('.base', backend_name)
+  File "/usr/lib/python2.6/dist-packages/django/utils/importlib.py", line 35, in import_module
+    __import__(name)
+  File "/usr/lib/python2.6/dist-packages/django/db/backends/postgresql_psycopg2/base.py", line 8, in &lt;module&gt;
+    from django.db import utils
+ImportError: cannot import name utils
+</pre></div>
+<p>开始以为是 psycopg2 的问题呢，到最后才发现是 uwsgi 内存设得太小了。</p>
+<p>找到这个原因是因为在另一个log日志里有 <code>libk5crypto.so.3: failed to map segment from shared object: Cannot allocate memory</code> 的错误信息。以此为关键字找到了 <a href="http://forum.lxcenter.org/index.php?t=msg&amp;goto=94393">这篇文章</a>，其中的方案是增加内存分配量。虽然他们不是在uwsgi中遇到的问题，但我也试了同样的思路，问题才得以解决。折腾了近一天吧。</p>
+<p>记录一点log吧：</p>
+<div class="highlight"><pre>sudo apt-get install memcached python-memcache python-psycopg2
+wget http://nginx.org/download/nginx-1.1.9.tar.gz
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.30.tar.gz
+./configure --with-pcre=/home/ocean/pcre-8.30/ --with-openssl=/usr/lib/ssl/
+wget http://zlib.net/zlib-1.2.6.tar.gz
+./configure 
+make
+sudo make install
+
+wget http://initd.org/psycopg/tarballs/PSYCOPG-2-4/psycopg2-2.4.5.tar.gz
+tar xfz psycopg2-2.4.5.tar.gz 
+sudo apt-get install libpq-dev python-dev
+sudo pip install --upgrade psycopg2
+</pre></div>
+<p>另外两篇设置 nginx / uwsgi 不错的文章是：</p>
+<p><a href="http://pig-monkey.com/2011/07/19/ubuntu-vps-django/">http://pig-monkey.com/2011/07/19/ubuntu-vps-django/</a><br/>
+<a href="http://senya.pl/2011/03/sexy-nginx-uwsgi-stack-for-django-with-virtualenv/">http://senya.pl/2011/03/sexy-nginx-uwsgi-stack-for-django-with-virtualenv/</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

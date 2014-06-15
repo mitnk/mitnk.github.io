@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">How To Build A Url Shorten Service</h1>
+        <div class="entry-content">
+            <p>隔了好久没更新部落格了, 各种琐事呀. 这篇关于短链接的这篇文章已经在手机memo里呆了很长一段时间了. 在上班路上修正了一些单词bug, 就这样发布吧</p>
+<p>With the bursting of twitter like social networks, which allow only short messages. An service called url-shorten became known to most people.</p>
+<div class="highlight"><pre>http://tinyurl.com/7ut9aho
+http://is.gd/DBoG18
+</pre></div>
+<p>Instead of using a public url-shorten service, some website built their own url-shorten service.</p>
+<div class="highlight"><pre>http://t.co/et0lGlHF
+</pre></div>
+<p>Now how to built a service like that?</p>
+<p>It's actually pretty simple. A table with the single url attribute with an extra the auto-incrise id attribute will be satisfied.</p>
+<table border="1">
+<tr><th>id</th> <th>original URL</th> </tr>
+<tr> <td>1</td><td>http://xxxx.com/very_very_long.html</td> </tr>
+<tr> <td>2</td><td>http://xxxx.com/very_very_long.html</td> </tr>
+<tr><td>...</td><td>...</td></tr>
+<tr> <td>22</td><td>http://xxxx.com/very_very_long.html</td> </tr>
+<tr><td>...</td><td>...</td></tr>
+<tr> <td>5000</td><td>http://xxxx.com/very_very_long.html</td> </tr>
+</table>
+<p>Now the shorten part. The key point is the conversion: base-10 to base-62 and base-62 to base-10</p>
+<table border="1">
+<tr><th>id</th> <th>Shorten URL</th></tr>
+<tr><td>1</td> <td>http://local.com/1</td></tr>
+<tr><td>2</td> <td>http://local.com/2</td></tr>
+<tr><td>10</td> <td>http://local.com/A</td></tr>
+<tr><td>3000</td> <td>http://local.com/mO</td></tr>
+<tr><td>1334212</td> <td>http://local.com/5b5Y</td></tr>
+</table>
+<p>When a query with a shorten-string comes, we just convert it to the ocd id to lookup the item in the table and 301 redirect to that url.</p>
+<p>The convert algorithm is simple, people already implemented it every where, you don't need to implement it again.</p>
+<p>This gist is a pretty good one: <a href="https://gist.github.com/778542">https://gist.github.com/778542</a></p>
+<p>And even <a href="https://docs.djangoproject.com/en/dev/ref/utils/#django.utils.http.base36_to_int">django provide an base-36 version</a> only including numbers and lowercase letters.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

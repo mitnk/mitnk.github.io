@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Config Vpn On Ubuntu 10 10</h1>
+        <div class="entry-content">
+            <p>在网上购买一个vpn，在iTouch上已经连接 上了<br/>
+但在Ubuntu下却很迷惑：<br/>
+不明白 服务器地址应该写到 Gateway 里面 还是 NT Domain 里。<br/>
+而且都尝试过也连接不上。  </p>
+<p>Google了一下，才把问题搞定！<br/>
+下面把步骤记录一下：  </p>
+<p>左键点击 网络图标 --&gt; VPN Connection --&gt; Configure VPN<br/>
+点击ADD<br/>
+选择PPTP --&gt; Create...  </p>
+<p><span style="color:red;">GetWay: 输入vpn服务器地址</span><br/>
+然后用户名密码，（其它不用填）<br/>
+点击 右下角高级(Advanced...)  </p>
+<p><span style="color:red;">选中 Use Point-to-Point Encryption (MPPE)</span> 和 Allow Stateful Encryption<br/>
+确定， 应用。  </p>
+<p>这样就配置好了  </p>
+<p>连接时，左键点击 网络图标 --&gt; Vpn Connection --&gt; XXX (刚才你配置的vpn的名字）<br/>
+连接成功后，风格状态图标上会多一个小锁<br/>
+在Vpn Connection 里有一个Disconnect VPN, 点击会断开VPN连接。  </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

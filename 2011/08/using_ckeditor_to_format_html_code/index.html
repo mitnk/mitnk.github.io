@@ -1,0 +1,180 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Using Ckeditor To Format Html Code</h1>
+        <div class="entry-content">
+            <p>强大的CKEditor在<a href="http://ckeditor.com/">这里</a>.</p>
+<p>近期项目里的CKEitor出问题了，花时间研究了下，结果把以前我反对使用WYSWYG的编辑器的想法给推翻了。之前不想用是因为不会用</p>
+<p>项目的需求是这样的：
+将一些静态页面的主要内容的HTML代码保存在数据库里，前台用时从这里将对应条目取出来render到页面上。这样客户就可以随时通过django后台使用CKEitor对其内容进行修改。</p>
+<p>后来出现问题，客户对一个页面做修改之后，这个页面的样式就彻底乱掉了。我认为肯定是CKEitor给加了额外的代码引起的。后来证明并不是如此。问题的原因是代码在被CKEditor碰之前就有问题。</p>
+<p>CKEditor只做两件事：</p>
+<ol>
+<li>对有问题的代码尝试修改</li>
+<li>格式化格式乱的代码</li>
+</ol>
+<p>比如会把以下代码</p>
+<div class="highlight"><pre>a
+
+b
+</pre></div>
+<p>修改为</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>
+    a b<span class="nt">&lt;/p&gt;</span>
+</pre></div>
+<p>会把以下代码</p>
+<div class="highlight"><pre><span class="nt">&lt;ul&gt;&lt;li&gt;</span>ab<span class="nt">&lt;/li&gt;&lt;li&gt;</span>
+cd<span class="nt">&lt;/li&gt;</span> 
+<span class="nt">&lt;li&gt;</span>ef<span class="nt">&lt;/li&gt;&lt;/ul&gt;</span>
+</pre></div>
+<p>修改成这样：</p>
+<div class="highlight"><pre><span class="nt">&lt;ul&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+        ab<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+        cd<span class="nt">&lt;/li&gt;</span>
+    <span class="nt">&lt;li&gt;</span>
+        ef<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+<p>有两点不好</p>
+<ol>
+<li>代码里用的是tab字符，应该用空格才好</li>
+<li>像p li这样的元素在开标签后面不应该回车才好</li>
+</ol>
+<p>今天才知道这些CKEitor都是可以调整的
+使用CKEditor时加入以下代码就可以了</p>
+<div class="highlight"><pre><span class="o">&lt;</span><span class="nx">script</span> <span class="nx">type</span><span class="o">=</span><span class="s2">"text/javascript"</span><span class="o">&gt;</span>
+<span class="nx">CKEDITOR</span><span class="p">.</span><span class="nx">on</span><span class="p">(</span> <span class="s1">'instanceReady'</span><span class="p">,</span> <span class="kd">function</span><span class="p">(</span> <span class="nx">ev</span> <span class="p">)</span> <span class="p">{</span>
+  <span class="nx">ev</span><span class="p">.</span><span class="nx">editor</span><span class="p">.</span><span class="nx">dataProcessor</span><span class="p">.</span><span class="nx">writer</span><span class="p">.</span><span class="nx">setRules</span><span class="p">(</span> <span class="s1">'p'</span><span class="p">,</span>
+     <span class="p">{</span>
+        <span class="nx">indent</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakBeforeOpen</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">breakAfterOpen</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakBeforeClose</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakAfterClose</span> <span class="o">:</span> <span class="kc">false</span>
+     <span class="p">});</span>
+  <span class="nx">ev</span><span class="p">.</span><span class="nx">editor</span><span class="p">.</span><span class="nx">dataProcessor</span><span class="p">.</span><span class="nx">writer</span><span class="p">.</span><span class="nx">setRules</span><span class="p">(</span> <span class="s1">'li'</span><span class="p">,</span>
+     <span class="p">{</span>
+        <span class="nx">indent</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakBeforeOpen</span> <span class="o">:</span> <span class="kc">true</span><span class="p">,</span>
+        <span class="nx">breakAfterOpen</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakBeforeClose</span> <span class="o">:</span> <span class="kc">false</span><span class="p">,</span>
+        <span class="nx">breakAfterClose</span> <span class="o">:</span> <span class="kc">false</span>
+     <span class="p">});</span>
+  <span class="nx">ev</span><span class="p">.</span><span class="nx">editor</span><span class="p">.</span><span class="nx">dataProcessor</span><span class="p">.</span><span class="nx">writer</span><span class="p">.</span><span class="nx">indentationChars</span> <span class="o">=</span> <span class="s1">'  '</span><span class="p">;</span>
+  <span class="nx">ev</span><span class="p">.</span><span class="nx">editor</span><span class="p">.</span><span class="nx">dataProcessor</span><span class="p">.</span><span class="nx">writer</span><span class="p">.</span><span class="nx">lineBreakChars</span> <span class="o">=</span> <span class="s1">'\n'</span><span class="p">;</span>
+<span class="p">});</span>
+<span class="o">&lt;</span><span class="err">/script&gt;</span>
+</pre></div>
+<p>现在CKEditor会将以下代码</p>
+<div class="highlight"><pre>a
+
+b
+
+<span class="nt">&lt;p&gt;</span>ppp<span class="nt">&lt;/p&gt;&lt;p&gt;</span>pppppd<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;ul&gt;&lt;li&gt;</span>
+    abc<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>
+    def<span class="nt">&lt;/li&gt;&lt;li&gt;</span>
+    g<span class="nt">&lt;/li&gt;&lt;/ul&gt;</span>
+
+<span class="nt">&lt;li&gt;</span>abcde<span class="nt">&lt;/li&gt;</span>
+</pre></div>
+<p>修改为这样：</p>
+<div class="highlight"><pre><span class="nt">&lt;p&gt;</span>a b<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>ppp<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;p&gt;</span>pppppd<span class="nt">&lt;/p&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>abc<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>def<span class="nt">&lt;/li&gt;</span>
+  <span class="nt">&lt;li&gt;</span>g<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+<span class="nt">&lt;ul&gt;</span>
+  <span class="nt">&lt;li&gt;</span>abcde<span class="nt">&lt;/li&gt;</span>
+<span class="nt">&lt;/ul&gt;</span>
+</pre></div>
+<p>是不是顺眼多了？嘿嘿</p>
+<p>用CKEditor做了个简单的页面，当作<a href="/webapps/ckeditor/">HTML代码的格式化工具</a>用
+大家可以到这个页面试试CKEditor的格式化功能</p>
+<ol>
+<li>先点Source按钮</li>
+<li>粘贴点乱的HTML代码进去</li>
+<li>然后连点Source按钮两次，就可以看效果了</li>
+</ol>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

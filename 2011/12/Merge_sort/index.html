@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Merge Sort</h1>
+        <div class="entry-content">
+            <p>归并排序（Merge Sort）是一个基于比较的复杂度为O(n log n)的排序算法。大多数实现都是<a href="http://en.wikipedia.org/wiki/Sorting_algorithm#Stability">稳定的</a>。它是一个<a href="http://en.wikipedia.org/wiki/Divide_and_conquer_algorithm">分治法算法</a>。是1945年由<a href="http://en.wikipedia.org/wiki/John_von_Neumann">约翰·冯·诺伊曼</a>发明的。
+归并排序（Merge Sort）的步骤是这样的：</p>
+<ol>
+<li>如果列表的长度为0或1，它已经是排序好的了。否则：</li>
+<li>把这个待排序的列表分成两个子列表，各含一半元素。</li>
+<li>对每个子列表分别用<code>归并排序</code>进行递归排序。</li>
+<li>合并两个已排序好的子列表，生成一个排序好的列表。</li>
+</ol>
+<p>归并排序融合了两个主要思想</p>
+<ol>
+<li>列表越小需要的步骤越少。</li>
+<li>对<span class="cb">两个已经排序好的列表</span>排序比对<span class="cb">两个未排序好的列表</span>排序需要较少的步骤（因为对已经排序好的列表，每个我们都只需遍历一次）。</li>
+</ol>
+<p>根据上面的思想，归并排序的主体用C语言表示是这样的：</p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">merge_sort</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">left</span><span class="p">,</span> <span class="kt">int</span> <span class="n">right</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">left</span> <span class="o">&gt;=</span> <span class="n">right</span><span class="p">)</span>
+        <span class="k">return</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="n">mid</span> <span class="o">=</span> <span class="p">(</span><span class="n">left</span> <span class="o">+</span> <span class="n">right</span><span class="p">)</span> <span class="o">/</span> <span class="mi">2</span><span class="p">;</span>
+    <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">mid</span><span class="p">);</span>
+    <span class="n">merge_sort</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">right</span><span class="p">);</span>
+    <span class="n">merge</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">left</span><span class="p">,</span> <span class="n">mid</span><span class="p">,</span> <span class="n">right</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>归并排序有两个细节：</p>
+<ol>
+<li>对子列表进行排序</li>
+<li>对两个已经排序好的列表进行合并</li>
+</ol>
+<p><img alt="Merge sort 1" src="/media/images/article/300px-Merge_sort_algorithm_diagram.svg.png"/></p>
+<p>对于 <code>1.</code> 来说，上面函数中的 <code>if (left &gt;= right) return;</code> 语句已经完成了，也就是说当列表元素个数为1或0时，列表自然是排序好的。所以焦点到了 <code>2.</code> 合并 <code>merge()</code> 这个动作</p>
+<p><img alt="Merge sort 1" src="/media/images/article/Merge-sort-example-300px.gif"/></p>
+<p>a) <strong> <code>merge()</code> 实现之简单明了版本</strong></p>
+<p>实现 <code>merge()</code> 直接明了的方法是：先将要合并的两个列表内容复制到一个辅助列表里，然后用两个指针<code>i</code> 和 <code>j</code>寻找最小的元素依次复制回原列表，如下图：</p>
+<p><img alt="merge" src="/media/images/article/merge1.gif"/></p>
+<p>当其中一个指针到达一半的终点时，可以将另一半的剩余元素，直接复制回原列表对应位置即可。实事上，当剩余的是右面一半时，不用执行此操作，里面的元素已经各就各位了。C语言实现如下（为了这个实现，我们需要在上面代码里给函数 <code>merge_sort()</code> 和 <code>merge()</code> 增加一个 <code>b[]</code> 参数）：</p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">merge</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">b</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">left</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">right</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">i</span><span class="o">=</span><span class="n">left</span><span class="p">;</span> <span class="n">i</span><span class="o">&lt;=</span><span class="n">right</span><span class="p">;</span> <span class="o">++</span><span class="n">i</span><span class="p">)</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">];</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="n">k</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span>
+    <span class="n">j</span> <span class="o">=</span> <span class="n">mid</span> <span class="o">+</span> <span class="mi">1</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mid</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&gt;</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">];</span>
+        <span class="k">else</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">i</span> <span class="o">&lt;=</span> <span class="n">mid</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+<p>b) <strong> <code>merge()</code> 高效一些的实现</strong></p>
+<p>实际上，我们并不需要将第二半列表放到 <code>b[]</code> 辅助列表里。这样我们会节省一半的额外内存，并且节省一半复制元素到辅助列表的时间。如下图</p>
+<p><img alt="merge 2" src="/media/images/article/merge1b.gif"/></p>
+<p>这里的关键点是复制时的结束点： 当 <code>k</code> 追上 <code>j</code> 时。也就是说当且仅当<code>k</code>追上<code>j</code>时，<code>b[]</code>中的元素才全部复制回了<code>a[]</code>。</p>
+<div class="highlight"><pre><span class="kt">void</span> <span class="nf">merge</span><span class="p">(</span><span class="kt">int</span> <span class="n">a</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">b</span><span class="p">[],</span> <span class="kt">int</span> <span class="n">left</span><span class="p">,</span> <span class="kt">int</span> <span class="n">mid</span><span class="p">,</span> <span class="kt">int</span> <span class="n">right</span><span class="p">)</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">i</span><span class="p">,</span> <span class="n">j</span><span class="p">,</span> <span class="n">k</span><span class="p">;</span>
+    <span class="n">k</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">j</span><span class="o">=</span><span class="n">left</span><span class="p">;</span> <span class="n">j</span><span class="o">&lt;=</span><span class="n">mid</span><span class="p">;</span> <span class="o">++</span><span class="n">j</span><span class="p">)</span>
+        <span class="n">b</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">];</span>
+
+    <span class="n">i</span> <span class="o">=</span> <span class="mi">0</span><span class="p">;</span> <span class="n">k</span> <span class="o">=</span> <span class="n">left</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">j</span> <span class="o">&amp;&amp;</span> <span class="n">j</span> <span class="o">&lt;=</span> <span class="n">right</span><span class="p">)</span>
+        <span class="k">if</span> <span class="p">(</span><span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">&lt;=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="p">])</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+        <span class="k">else</span>
+            <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">a</span><span class="p">[</span><span class="n">j</span><span class="o">++</span><span class="p">];</span>
+
+    <span class="k">while</span> <span class="p">(</span><span class="n">k</span> <span class="o">&lt;</span> <span class="n">j</span><span class="p">)</span>
+        <span class="n">a</span><span class="p">[</span><span class="n">k</span><span class="o">++</span><span class="p">]</span> <span class="o">=</span> <span class="n">b</span><span class="p">[</span><span class="n">i</span><span class="o">++</span><span class="p">];</span>
+<span class="p">}</span>
+</pre></div>
+<p><strong> 复杂度分析 </strong></p>
+<p>当一个算法含有函数递归调用时，其运行时间常常以一个递推关系式。对于归并排序算法，一种情况是最简单的情况，即当列表元素只有一个时不用做任何操作，只需要常数时间 <code>Θ(1)</code>； 除此种情况外，我们将它的运行时间分解开来：</p>
+<p><strong>分 (Divide):</strong> 在 这一步，我们只需要计算拆分的中点。所以这步的时间为 <code>Θ(1)</code>。</p>
+<p><strong>治 (Conquer):</strong> 我们递归地解决两个子问题，运行时间为 <code>2T(n/2)</code>。</p>
+<p><strong>并 (Combine):</strong> 也就是 <code>merge()</code> 函数的运行时间，可以很容易看出，时间为 <code>Θ(n)</code>。</p>
+<p>得到以下关系式</p>
+<p><img alt="recurrence equation1" src="/media/images/article/recurrence_equation1.png"/></p>
+<p>也可以写成这样 (<em>c</em> 为常数时间，即处理元素数量为1时的时间)：</p>
+<p><img alt="recurrence equation2" src="/media/images/article/recurrence_equation2.png"/></p>
+<p>可以将上面的关系式表示成如下图例：</p>
+<p><img alt="recurrence tree1" src="/media/images/article/recurrence_tree1.png"/><br/>
+<img alt="recurrence tree2" src="/media/images/article/recurrence_tree2.png"/></p>
+<p>从图(a) 到 图(d)是递归树的依次展开过程。图(d)是已经完全展开的树，共有 <code>lgn + 1</code>层，共花费时间 <code>cn lgn + cn</code>，即 <code>Θ(nlgn)</code>。</p>
+<p>参考及图片来源: <br/>
+<a href="http://en.wikipedia.org/wiki/Merge_sort">Wikipedia</a><br/>
+<a href="http://www.inf.fh-flensburg.de/lang/algorithmen/sortieren/merge/mergen.htm">inf.fh-flensburg.de</a><br/>
+<a href="http://www.amazon.com/Introduction-Algorithms-Thomas-H-Cormen/dp/0262033844">Introduction to Algorithms</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

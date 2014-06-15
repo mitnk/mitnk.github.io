@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Event Every 823 Years</h1>
+        <div class="entry-content">
+            <p>在推上看到 @localhost_8080 发的<a href="http://twitter.com/#!/localhost_8080/status/84842529660473344">一条推</a>：</p>
+<p><quote>
+@localhost_8080:
+ 刚看到一条状态：“今年7月份有5个周五，5个周六和5个周日，这种现象每823年才发生一次，叫做钱袋子。” 男朋友评论了这条状态：“扯，2013年3月就还是这样。” 噗哈哈…这就是考据癖的男朋友么～
+</quote></p>
+<p>看后觉得很有喜感，她男友同学很用心呀。然后就想到写个程序搜索一下就会知道哪个月份符合这个现象了。</p>
+<p>先想如何实现：<br/>
+因为4周是28天，所以只有31天的月份才可能出现这个现象，并且当且仅需1号这天是周五。
+想到这里后，写程序就很简单了。</p>
+<p>Python程序如下：</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+
+<span class="n">FRIDAY</span> <span class="o">=</span> <span class="mi">4</span>
+<span class="n">MONTHS_TO_CHECK</span> <span class="o">=</span> <span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">,</span> <span class="mi">8</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">12</span><span class="p">)</span>
+
+<span class="k">def</span> <span class="nf">check_1st_friday</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+    <span class="k">if</span> <span class="n">day</span><span class="o">.</span><span class="n">weekday</span><span class="p">()</span> <span class="o">==</span> <span class="n">FRIDAY</span><span class="p">:</span>
+        <span class="k">return</span> <span class="bp">True</span>
+    <span class="k">return</span> <span class="bp">False</span>
+
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="n">year_from</span> <span class="o">=</span> <span class="mi">2000</span>
+    <span class="n">year_to</span> <span class="o">=</span> <span class="mi">2020</span>
+
+    <span class="k">for</span> <span class="n">year</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="n">year_from</span><span class="p">,</span> <span class="n">year_to</span> <span class="o">+</span> <span class="mi">1</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">month</span> <span class="ow">in</span> <span class="n">MONTHS_TO_CHECK</span><span class="p">:</span>
+            <span class="n">day</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="n">year</span><span class="p">,</span> <span class="n">month</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+            <span class="k">if</span> <span class="n">check_1st_friday</span><span class="p">(</span><span class="n">day</span><span class="p">):</span>
+                <span class="k">print</span> <span class="n">day</span>
+</pre></div>
+<p>结果如下（见<a href="http://codepad.org/V2zSXyTP">这里</a>）：</p>
+<div class="highlight"><pre>2000-12-01
+2002-03-01
+2003-08-01
+2004-10-01
+2005-07-01
+2006-12-01
+2008-08-01
+2009-05-01
+2010-01-01
+2010-10-01
+2011-07-01
+2013-03-01
+2014-08-01
+2015-05-01
+2016-01-01
+2016-07-01
+2017-12-01
+2019-03-01
+2020-05-01
+</pre></div>
+<p>几乎每年都会出现一次嘛！</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Linux Find</h1>
+        <div class="entry-content">
+            <p>0) <code>$ man find</code></p>
+<p>1) 查找当前目录下所有.jpg文件：</p>
+<div class="highlight"><pre>$ find . -name "*.jpg" -type f
+</pre></div>
+<p>注1： 可以使用Shell Pattern with * ? [ ]<br/>
+注2： -type 的选项是f d l 等<br/>
+注3： 可以用 -iname 代替 -name 以去除大小写敏感问题<br/>
+注3： 当前目录 . 可以省略  </p>
+<p>2) 查找home目录下大于100M的文件</p>
+<div class="highlight"><pre>$ find ~ -type f -size +100M
+</pre></div>
+<p>注：+n -n n 分别表示大于n，小于n，等于n</p>
+<p>3) 查找当前目录24小时内改动过的py文件</p>
+<div class="highlight"><pre>$find -name "*.py" -ctime -1
+</pre></div>
+<p>注1： -atime 为访问时间<br/>
+注2： -cmin -amin 为以分钟计算的时间<br/>
+注3： 相关参数还有 -anewer file -cnewer file （查找比file查改时间更新的）  </p>
+<p>4) 修改时间为7天以前的文件</p>
+<div class="highlight"><pre>$ find . -mtime +7
+</pre></div>
+<p>5) 查找当前目录下所有的隐藏（普遍）文件</p>
+<div class="highlight"><pre>$ find -regex ".*\/\.[^/]*" -type f
+</pre></div>
+<p>注：可以 -iregex 来去除大小写敏感</p>
+<p>6) 查找空文件（夹）</p>
+<div class="highlight"><pre>$ find -empty
+</pre></div>
+<p>7) 查找用户mitnk所属的所有文件</p>
+<div class="highlight"><pre>$ find -user mitnk
+</pre></div>
+<p>8) 查找当前目录中以及一级子目录中的py文件</p>
+<div class="highlight"><pre>$ find -name "*.py" -maxdepth 2
+</pre></div>
+<p>注： 还有一个相关参数为 -mindepth</p>
+<p>9) 查找名字不以txt结尾的文件
+    $ find -not -name "*txt"</p>
+<p>或</p>
+<div class="highlight"><pre>$ find ! -name "*txt"
+</pre></div>
+<p>10) 查找当前目录下带a或b的文件</p>
+<div class="highlight"><pre>$ find . -name "*a*" -or -name "*b*"
+</pre></div>
+<p>11) 查找当前目录下除.svn子目录以外的所有文件</p>
+<div class="highlight"><pre>$ find . -path "*.svn" -prune -o -print
+</pre></div>
+<p>12) 查找权限是755的文件</p>
+<div class="highlight"><pre>$ find . -perm 755
+</pre></div>
+<p>13) 输出当前目录下所有txt文件的内容</p>
+<div class="highlight"><pre>$ find . -type f -name "*.txt" -exec cat {} \;
+</pre></div>
+<p>或</p>
+<div class="highlight"><pre>$ find . -type f -name "*.txt" | xargs cat
+</pre></div>
+<p>14) 只搜索最小深度为3，最大尝试为5的所有文件夹 ( -maxdepth参数需要放在最前面 ）</p>
+<div class="highlight"><pre>$ find . -mindepth 3 -maxdepth 5 -type d
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

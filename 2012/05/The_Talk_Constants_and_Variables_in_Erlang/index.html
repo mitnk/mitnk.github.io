@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">The Talk Constants And Variables In Erlang</h1>
+        <div class="entry-content">
+            <p><a>mitnk</a>:    Hi, I'm new to Erlang. Can anybody show me how to define a global like variable in Erlang? I wrote like this, http://codepad.org/kSMIyRyc But it got compile Errors.</p>
+<p><a>Erlang</a>:    Python code- 18 lines - codepad (0.02s)</p>
+<p><a>dottedmag</a>:    mitnk: you don't</p>
+<p><a>dottedmag</a>:    mitnk: there are no variables in Erlang, just constants. If you need a constant, just declare arg-less function.</p>
+<p><a>DeadZen</a>:    there are variables in erlang.</p>
+<p><a>dottedmag</a>:    DeadZen: if you count ETS as variables.</p>
+<p><a>DeadZen</a>:    no im counting immutable variables as variables</p>
+<p><a>dottedmag</a>:    They aren't _var_iables, they don't vary, right?</p>
+<p><a>DeadZen</a>:    and there are mutable variables beyond just ets..</p>
+<p><a>DeadZen</a>:    yes they do vary</p>
+<p><a>DeadZen</a>:    they don't mutate.</p>
+<p><a>mitnk</a>:    How to define and constant? I'm going to look at arg-less</p>
+<p><a>dottedmag</a>:    mitnk: my_age/0</p>
+<p><a>DeadZen</a>:    variables have different values. thats why they're called variables.. not because a single variables value varies</p>
+<p><a>DeadZen</a>:    thats why they're called immutable variables not immutable constants</p>
+<p><a>mitnk</a>:    dottedmag: It was in my code.</p>
+<p><a>dottedmag</a>:    mitnk: that's the arg-less function.</p>
+<p><a>dottedmag</a>:    DeadZen: "immutable variables" is oxymoron</p>
+<p><a>DeadZen</a>:    not really... immutable variables and immutable flags are long standing terms</p>
+<p><a>mitnk</a>:    dottedmag: Then what you mean by saying "If you need a constant, just declare arg-less function."</p>
+<p><a>dottedmag</a>:    mitnk: my_age/0 is constant. So you have already declared it.</p>
+<p><a>DeadZen</a>:    but thats not a variable my_age is a function</p>
+<p><a>DeadZen</a>:    i thought the question was global variables</p>
+<p><a>mitnk</a>:    Ok, thx. Yeah, I meant constant rather than global varmy mistake.</p>
+<p><a>DeadZen</a>:    in erlang the question becomes global to what?</p>
+<p><a>DeadZen</a>:    global to that process? that node? that cluster?</p>
+<p><a>dottedmag</a>:    mitnk: There's another way to do it: http://www.erlang.org/doc/reference_manual/macros.html</p>
+<p><a>Erlang</a>:    Erlang -- The Preprocessor (0.86s)</p>
+<p><a>DeadZen</a>:    mitnk: -define(MY_AGE, 18). after -export</p>
+<p><a>dottedmag</a>:    mitnk: see the 8.2</p>
+<p><a>DeadZen</a>:    mitnk: then reference ?MY_AGE in bar()</p>
+<p><a>mitnk</a>:    DeadZen: Well, I am writing a simple Sequential program. Maybe I asked a bad question.</p>
+<p><a>DeadZen</a>:    mitnk: I don't believe in bad questions, even asking the wrong question is useful indication</p>
+<p><a>DeadZen</a>:    mitnk: the subsequent question is always... now what are you trying to do?</p>
+<p><a>mitnk</a>:    DeadZen: "-define(MY_AGE, 18)" seems just what I am looking for</p>
+<p><a>DeadZen</a>:    dottedmag: also i still assert 1 allowed mutation constitutes a variable.</p>
+<p><a>DeadZen</a>:    dottedmag: albeit with limited assignment variability?;p</p>
+<p><a>dottedmag</a>:    There is no mutation or assignment -- just coming to scope with defined value.</p>
+<p><a>DeadZen</a>:    well thats really what erlang is saying.. once a variable is set, its no longer safe to change it</p>
+<p><a>DeadZen</a>:    the value can vary, but not be reassigned</p>
+<p><a>dottedmag</a>:    Different instances of the same, ahem, variable may exist with different values in different scopes, but the every particular example is immutable and does not vary.</p>
+<p><a>dottedmag</a>:    But that's just the terminology.</p>
+<p><a>dottedmag</a>:    So let's agree we describe the same situation using different terms.</p>
+<p><a>DeadZen</a>:    thats interesting you consider it not setting a variable but brining a non variable to scope</p>
+<p><a>DeadZen</a>:    dottedmag: its 6am, i haven't slept, semantic death is imminent</p>
+<p><a>DeadZen</a>:    </p>
+<p><a>dottedmag</a>:    good night</p>
+<p><a>DeadZen</a>:    nah its funny, i had the same thought but arrived at the opposite conclusion</p>
+<p><a>DeadZen</a>:    A=1. simple a variable A set to 1.. B = A. a variable B set to the variable A.. the values could be anything.. ergo. they're variables</p>
+<p><a>mitnk</a>:    DeadZen: Bye, thx!</p>
+<p><a>DeadZen</a>:    mitnk: you're welcome, keep at it</p>
+<p><a>mitnk</a>:    dottedmag: I knew variable in Erlang is different. But in book "Programming Erlang", Joe call them variables</p>
+<p><a>DeadZen</a>:    if it makes you feel better, we can call them predictable variables</p>
+<p><a>mitnk</a>:    Okey</p>
+<p><a>DeadZen</a>:    lol</p>
+<p><a>ttmrichter</a>:    mitnk: They <em>are</em> variables.</p>
+<p><a>ttmrichter</a>:    In the <em>mathematical</em> sense of the term.</p>
+<p><a>ttmrichter</a>:    If you think about it, the statement "x = x + 1" is ludicrous.</p>
+<p><a>ttmrichter</a>:    It cannot be possible in anything except the most neurotic of number systems (a number system which has one value and is a ring).</p>
+<p><a>ttmrichter</a>:    had a massive shock on first contact with BASIC back in the day when seeing "A = A + 1".</p>
+<p><a>ttmrichter</a>:    It just didn't make any damned sense.</p>
+<p><a>Erlang</a>:    does not compute</p>
+<p><a>mitnk</a>:    Thank you, ttmrichter. That's can be right, but my question (concern) here is not this. Thanks all!</p>
+<p><a>ski_</a>:    mitnk : your pasted code works fine, if you lift the call to my_age/0 out of the condition</p>
+<p><a>ski_</a>:    ponders using a parameterized module for this ..</p>
+<p><a>mitnk</a>:    ski_: Yes, I tried that. But I don't want create an extra variable; -define is just the case</p>
+<p><a>ttmrichter</a>:    ski_: Parameterized modules are evil.</p>
+<p><a>ski_</a>:    ttmrichter : i'm not convinced</p>
+<p><a>ski_</a>:    mitnk : <em>nod</em>, then go with that</p>
+<p><a>DeadZen</a>:   draws horns on parameterized modules</p>
+<p><a>DeadZen</a>:   adds a picture of rush limbaugh</p>
+<p><a>DeadZen</a>:   ski_: k... how bout now?</p>
+<p><a>Licenser</a>:   heh</p>
+<p><a>Licenser</a>:   ski_ there is a very good explemation why somewhere on the interwerbs let ne dig it out</p>
+<p><a>Licenser</a>:   http://ferd.ca/you-will-regret-this.html</p>
+<p><a>Erlang</a>:   ferd.ca -&gt; YOU WILL REGRET THIS (0.22s)</p>
+<p><a>Licenser</a>:   that one, realy worth looking at, not only opend it my eyes but ti made me laugh a lot</p>
+<p><a>nox</a>:   when was released -callback attributes?</p>
+<p><a>nox</a>:   were*</p>
+<p><a>ski_</a>:   DeadZen : all lies !</p>
+<p><a>ski_</a>:   (though i suppose horns is a biblical symbol for power ..)</p>
+<p><a>DeadZen</a>:   nox: r15 i think</p>
+<p><a>DeadZen</a>:   ski_: WITCH!</p>
+<p><a>nox</a>:  DeadZen: thanks</p>
+<p>Copy right by <a>mitnk</a>, <a>dottedmag</a>, <a>DeadZen</a>, <a>ttmrichter</a>,  <a>ski_</a>, <a>Licenser</a>, and <a>nox</a> @ <a href="irc://irc.freenode.net/erlang">Erlang IRC</a> :P</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

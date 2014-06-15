@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Write A Little Program Using Erlang</h1>
+        <div class="entry-content">
+            <p>前几天同事为应聘自动化测试的同学出了 <a href="http://projecteuler.net/index.php?section=problems&amp;id=9">projecteuler 上面的一道题</a>：<br/>
+一个直角三角形三个边 a b c 之和为 1000<br/>
+且 a b c 皆为整数<br/>
+求三边之积  </p>
+<p>有兴趣的读者可以停下来试着写程序跑上一跑</p>
+<p>用Python来写这个程序可以是这个样子：</p>
+<div class="highlight"><pre><span class="k">def</span> <span class="nf">triangle</span><span class="p">(</span><span class="n">N</span><span class="p">):</span>
+    <span class="k">for</span> <span class="n">a</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">/</span><span class="mi">4</span><span class="p">):</span>
+        <span class="k">for</span> <span class="n">b</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">N</span><span class="o">/</span><span class="mi">2</span><span class="p">):</span>
+            <span class="n">c</span> <span class="o">=</span> <span class="n">N</span> <span class="o">-</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+            <span class="k">if</span> <span class="n">a</span> <span class="o">*</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span> <span class="o">*</span> <span class="n">b</span> <span class="o">==</span> <span class="n">c</span> <span class="o">*</span> <span class="n">c</span><span class="p">:</span>
+                <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span> <span class="o">*</span> <span class="n">c</span>
+
+<span class="k">if</span> <span class="n">__name__</span> <span class="o">==</span> <span class="s">"__main__"</span><span class="p">:</span>
+    <span class="k">print</span> <span class="n">triangle</span><span class="p">(</span><span class="mi">1000</span><span class="p">)</span>
+</pre></div>
+<p>（由题目可推得两条直角边a b不可能大于或等于 N/2 且 小边小于 N/4）</p>
+<p>下面看看用 Erlang 语言如何解决这个问题<br/>
+按照<a href="/36/">惯例</a>，先说下Erlang的一个语法：List Comprehensions<br/>
+据说要译为 列表推导，请看代码  </p>
+<div class="highlight"><pre><span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span>
+<span class="gp">2&gt;</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">map</span><span class="p">(</span><span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">X</span><span class="o">*</span><span class="nv">X</span> <span class="k">end</span><span class="p">,</span> <span class="nv">L</span><span class="p">).</span>
+<span class="go">[1,9,25]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="nv">X</span><span class="o">*</span><span class="nv">X</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">L</span><span class="p">].</span>
+<span class="go">[1,9,25]</span>
+</pre></div>
+<p>句3即为列表推导</p>
+<p>注：句2为一个方便的函数定义，类似Python语言中的 <a href="http://diveintopython.org/power_of_introspection/lambda_functions.html">lambda 函数</a><br/>
+Out 一下，给个例子  </p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Z</span> <span class="o">=</span> <span class="k">fun</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">X</span> <span class="o">*</span> <span class="mi">2</span> <span class="k">end</span><span class="p">.</span>
+<span class="gp">2&gt;</span> <span class="nv">Z</span><span class="p">(</span><span class="mi">3</span><span class="p">).</span>
+<span class="go">6</span>
+</pre></div>
+<p>下面回到正题，现在来看看如何用Erlang来计算直角边之积吧：</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">tri</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">triangle</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">triangle</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">[{</span><span class="nv">A</span> <span class="o">*</span> <span class="nv">B</span> <span class="o">*</span> <span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="nv">A</span> <span class="o">-</span> <span class="nv">B</span><span class="p">)}</span> <span class="p">||</span>
+        <span class="nv">A</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span> <span class="ow">div</span> <span class="mi">4</span><span class="p">),</span>
+        <span class="nv">B</span> <span class="o">&lt;-</span> <span class="nn">lists</span><span class="p">:</span><span class="nf">seq</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">N</span> <span class="ow">div</span> <span class="mi">2</span><span class="p">),</span>
+        <span class="nv">A</span><span class="o">*</span><span class="nv">A</span> <span class="o">+</span> <span class="nv">B</span><span class="o">*</span><span class="nv">B</span> <span class="o">==</span> <span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="nv">A</span> <span class="o">-</span> <span class="nv">B</span><span class="p">)</span> <span class="o">*</span><span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="nv">A</span> <span class="o">-</span> <span class="nv">B</span><span class="p">)].</span>
+</pre></div>
+<p>测试：</p>
+<div class="highlight"><pre><span class="go">$ erlc tri.erl</span>
+<span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="nn">tri</span><span class="p">:</span><span class="nf">triangle</span><span class="p">(</span><span class="mi">1000</span><span class="p">).</span>
+<span class="go">[{31875000}]</span>
+</pre></div>
+<p><b>注</b>：这个算法是比较直接的，多数人都可以想到<br/>
+开始我觉得大概这样已经是最优解了<br/>
+但我另一个同事在那里用数字公式算来算去<br/>
+仅仅用一层循环就搞定了。。。<br/>
+我后来在 stackoverflow 上看到也<a href="http://stackoverflow.com/questions/2817848/find-pythagorean-triplet-for-which-a-b-c-1000#3436152">有人提到这个算法</a> </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

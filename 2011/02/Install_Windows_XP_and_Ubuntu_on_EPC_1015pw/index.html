@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Windows Xp And Ubuntu On Epc 1015Pw</h1>
+        <div class="entry-content">
+            <p>最终还是入手了 EPC 1015PW ：）<br/>
+顺丰快递就是给力<br/>
+昨天在Taobao上定的(上海)，今天就到了！</p>
+<p>折腾了一下午，历尽艰辛终于把系统装好了<br/>
+这次没有用光驱，用U盘安装的<br/>
+在这里把折腾的过程记录一下<br/>
+免得以后重蹈覆辙...  </p>
+<p>准备一个1G或1G以上的U盘<br/>
+先下载一个Ghost安装版本的Windows XP iso文件<br/>
+在Windows下（其它机器上）用UltraISO 将这个iso写入U盘里：  </p>
+<ol>
+<li>（菜单）文件 -&gt; 打开 -&gt; Windows XP iso 文件  </li>
+<li>（菜单）启动 -&gt; 写入硬盘映像...  </li>
+<li>在弹出的窗口里格式化，选择写入方式为 USB-HDD 并执行写入操作  </li>
+</ol>
+<p>然后用USB方式启动 EPC 上网本<br/>
+给硬盘分好区<br/>
+我分的是大概是30（C盘）, 20（D盘）, 270G<br/>
+前两个盘给WinXP用<br/>
+执行Ghost 软件把 WinXP.gho 文件Ghost到EPC的C盘里<br/>
+<span style="color:red;">最后用硬盘分区医生之类的软件对C盘执行“重建MBR”操作</span><br/>
+重启机器（这次从硬盘引导）完成Windows XP的安装  </p>
+<p>接下来是安装第二系统Ubuntu<br/>
+下载Ubuntu 10.10 iso文件<br/>
+我用上面写WinXP的方式来做Ubuntu启动盘并不能成功启动起EPC来<br/>
+又试了官方网站上用 Universal USB Installer 在Windows上制作的U盘启动也不行<br/>
+<span style="color:red;">最后在Ubuntu 10.10系统（另一台机器）下用 Startup Disk Creator创建成功了！</span><br/>
+（这个工具在 System -&gt; Administration 下面）<br/>
+用这个U盘启动EPC，顺利完成Ubuntu的安装<br/>
+我的Ubuntu分区是这样的（可以参考下）  </p>
+<ul>
+<li>/ ext4 25G</li>
+<li>/boot ext2 256M</li>
+<li>swap 2G</li>
+<li>/home ext4 200G</li>
+<li>/tmp ext4 20G</li>
+</ul>
+<p>最后20G的 /tmp 分法是抱着玩玩的心态分的 [1]<br/>
+也可以将这些空间分给 /home</p>
+<p>[1] Update：这样给 /tmp 分区<a href="http://mitnk.com/72/">是不对的</a> </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">The Easiest Way To Get Started With Postgresql On The Mac</h1>
+        <div class="entry-content">
+            <p>家中mbp升级10.8ML后一直没有配置Postgresql<br/>
+今天在家工作发现 sqlite3 不支援 Django 的 distinct 操作<br/>
+终于懒人不得不用真刀真剑了  -- PostgreSQL</p>
+<p>首先要知道OS X上已经自带了 psql 和 pg_dump 等命令行工具了<br/>
+(<strong>Update</strong>: psql这些工具我们也不会用系统提供的，见下面配置小节)<br/>
+我们需要的仅仅是 PostgreSQL 的服务端<br/>
+除了不方便的从源码编译（我没试过这个。。）<br/>
+还有就是下载 EnterpriseDB 提供的OS X安装包了  </p>
+<p>但今天发现还有另一个选择： The PostgreSQL APP.  </p>
+<blockquote>
+<p>Postgres.app is the easiest way to get started with PostgreSQL on the Mac. 
+Open the app, and you have a PostgreSQL server ready and awaiting new connections. 
+Close the app, and the server shuts down.</p>
+</blockquote>
+<p>相对于安装版本，这个app版有很多优点  </p>
+<ul>
+<li>不用安装，下载解压、拖到应用程序文件夹里即可</li>
+<li>不会给你创建新的用户，如 postgres 用户</li>
+</ul>
+<p>算得上是<strong>沙盒</strong>版的 PostgreSQL 服务了<br/>
+现在去下载吧！<br/>
+<a href="http://postgresapp.com">http://postgresapp.com</a></p>
+<h2>配置</h2>
+<p>将app的命令行工具目录加到 PATH 中：</p>
+<div class="highlight"><pre><span class="nv">PATH</span><span class="o">=</span><span class="s2">"/Applications/Postgres.app/Contents/MacOS/bin:$PATH"</span>
+</pre></div>
+<p>Django的配置：</p>
+<div class="highlight"><pre><span class="n">DATABASES</span> <span class="o">=</span> <span class="p">{</span>
+    <span class="s">"default"</span><span class="p">:</span> <span class="p">{</span>
+        <span class="s">"ENGINE"</span><span class="p">:</span> <span class="s">"django.db.backends.postgresql_psycopg2"</span><span class="p">,</span>
+        <span class="s">"NAME"</span><span class="p">:</span> <span class="s">"[YOUR_DATABASE_NAME]"</span><span class="p">,</span>
+        <span class="s">"USER"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+        <span class="s">"PASSWORD"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+        <span class="s">"HOST"</span><span class="p">:</span> <span class="s">"localhost"</span><span class="p">,</span>
+        <span class="s">"PORT"</span><span class="p">:</span> <span class="s">""</span><span class="p">,</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>更多配置选项见<a href="http://postgresapp.com/documentation">官方文档</a>.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

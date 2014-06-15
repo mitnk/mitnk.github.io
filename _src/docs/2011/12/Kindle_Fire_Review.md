@@ -1,0 +1,38 @@
+不久前，经百通在Amazon购买了Kindle Fire，这也是我第一次海购。下面是TimeLine：
+
+Nov 17 在Amazon下单  
+Nov 23 签收 新泽西  
+Nov 24 已发货 （运单生成，等待登机）  
+Nov 29 已经飞往中国途中  
+Nov 30 抵达天津已入关  
+Dec 2 已转入EMS派送  
+Dec 3 签收  
+
+花费：  
+$199 + ￥60
+
+说下这几天的使用感受。
+
+首先说一个比iPad更人性的地方，屏幕锁定也可以是横向，这点和IOS上的Kindle应用中的锁屏功能一样。
+
+通过网络接收文档：  
+原以为同一个Amazon账号所注册的所有Kindle设备共用一个@kindle.com用来接收文件，也就是说发一份文档到这个邮箱，所有设备都会收到一份。但事实不是这样，每一个Kindle设备都是单独拥有一个地址，这点Amazon做得太不“云”了！<del>另外Fire貌似不会自动检查有没有新的文档发过来，必须得手动点一下Sync按钮才行</del>。
+
+阅读：  
+Fire的定位是平板电脑，所以阅读体验离E-ink的Kindle系列就差了很多，看习惯了E-ink的屏幕，再回来看IPS屏，眼睛表示非常不爽。
+
+Web浏览器Silk：  
+速度方面个人觉得和其它浏览器没有什么不同。在网页上双击一个元素进行zoom in/zoom out时，离IOS的Safari体验还有差距。当横着Fire看网页时，#1顶部面板 #2 Silk标签面板 #3底部状态面板 占据了太多面积，致使网页本身的面积很小，希望Amazon下次升级可以给Silk加上全屏模式。
+
+全屏模式：  
+这点是我觉得Fire最不好的地方。除了读书是真正的全屏外，所有App的全屏模式并不是真正的全屏，屏幕最下方会有一个小小的面板。玩游戏时如此，看电影时也是如此，真让人无语！这就是不要实体按键的代价。。
+
+<a href="http://www.tools4movies.com/2011/11/movie-trailers-for-kindle-fire-as-fullscreen-as-can-get/"><img src="http://www.tools4movies.com/wp-content/uploads/2011/11/kindle_fire2.jpg"></a>
+
+应用（Apps）：  
+无法在Amazon应用商店买应用，好像得用美国的信用卡才行。好在Fire原生允许安装第三方应用。我现在只安装了几个应用：Evernote, QQPlayer, Douban.fm，水果忍者（Amazon不让买，只好上盗版）。现在不越狱就没有中文输入法可用，这点挺不方便的。
+
+其它：  
+触摸屏是最廉价的那种，最多支持两点触摸（切瓜时可以看出来）；不支持VPN
+
+总之，和iPad相比，Fire有许多不尽人意的地方。但对于1300多元的平板，我们能要求多少呢？

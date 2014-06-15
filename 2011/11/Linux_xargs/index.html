@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Linux Xargs</h1>
+        <div class="entry-content">
+            <p>xargs是一个非常有用的工具，用来构建另一个命令的参数并执行它。</p>
+<p>比如将一个文件夹下所有的.sh文件加上可执行权限，可以这样做：</p>
+<div class="highlight"><pre>$ ls *.sh | xargs chmod +x
+</pre></div>
+<p>在Unix中 cp 这样的命令可以接收多个参数，这时最后一个参数会是目标文件夹。命令</p>
+<div class="highlight"><pre>$ cp a b c d/
+</pre></div>
+<p>是将文件a， b， 和c 分别复制一份到d文件夹。但如果有很多文件，手动输入就非常麻烦了。这时就轮到xargs出手了，我们需要让它来提供前面的参数。</p>
+<p>比如将Home目录下所有.mobi文件复制一份到 ebooks 文件夹。我们先尝试这样：</p>
+<div class="highlight"><pre>$ cd
+$ find . -type f -name "*.mobi" | xargs cp ebooks/
+</pre></div>
+<p>但这样不行，报错。怎么办？</p>
+<p>现在，我们<a href="http://unix.stackexchange.com/questions/24846/provide-params-to-scp-with-xargs">可以问stackoverflow</a>，可以google，可以man xargs
+（我当时遇到这个问题时，竟然用的是这个顺序，明显反了嘛！！！）</p>
+<p>正确的命令 (最易被人类或程序员理解的方案) 是这样的：</p>
+<div class="highlight"><pre>$ find . -type f -name "*.mobi" | xargs -Iz cp z ebooks/
+</pre></div>
+<p>当然z可以换成别的东东（Unix命令中的Option与其数值之间有无空格均可）：</p>
+<div class="highlight"><pre>$ find . -type f -name "*.mobi" | xargs -I xxx cp xxx ebooks/
+</pre></div>
+<p>学会xargs的这两种用法也就够用了。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

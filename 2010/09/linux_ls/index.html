@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Linux Ls</h1>
+        <div class="entry-content">
+            <p>Name:</p>
+<p>ls - List directory contents</p>
+<p>Synopsis:</p>
+<div class="highlight"><pre>ls [-ABCFGHLOPRSTUW@abcdefghiklmnopqrstuwx1] [file ...]
+</pre></div>
+<p>Options:</p>
+<p>每行只列一个文件<br/>
+列出所有文件<br/>
+列出所有文件但不输出 . ..  </p>
+<div class="highlight"><pre>ls -1
+ls -a
+ls -A
+</pre></div>
+<p>列出所有文件详细信息<br/>
+让文件的大小增加可读性<br/>
+列出文件的修改时间详情  </p>
+<div class="highlight"><pre>ls -l
+ls -lh
+ls -lT
+</pre></div>
+<p>只列出所有文件夹</p>
+<div class="highlight"><pre>ls -d */
+</pre></div>
+<p>递归列出所有文件夹下的所有文件</p>
+<div class="highlight"><pre>ls -R
+</pre></div>
+<p>如果想在文件夹后面加 /, 有两个命令可以做到：</p>
+<div class="highlight"><pre>ls -F
+ls -p
+</pre></div>
+<p>列出文件的id号</p>
+<div class="highlight"><pre>ls -i
+</pre></div>
+<p>用逗号分割文件名</p>
+<div class="highlight"><pre>ls -m
+</pre></div>
+<p>让文件以行排序</p>
+<div class="highlight"><pre>ls -x
+</pre></div>
+<p>以修改时间排序；以修改时间倒序排列；列出时间详情</p>
+<div class="highlight"><pre>ls -t
+ls -tr
+ls -tT
+</pre></div>
+<p>以文件大小排序；倒序</p>
+<div class="highlight"><pre>ls -S
+ls -Sr
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

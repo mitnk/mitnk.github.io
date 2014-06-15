@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Develop On Mac Os X</h1>
+        <div class="entry-content">
+            <p>这几天给Mac配开发环境真是折腾、  </p>
+<p>周一刚到公司就发现我的Mac无法上网<br/>
+Yihua、Shuaiqi都出马还是没弄好<br/>
+最后还是得让Zhangcheng出马<br/>
+经过一票“隐晦”的Shell命令之后<br/>
+他说，是VmWare这个虚拟机搞的鬼<br/>
+因为它的虚拟网络Hook了192.168.1.1这个网址<br/>
+把这个软件卸载了就一切正常了  </p>
+<p>接下来两天，我每天六点多就起床了<br/>
+折腾MBP以便让它跑起开发环境来  </p>
+<p>项目用的是Django ＋ PostgreSQL<br/>
+需要Psycopg2这个东东<br/>
+通过编译它的源码后，发现import时总是报错<br/>
+试了网上所有人的解决方案后还是不行<br/>
+最后看到Psycopg2的官网说可以用Macports来装它<br/>
+下载安装了Macports<br/>
+用命令 sudo port install psycopg2 终于安装成功并能正常使用了<br/>
+但这条命令执行了几个小时，真是不可接受！<br/>
+因为Macports安装东西不会看你本机已有的lib<br/>
+而是从它自己的ports里下载安装依赖<br/>
+比如安装 psycopg2 这个小东西，就给我额外安装了 python2.6 postgresql8 等等等包或软件<br/>
+再加上不能指定用哪个Mirror，下载速度一直居低不上<br/>
+所以用几个小时才结束安装  </p>
+<p>但也算是work了吧<br/>
+然后继续用 port 来安装项目需要的其它包<br/>
+在此过程中又它又给我装了其它没必要的东西<br/>
+比如我装 html5lib 时，它又给我装了 python2.7<br/>
+真是有让我汗颜！  </p>
+<p>最后一个叫IP2Location 的Python lib实在成功不了<br/>
+而这个包在我们本地几乎不需要<br/>
+所以我实现了个类似mock的东东<br/>
+以便让项目代码能import这个名字就成了<br/>
+至此项目算是跑起来了  </p>
+<p>周二下班后，跟张成聊到 Macports 时，他说这是个比较OUT的东西的<br/>
+现在大家都用 Homebrew 这个工具来装软件  </p>
+<p>晚上回家后，我手贱把 Macports 卸载了<br/>
+这个卸载比较暴力，先是要卸载安装过的所有包<br/>
+然后sudo rm -rf 掉一系统文件夹<br/>
+也就是我辛辛苦苦配起来的环境又被干掉了<br/>
+这样也好！  </p>
+<p>试试 Homebrew吧<br/>
+安装之后发现它库里没有 psycopg2 这个包<br/>
+就又试图通过 psycopg2 的源码安装上它<br/>
+因为这样天然，一个小东西，实在不用额外安装一堆不需要的lib<br/>
+最后还是失败。。。。。  </p>
+<p>这时我看了一下另一个安装工具 fink<br/>
+这也是个老家伙了，很老了<br/>
+他的工作原理和Ubuntu下的 apt-get 类似<br/>
+它自己维护了一些安装包<br/>
+并不像 macports 那样通过源码安装  </p>
+<p>也许是我太菜，试了半天也没有成功<br/>
+明明他有这个包，但 install 命令就是说没有这个东东<br/>
+各位selfupdate，什么cvs版的都更新了<br/>
+最后还是失望地暴力卸载掉 fink  </p>
+<p>然后，终于，烦透了这些省事的工具们<br/>
+立了一个原则：除非别无他法，否则不去使用诸如 macports, fink, homebrew 这些省力工具  </p>
+<p>－－－－－（有用的）正文开始 －－－－－－－</p>
+<p>1) 先用psql官网找到的dmg包安装了postgresql<br/>
+建好数据库（postgres用户的密码也是postgres）  </p>
+<p>2) 下载安装 macports 1.9 <br/>
+用 sudo port install psycopg2 安装 psycopg2<br/>
+（这个过程需要几个小时才能完成）<br/>
+安装成功后，只用它生成的二进制lib包  </p>
+<div class="highlight"><pre>sudo cp -r /opt/local/Library/Frameworks/Python.framework/Versions/2.6/lib/python2.6/site-packages/psycopg2* /Library/Python/2.6/site-packages/
+</pre></div>
+<p>然后按照macports 官网提供的方法卸载掉 macports （当然也删除了它安装的一些包）</p>
+<p>3) 用easy_install 安装pip  </p>
+<p>然后用pip安装 PIL 和 pycrypto等其它包包。。。<br/>
+或者，尽可能地去包包的官网下载源码，自己make自己install<br/>
+这样最天然  </p>
+<p>4) 值得说的几个开发工具  </p>
+<p><b>grep</b><br/>
+系统(Mac OS X 10.6.6）带的grep是V2.5.1，并不是支持 --exclude-dir 参数<br/>
+而我离不了这个参数（用grep -v来替代并不是好的方案）<br/>
+去<a href="http://ftp.gnu.org/gnu/grep/">官网下载了最新的V2.7版本</a>，结果编译不成功<br/>
+因为 --exclude-dir 参数是V2.5.3 加入的<br/>
+所以我试了V2.6.3版本，结果幸运地安装成功了！<br/>
+在 ~/.bash_profile 加入下载代码（第一行是让bash本身用ls等命令时着色）：  </p>
+<div class="highlight"><pre>export CLICOLOR=1
+GREP_OPTIONS="--exclude-dir=.svn --binary-file=without-match --color"
+export GREP_OPTIONS
+</pre></div>
+<p><b>colordiff</b><br/>
+因为我是重度 svn diff 用户<br/>
+所以需要它的着色功能（svn diff原生不带此功能）<br/>
+去<a href="http://colordiff.sourceforge.net/">官网下载 colordiff</a> （Ubuntu下直接 apt-get install colordiff 可得）<br/>
+下载的源码让我迷了。。。。<br/>
+这个没有configure 之类的东东呀？？<br/>
+后来认真读了下INSTALL文件说明才知道，不用make也成（也许在Unix类系统里能正常make吧）<br/>
+用以下命令安装即可：  </p>
+<div class="highlight"><pre>sudo cp colordiff.pl /usr/local/bin/colordiff
+sudo cp colordiffrc /etc/
+</pre></div>
+<p>在 ~/.bash_profile 文件里加入以下命令</p>
+<div class="highlight"><pre>svndiff()
+{
+    svn diff "${@}" | colordiff
+}
+</pre></div>
+<p>新开一个Shell，在项目下试试svndiff吧（以后使用 svndiff 来代替 svn diff）</p>
+<p><b>Vim, MacVim</b><br/>
+首先把<a href="/article/1/">我的vimrc配置</a>写入 ~/.vimrc 中（按需修改）<br/>
+然后下载安装MacVim就行了<br/>
+这个MacVim好像有好几个？？<br/>
+我随便下了一个，是个app，复制到Applications文件夹下就能用了<br/>
+再下载 <a href="http://www.vim.org/scripts/script.php?script_id=182">supertab</a> <a href="http://www.vim.org/scripts/script.php?script_id=1658">NERDTree</a> 之类<br/>
+编辑之绝品神器自此搭成！  </p>
+<p><b>tree</b><br/>
+Tree is a recursive directory listing command that produces a depth indented listing of files.<br/>
+下载地址在<a href="http://mama.indstate.edu/users/ice/tree/">这里</a> </p>
+<ol>
+<li>按照Makefile中的指导，去掉Mac OS X的相关配置处的注释  </li>
+<li>make  </li>
+<li>sudo make install  </li>
+</ol>
+<p>Updated at 27th Sept. 2011</p>
+<p>Added <a href="/wiki/228/">an related wiki page</a></p>
+<p>Updated at 27th Mar 2012</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

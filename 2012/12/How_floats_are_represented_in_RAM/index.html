@@ -1,0 +1,112 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">How Floats Are Represented In Ram</h1>
+        <div class="entry-content">
+            <p>许久之前写了一篇<a href="http://mitnk.com/64/why_int_and_float_have_the_same_size_of_bits_but_have_different_ranges/">为什么int和float字节数相同但表示的范围却不同</a></p>
+<p>（近日读来，发现读得不是很好，有些地方位置如前后互换再易理解<br/>
+不过既已完成就那它保持原样罢，不好也不坏 - -）  </p>
+<p>文章里提到了<strong>现代计算机差不多都是基于 IEEE 754 标准来存储浮点数</strong>
+并且按理论预测出 <code>13.625</code> 在内存的bits是 <code>0 10000010 10110100000000000000000</code><br/>
+而 <code>0.1</code> 为 <code>0 01111011 10011001100110011001101</code> </p>
+<p>前几天想到了一个方法应该可以验证一下事实就是这样的<br/>
+今天试了一下，果然没错，至少我用的这台Macbook是这样的  </p>
+<p>验证如下：</p>
+<div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">float</span> <span class="n">a</span> <span class="o">=</span> <span class="mf">13.625</span><span class="p">,</span> <span class="n">b</span> <span class="o">=</span> <span class="mf">0.1</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="o">*</span><span class="n">pa</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">a</span><span class="p">;</span>
+    <span class="kt">int</span> <span class="o">*</span><span class="n">pb</span> <span class="o">=</span> <span class="p">(</span><span class="kt">int</span> <span class="o">*</span><span class="p">)</span><span class="o">&amp;</span><span class="n">b</span><span class="p">;</span>
+    <span class="n">printf</span><span class="p">(</span><span class="s">"%d</span><span class="se">\n</span><span class="s">%d</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">pa</span><span class="p">,</span> <span class="o">*</span><span class="n">pb</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>输出为：</p>
+<div class="highlight"><pre>1096417280
+1036831949
+</pre></div>
+<p>然后打开Python将这两个整数转换为二进制</p>
+<div class="highlight"><pre><span class="n">In</span> <span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="s">'{0:032b}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1096417280</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">1</span><span class="p">]:</span> <span class="s">'01000001010110100000000000000000'</span>
+
+<span class="n">In</span> <span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="s">'{0:032b}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="mi">1036831949</span><span class="p">)</span>
+<span class="n">Out</span><span class="p">[</span><span class="mi">2</span><span class="p">]:</span> <span class="s">'00111101110011001100110011001101'</span>
+</pre></div>
+<p>Q.E.D.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

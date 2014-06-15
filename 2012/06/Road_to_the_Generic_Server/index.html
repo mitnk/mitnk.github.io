@@ -1,0 +1,298 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Road To The Generic Server</h1>
+        <div class="entry-content">
+            <p>这是整本书中最重要的一节，所以读一遍、读两遍、读一百遍——直到你懂透所有。</p>
+<p>我们将写四个小的server，分别叫server1，server2。。。，每个和前一个稍有不同。我们的目标是将问题的非功能部分和功能部分彻底分开。上句话对你来说可能不是十分明了，但不用担心，很快就会明白。深吸一口气。。。</p>
+<h2>Server 1: The Basic Server</h2>
+<p>这是我们第一个尝试。它是一个很小的可以给他一个回调module当做参数的server。</p>
+<p>server1.erl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">server1</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">register</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">init</span><span class="p">())</span> <span class="k">end</span><span class="p">)).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Name</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nv">Response</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">State</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="nv">Request</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="p">{</span><span class="nv">Response</span><span class="p">,</span> <span class="nv">State1</span><span class="p">}</span> <span class="o">=</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">handle</span><span class="p">(</span><span class="nv">Request</span><span class="p">,</span> <span class="nv">State</span><span class="p">),</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Response</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">State1</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>这一小段代码表现了一个server的最典型最精华的部分，表现了一个server的本质。下面让我们给server写一个回调module。下面是一个名字server回调：</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">name_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">init</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">add</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="nb">whereis</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">handle</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+<span class="p">-</span><span class="ni">import</span><span class="p">(</span><span class="n">server1</span><span class="p">,</span> <span class="p">[</span><span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="c">%% client routines</span>
+<span class="nf">add</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="p">{</span><span class="n">add</span><span class="p">,</span> <span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">}).</span>
+<span class="nb">whereis</span><span class="p">(</span><span class="nv">Name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="p">{</span><span class="nb">whereis</span><span class="p">,</span> <span class="nv">Name</span><span class="p">}).</span>
+
+<span class="c">%% callback routines</span>
+<span class="nf">init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">new</span><span class="p">().</span>
+
+<span class="nf">handle</span><span class="p">({</span><span class="n">add</span><span class="p">,</span> <span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">},</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">store</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">)};</span>
+<span class="nf">handle</span><span class="p">({</span><span class="nb">whereis</span><span class="p">,</span> <span class="nv">Name</span><span class="p">},</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nn">dict</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">),</span> <span class="nv">Dict</span><span class="p">}.</span>
+</pre></div>
+<p>这段代码完成了两个任务。一、它是上面的server框架的一个回调module；二、它包含一些可以被客户端调用的接口。<code>OTP</code>的惯例就是将上面两个方面放在同一个module中。</p>
+<p>可以通过下面代码来证明上述代码可行：</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">server1</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="n">name_server</span><span class="p">).</span>
+<span class="go">true</span>
+<span class="gp">2&gt;</span> <span class="nn">name_server</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">joe</span><span class="p">,</span> <span class="s">"at home"</span><span class="p">).</span>
+<span class="go">ok</span>
+<span class="gp">3&gt;</span> <span class="nn">name_server</span><span class="p">:</span><span class="nb">whereis</span><span class="p">(</span><span class="n">joe</span><span class="p">).</span>
+<span class="go">{ok,"at home"}</span>
+</pre></div>
+<p>停下来思考一下。这个回调没有任何并行（concurrency）代码，没有spawn，没有send，没有receive，没有register。它仅仅是纯顺序（sequential）代码而已。这代表什么意思呢？</p>
+<p>这代表我们可以在完全不懂并行模型的情况下写出CS（client-server）模型。</p>
+<p>这就是所有server的基本模式。一旦你理解了这个基本结构，你便上路了。</p>
+<h2>Server 2: A Server with Transactions</h2>
+<p>这是一个server，但请求产生异常时，它会将client退掉（crash）。</p>
+<p>server2.erl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">server2</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">register</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">init</span><span class="p">())</span> <span class="k">end</span><span class="p">)).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Name</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="n">crash</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nb">exit</span><span class="p">(</span><span class="n">rpc</span><span class="p">);</span>
+        <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="n">ok</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nv">Response</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="nv">Request</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="k">try</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">handle</span><span class="p">(</span><span class="nv">Request</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">)</span> <span class="k">of</span>
+                <span class="p">{</span><span class="nv">Response</span><span class="p">,</span> <span class="nv">State1</span><span class="p">}</span> <span class="o">-&gt;</span>
+                    <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="n">ok</span><span class="p">,</span> <span class="nv">Response</span><span class="p">},</span>
+                    <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">State1</span><span class="p">)</span>
+            <span class="k">catch</span>
+                <span class="p">_:</span><span class="nv">Why</span> <span class="o">-&gt;</span>
+                    <span class="n">log_the_error</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">,</span> <span class="nv">Why</span><span class="p">),</span>
+                    <span class="c">%% send a message to cause the client to crash</span>
+                    <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="n">crash</span><span class="p">},</span>
+                    <span class="c">%% loop with the *original* state</span>
+                    <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">)</span>
+            <span class="k">end</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">log_the_error</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">,</span> <span class="nv">Why</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Server </span><span class="si">~p</span><span class="s"> request </span><span class="si">~p</span><span class="s"> </span><span class="si">~n</span><span class="s">"</span>
+              <span class="s">"caused exception </span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span>
+              <span class="p">[</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">,</span> <span class="nv">Why</span><span class="p">]).</span>
+</pre></div>
+<p>这个server增加了事务处理语义（transaction semantics）。</p>
+<p>注意这个回调module和之前给server1用的一模一样。只修改server，不动回调module，我们就可以修改回调module的非功能行为。</p>
+<h2>Server 3: A Server with Hot Code Swapping</h2>
+<p>现在我们将实现代码热更新：</p>
+<p>server3.erl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">server3</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">swap_code</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">register</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">init</span><span class="p">())</span> <span class="k">end</span><span class="p">)).</span>
+
+<span class="nf">swap_code</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">NewMode</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="p">{</span><span class="n">swap_code</span><span class="p">,</span> <span class="nv">NewMode</span><span class="p">}).</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Request</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Name</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Request</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Response</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nv">Response</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">swap_code</span><span class="p">,</span> <span class="nv">NewCallBackMod</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="n">ack</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">NewCallBackMod</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">);</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="nv">Request</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="p">{</span><span class="nv">Response</span><span class="p">,</span> <span class="nv">NewState</span><span class="p">}</span> <span class="o">=</span> <span class="nv">Mod</span><span class="p">:</span><span class="nf">handle</span><span class="p">(</span><span class="nv">Request</span><span class="p">,</span> <span class="nv">OldState</span><span class="p">),</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Response</span><span class="p">},</span>
+            <span class="n">loop</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Mod</span><span class="p">,</span> <span class="nv">NewState</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>它是如何工作的呢？</p>
+<p>如果我们发送 swap code 消息，它就会将回调module更新为消息所包含的module。我们先继续用name_server来实验：</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">server3</span><span class="p">:</span><span class="nf">start</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="n">name_server1</span><span class="p">).</span>
+<span class="go">true</span>
+<span class="gp">2&gt;</span> <span class="nn">name_server</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">joe</span><span class="p">,</span> <span class="s">"at home"</span><span class="p">).</span>
+<span class="go">ok</span>
+<span class="gp">3&gt;</span> <span class="nn">name_server</span><span class="p">:</span><span class="nf">add</span><span class="p">(</span><span class="n">helen</span><span class="p">,</span> <span class="s">"at work"</span><span class="p">).</span>
+<span class="go">ok</span>
+</pre></div>
+<p>假设我们想列出server的所有名字。而当前name_server没有此API。没问题！我们以闪电的速度打开文本编辑器，写一个新的回调模块。</p>
+<p>new_name_server.erl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">new_name_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">init</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">add</span><span class="o">/</span><span class="mi">2</span><span class="p">,</span> <span class="n">all_name</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">delete</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="nb">whereis</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">handle</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+<span class="p">-</span><span class="ni">import</span><span class="p">(</span><span class="n">server3</span><span class="p">,</span> <span class="p">[</span><span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="c">%% interface</span>
+<span class="nf">add</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="p">{</span><span class="n">add</span><span class="p">,</span> <span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">}).</span>
+<span class="nf">all_name</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="n">allNames</span><span class="p">).</span>
+<span class="nf">delete</span><span class="p">(</span><span class="nv">Name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="p">{</span><span class="n">delete</span><span class="p">,</span> <span class="nv">Name</span><span class="p">}).</span>
+<span class="nb">whereis</span><span class="p">(</span><span class="nv">Name</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">rpc</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="p">{</span><span class="nb">whereis</span><span class="p">,</span> <span class="nv">Name</span><span class="p">}).</span>
+
+<span class="c">%% callback routines</span>
+<span class="nf">init</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">new</span><span class="p">().</span>
+
+<span class="nf">handle</span><span class="p">({</span><span class="n">add</span><span class="p">,</span> <span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">},</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">store</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Place</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">)};</span>
+<span class="nf">handle</span><span class="p">(</span><span class="n">allNames</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nn">dict</span><span class="p">:</span><span class="nf">fetch_keys</span><span class="p">(</span><span class="nv">Dict</span><span class="p">),</span> <span class="nv">Dict</span><span class="p">};</span>
+<span class="nf">handle</span><span class="p">({</span><span class="n">delete</span><span class="p">,</span> <span class="nv">Name</span><span class="p">},</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="nn">dict</span><span class="p">:</span><span class="nb">erase</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">)};</span>
+<span class="nf">handle</span><span class="p">({</span><span class="nb">whereis</span><span class="p">,</span> <span class="nv">Name</span><span class="p">},</span> <span class="nv">Dict</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nn">dict</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">),</span> <span class="nv">Dict</span><span class="p">}.</span>
+</pre></div>
+<p>我们编译它并告诉server将回调更新到这个新module上：</p>
+<div class="highlight"><pre><span class="gp">4&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">new_name_server</span><span class="p">).</span>
+<span class="go">{ok,new_name_server}</span>
+<span class="gp">5&gt;</span> <span class="nn">server3</span><span class="p">:</span><span class="nf">swap_code</span><span class="p">(</span><span class="n">name_server</span><span class="p">,</span> <span class="n">new_name_server</span><span class="p">).</span>
+<span class="go">ack</span>
+</pre></div>
+<p>现在我们就可以调用新接口了：</p>
+<div class="highlight"><pre><span class="gp">6&gt;</span> <span class="nn">new_name_server</span><span class="p">:</span><span class="nf">all_names</span><span class="p">().</span>
+<span class="go">[joe,helen]</span>
+</pre></div>
+<p>这里我们更新回调模块on the fly —— 也就是动态代码升级，一切都是在你眼前发生的，并无什么黑魔法。</p>
+<p>现在停下来再想一想。最后两个任务我们一般认为是困难的，事实上，是非常困难。支持事务处理语义的代码很难写；支持代码热升级的server更加难写。</p>
+<p>这项技术非常强大。传统上我们认为server是拥有状态的程序，并且我们可以给它发送消息改变其状态。一旦server上线后，它就是固定的了，如果我们想修改server的代码，我们不得不停止server，修改代码，然后再启动server。在上述示例中，我们可以不停止server而修改代码，就和修改server的状态一样容易。</p>
+<h2>Server 4: Even More Fun</h2>
+<p>既然我们已经可以让代码热更新了，我们还可以做到其它一些有趣的事情。下面的server什么也不做，直到你告诉它成为某种特定的server：</p>
+<p>server4.erl</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">server4</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">start</span><span class="o">/</span><span class="mi">0</span><span class="p">,</span> <span class="n">rpc</span><span class="o">/</span><span class="mi">2</span><span class="p">]).</span>
+
+<span class="nf">start</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="n">wait</span><span class="p">()</span> <span class="k">end</span><span class="p">).</span>
+
+<span class="nf">wait</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">become</span><span class="p">,</span> <span class="nv">F</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nv">F</span><span class="p">()</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">rpc</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Q</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="nv">Q</span><span class="p">},</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Reply</span><span class="p">}</span> <span class="o">-&gt;</span> <span class="nv">Reply</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>如果我们启动它，然后给它发送消息 <code>{become, F}</code>，它就会变成执行 <code>F()</code> 的 <code>F</code> server。我们来启动它：</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Pid</span> <span class="o">=</span> <span class="n">server4</span><span class="p">.</span><span class="n">start</span><span class="p">().</span>
+<span class="go">&lt;0.57.0&gt;</span>
+</pre></div>
+<p>这个server什么也不做，仅仅等待 <code>become</code> 消息。让我们来定义一个server函数吧。它很简单，仅仅来计算阶乘：</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">my_fac_server</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">loop</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">loop</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="nv">From</span><span class="p">,</span> <span class="p">{</span><span class="n">fac</span><span class="p">,</span> <span class="nv">N</span><span class="p">}}</span> <span class="o">-&gt;</span>
+            <span class="nv">From</span> <span class="o">!</span> <span class="p">{</span><span class="n">self</span><span class="p">(),</span> <span class="n">fac</span><span class="p">(</span><span class="nv">N</span><span class="p">)},</span>
+            <span class="n">loop</span><span class="p">();</span>
+        <span class="p">{</span><span class="n">become</span><span class="p">,</span> <span class="nv">Something</span><span class="p">}</span> <span class="o">-&gt;</span>
+            <span class="nv">Something</span><span class="p">()</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">fac</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nf">fac</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nv">N</span> <span class="o">*</span> <span class="n">fac</span><span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">).</span>
+</pre></div>
+<p>现在我们可以让上面server来做一个计算阶乘的server了：</p>
+<div class="highlight"><pre><span class="gp">2&gt;</span> <span class="n">c</span><span class="p">(</span><span class="n">my_fac_server</span><span class="p">).</span>
+<span class="go">{ok,my_fac_server}</span>
+<span class="gp">3&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="p">{</span><span class="n">become</span><span class="p">,</span> <span class="k">fun</span> <span class="nn">my_fac_server</span><span class="p">:</span><span class="n">loop</span><span class="o">/</span><span class="mi">0</span><span class="p">}.</span>
+<span class="go">{become,#Fun&lt;my_fac_server.loop.0&gt;}</span>
+</pre></div>
+<p>好了，它已经变成阶乘server了，我们可以这样：</p>
+<div class="highlight"><pre><span class="gp">4&gt;</span> <span class="nn">server4</span><span class="p">:</span><span class="nf">rpc</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="p">{</span><span class="n">fac</span><span class="p">,</span> <span class="mi">30</span><span class="p">}).</span>
+<span class="go">265252859812191058636308480000000</span>
+</pre></div>
+<p>它会一直是一个阶乘server，直到我们给它发送 <code>{become, Something}</code> 让它变成其它server。</p>
+<h2>小结</h2>
+<p>如上述几个例子所示，我们可以用不同的语法和一些奇妙的属性实现不同类型的server。这个技术几乎太强大了。利用所有潜力，它可以使一个小程序变得惊人强大与优雅。但当我们几十个人在做一个工业级的工程时，也许不想让事情变得太过动态。我们不得不试图在强大与通用之间寻求平衡。可以热更新的代码很漂亮，但一旦出了问题，调试起来会是个噩梦。在我们做了十几次动态升级后突然crash的话，想找出哪出错了不太容易。</p>
+<p>在这一小节中所示的这些例子实际上并不十分正确。它们被写成这个样子是为了描述其所包含的思想，但它们确有一两个非常小但明显的错误。我不会立马告诉你是什么样的错误，但在这一章结束前我会给出一些提示。</p>
+<p>The Erlang module <code>gen_server</code> is the kind of logical conclusion of a succession of successively sophisticated servers (just like the ones we’ve written so far in this chapter).</p>
+<p>节译自 《<a href="http://www.amazon.com/Programming-Erlang-Software-Concurrent-World/dp/193435600X">Programming Erlang</a>》。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

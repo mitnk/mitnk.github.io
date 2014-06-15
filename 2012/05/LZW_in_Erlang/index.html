@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Lzw In Erlang</h1>
+        <div class="entry-content">
+            <p><a href="http://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Welch">LZW算法</a>是Terry Welch在1978年发表的一个无损数据压缩算法。这个算法基于Abraham Lempel和Jacob Ziv发表的算法<a href="http://en.wikipedia.org/wiki/LZ77_and_LZ78">LZ77, LZ78</a>。LZ77是后来很多压缩算法（如gzip等）的基础，且被命名为<a href="http://en.wikipedia.org/wiki/List_of_IEEE_milestones">IEEE里程碑之一</a>。</p>
+<p>在写LZW之前先看一看最简单的一种数据压缩算法RLE（<a href="http://en.wikipedia.org/wiki/Run-length_encoding">Run-length encoding</a>）。比如一个拥有白色背景黑色文字的屏幕，我们可以将之“序列化”成如下字符串：</p>
+<div class="highlight"><pre>WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW
+</pre></div>
+<p>W代表白色，B为黑色。应用RLE算法后，字符串可以被压缩成这样：</p>
+<div class="highlight"><pre>12W1B12W3B24W1B14W
+</pre></div>
+<p>下面是用Erlang给出的一个RLE实现。</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">rle</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">encode</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">decode</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">test</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+
+<span class="nf">encode</span><span class="p">(</span><span class="nv">S</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="n">doEncode</span><span class="p">(</span><span class="nv">S</span> <span class="o">++</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="s">""</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="p">[]).</span>
+
+<span class="nf">doEncode</span><span class="p">([],</span> <span class="p">_,</span> <span class="p">_,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Result</span><span class="p">;</span>
+
+<span class="nf">doEncode</span><span class="p">([</span><span class="nv">Next</span><span class="p">|</span><span class="nv">S</span><span class="p">],</span> <span class="nv">Current</span><span class="p">,</span> <span class="nv">Count</span><span class="p">,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span>
+        <span class="nv">Current</span> <span class="o">=:=</span> <span class="nv">Next</span> <span class="o">-&gt;</span>
+            <span class="n">encode</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">Current</span><span class="p">,</span> <span class="nv">Count</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Result</span><span class="p">);</span>
+        <span class="nv">Current</span> <span class="o">=:=</span> <span class="s">""</span> <span class="o">-&gt;</span>
+            <span class="n">encode</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">Next</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Result</span><span class="p">);</span>
+        <span class="n">true</span> <span class="o">-&gt;</span>
+            <span class="n">encode</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">Next</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Result</span> <span class="o">++</span> <span class="p">[</span><span class="nv">Count</span><span class="p">,</span> <span class="nv">Current</span><span class="p">])</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">decode</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span>
+        <span class="nb">length</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="ow">rem</span> <span class="mi">2</span> <span class="o">=/=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">error_param</span><span class="p">;</span>
+        <span class="n">true</span> <span class="o">-&gt;</span> <span class="n">doDecode</span><span class="p">(</span><span class="nv">E</span> <span class="o">++</span> <span class="p">[</span><span class="mi">0</span><span class="p">,</span> <span class="mi">0</span><span class="p">],</span> <span class="p">[])</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">doDecode</span><span class="p">([],</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Result</span><span class="p">;</span>
+
+<span class="nf">doDecode</span><span class="p">([</span><span class="nv">Count</span><span class="p">,</span> <span class="nv">Char</span><span class="p">|</span><span class="nv">E</span><span class="p">],</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span>
+        <span class="nv">Count</span> <span class="o">=:=</span> <span class="mi">0</span> <span class="o">-&gt;</span> <span class="n">decode</span><span class="p">(</span><span class="nv">E</span><span class="p">,</span> <span class="nv">Result</span><span class="p">);</span>
+        <span class="n">true</span> <span class="o">-&gt;</span> <span class="n">decode</span><span class="p">([</span><span class="nv">Count</span> <span class="o">-</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">Char</span><span class="p">]</span> <span class="o">++</span> <span class="nv">E</span><span class="p">,</span> <span class="nv">Result</span> <span class="o">++</span> <span class="p">[</span><span class="nv">Char</span><span class="p">])</span>
+    <span class="k">end</span><span class="p">.</span>
+
+
+<span class="nf">test</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="nv">S</span> <span class="o">=</span> <span class="s">"WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW"</span><span class="p">,</span>
+    <span class="nv">E</span> <span class="o">=</span> <span class="n">encode</span><span class="p">(</span><span class="nv">S</span><span class="p">),</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"Original: </span><span class="si">~p~n</span><span class="s"> Encoded: </span><span class="si">~p~n</span><span class="s">Rate: </span><span class="si">~p~n</span><span class="s"> Check Decode:</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span>
+              <span class="p">[</span><span class="nv">S</span><span class="p">,</span> <span class="nv">E</span><span class="p">,</span> <span class="nb">length</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="o">/</span> <span class="nb">length</span><span class="p">(</span><span class="nv">S</span><span class="p">),</span> <span class="n">decode</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="o">=:=</span> <span class="nv">S</span><span class="p">]).</span>
+</pre></div>
+<p>LZ算法把输入序列分成不同的片断，每个片断用前一个片断的引用和一些额外信息表示。一个简单实现是这个样子的：</p>
+<div class="highlight"><pre>  INPUT: The sequence to be compressed S over some finite alphabet of characters
+  OUTPUT: A sequence of pairs (reference, character)
+A1 Search for the shortest block W that is not in the dictionary
+A2 if W is a single character c
+A3       encode W as (0, c)
+A4 else W is a phrase X that is in the dictionary plus a character c
+A5       encode W as (reference to X in D, c)
+A6 Add W to the dictionary
+A7 Go to step A1
+</pre></div>
+<p>而解压算法是这个的逆过程，很简单，这里就不列了，可以参考<a href="http://en.wikipedia.org/wiki/LZ77_and_LZ78">Wikipedia</a>。</p>
+<p>现在到LZW了。其压缩（encoding）过程是这样的：</p>
+<ol>
+<li>将输入序列中的每一个字符都放到字典里。</li>
+<li>找当前输入在字典中的最长序列<code>W</code>。</li>
+<li>输出<code>W</code>在字典中的索引，并将<code>W</code>从输入中去除。</li>
+<li>把<code>W</code>加上下一个字符放进字典。</li>
+<li>返回步骤2.</li>
+</ol>
+<p>上Erlang代码：</p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">lzw</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">compress</span><span class="o">/</span><span class="mi">1</span><span class="p">,</span> <span class="n">test</span><span class="o">/</span><span class="mi">0</span><span class="p">]).</span>
+<span class="p">-</span><span class="ni">define</span><span class="p">(</span><span class="no">MIN_CODE</span><span class="p">,</span> <span class="mi">256</span><span class="p">).</span>
+
+<span class="nf">compress</span><span class="p">(</span><span class="nv">S</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Dict</span> <span class="o">=</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">new</span><span class="p">(),</span>
+    <span class="n">doCompress</span><span class="p">(</span><span class="nv">S</span> <span class="o">++</span> <span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="nv">Dict</span><span class="p">,</span> <span class="p">[],</span> <span class="o">?</span><span class="nv">MIN_CODE</span><span class="p">,</span> <span class="p">[]).</span>
+
+<span class="nf">doCompress</span><span class="p">([],</span> <span class="p">_,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Result</span><span class="p">;</span>
+
+<span class="nf">doCompress</span><span class="p">([</span><span class="nv">Char</span><span class="p">|</span><span class="nv">S</span><span class="p">],</span> <span class="nv">Dict</span><span class="p">,</span> <span class="nv">Buffer</span><span class="p">,</span> <span class="nv">Code</span><span class="p">,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="n">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="nv">Buffer</span> <span class="o">++</span> <span class="p">[</span><span class="nv">Char</span><span class="p">])</span> <span class="k">of</span>
+        <span class="p">[]</span> <span class="o">-&gt;</span>
+            <span class="nv">Index</span> <span class="o">=</span> <span class="n">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="nv">Buffer</span><span class="p">),</span>
+            <span class="nv">NewResult</span> <span class="o">=</span> <span class="nv">Result</span> <span class="o">++</span> <span class="n">listify</span><span class="p">(</span><span class="nv">Index</span><span class="p">),</span>
+            <span class="nv">NewDict</span> <span class="o">=</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">append</span><span class="p">(</span><span class="nv">Buffer</span> <span class="o">++</span> <span class="p">[</span><span class="nv">Char</span><span class="p">],</span> <span class="nv">Code</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">),</span>
+            <span class="n">doCompress</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">NewDict</span><span class="p">,</span> <span class="p">[</span><span class="nv">Char</span><span class="p">],</span> <span class="nv">Code</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="nv">NewResult</span><span class="p">);</span>
+        <span class="p">_</span> <span class="o">-&gt;</span>
+            <span class="n">doCompress</span><span class="p">(</span><span class="nv">S</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">,</span> <span class="nv">Buffer</span> <span class="o">++</span> <span class="p">[</span><span class="nv">Char</span><span class="p">],</span> <span class="nv">Code</span><span class="p">,</span> <span class="nv">Result</span><span class="p">)</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">listify</span><span class="p">(</span><span class="nv">Thing</span><span class="p">)</span> <span class="k">when</span> <span class="nb">is_list</span><span class="p">(</span><span class="nv">Thing</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Thing</span><span class="p">;</span>
+
+<span class="nf">listify</span><span class="p">(</span><span class="nv">Thing</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="p">[</span><span class="nv">Thing</span><span class="p">].</span>
+
+<span class="nf">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="p">[</span><span class="nv">Item</span><span class="p">])</span> <span class="o">-&gt;</span>
+    <span class="n">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="nv">Item</span><span class="p">);</span>
+
+<span class="nf">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="nv">Item</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">case</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">find</span><span class="p">(</span><span class="nv">Item</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">)</span> <span class="k">of</span>
+        <span class="n">error</span> <span class="o">-&gt;</span>
+            <span class="k">if</span>
+                <span class="p">((</span><span class="nv">Item</span> <span class="o">&gt;=</span> <span class="mi">0</span><span class="p">)</span> <span class="ow">and</span> <span class="p">(</span><span class="nv">Item</span> <span class="o">&lt;</span> <span class="o">?</span><span class="nv">MIN_CODE</span><span class="p">))</span> <span class="o">-&gt;</span>
+                    <span class="nv">Item</span><span class="p">;</span>
+                <span class="n">true</span> <span class="o">-&gt;</span>
+                    <span class="p">[]</span>
+            <span class="k">end</span><span class="p">;</span>
+        <span class="p">{</span><span class="n">ok</span><span class="p">,</span> <span class="p">[</span><span class="nv">Value</span><span class="p">]}</span> <span class="o">-&gt;</span>
+            <span class="nv">Value</span>
+    <span class="k">end</span><span class="p">.</span>
+
+
+<span class="nf">test</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="nv">S</span> <span class="o">=</span> <span class="s">"ABABABAB"</span><span class="p">,</span>
+    <span class="n">compress</span><span class="p">(</span><span class="nv">S</span><span class="p">).</span>
+</pre></div>
+<p>用上面的算法压缩字符串<code>"ABABABAB"</code>得到的结果是<code>[A, B, 256, 258, B]</code>（注：<a href="http://www.erlang.org/doc/reference_manual/data_types.html#id73373">Erlang中的字符串即list</a>)。</p>
+<p>解压（decoding）的过程是这样的 (方便起见我们将256, 257, ... 记为 0, 1, ... )：</p>
+<table border="1">
+<tr>
+<th>Input|E</th><th>Output</th><th>Result</th><th>Conjecture</th><th>Add to Dict</th>
+</tr>
+<tr>
+<td>A|B02B</td><td>A</td><td>A</td><td>0: A+?</td><td>-</td>
+</tr>
+<tr>
+<td>B|02B</td><td>B</td><td>AB</td><td>1: B+?</td><td>0: AB</td>
+</tr>
+<tr>
+<td>0|2B</td><td>AB</td><td>ABAB</td><td>2: AB+?</td><td>1: BA</td>
+</tr>
+<tr>
+<td>2|B</td><td>?</td><td>ABAB?</td><td>2: AB+?</td><td>-</td>
+</tr>
+<tr>
+<td>2|B</td><td>ABA</td><td>ABABABA</td><td>3: ABA+?</td><td>2: ABA</td>
+</tr>
+<tr>
+<td>B|</td><td>B</td><td>ABABABAB</td><td>-</td><td>3: ABAB</td>
+</tr>
+</table>
+<p>在每一步中，decoder收到一个Code <code>X</code>并且在字典中查找到它的值<code>χ</code>输出到结果，同时推测<code>χ + ?</code>为字典中下一个索引的值——因为encoder将<code>X</code>生成<code>χ</code>的索引就是因为<code>χ + ?</code>不在字典中。但这个<code>?</code>到底是哪个字符呢？它是下一个Code <code>Z</code>所索引的值的第一个字符。所以decoder查找<code>Z</code>。</p>
+<p>但如果<code>Z</code>还不在字典中怎么办？方案如下：</p>
+<ol>
+<li>Decoder先看到<code>X</code>然后是<code>Z</code>。</li>
+<li>它知道索引<code>X</code>的值是<code>χ</code>，而索引<code>Z</code>的值为未知量<code>ω</code>。</li>
+<li>它知道encoder刚刚加入索引<code>Z</code>，其值为<code>χ</code>加上某个未知字符，</li>
+<li>且知道未知字符是<code>ω</code>的第一个字符<code>z</code>。</li>
+<li>但<code>ω</code>的第一个字符肯定也就是<code>χ</code>的第一个字符。</li>
+<li>故<code>ω</code>一定是<code>χ</code>加上<code>χ</code>的第一个字符<code>x</code>。</li>
+<li>这样decoder就知道索引<code>Z</code>的值。</li>
+</ol>
+<p>最后给出Erlang语言的实现：</p>
+<div class="highlight"><pre><span class="nf">decompress</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Dict</span> <span class="o">=</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">new</span><span class="p">(),</span>
+    <span class="k">if</span>
+        <span class="nb">length</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="o">=:=</span> <span class="mi">0</span> <span class="o">-&gt;</span>
+            <span class="p">[];</span>
+        <span class="n">true</span> <span class="o">-&gt;</span>
+            <span class="p">[</span><span class="nv">Code</span><span class="p">|</span><span class="nv">EE</span><span class="p">]</span> <span class="o">=</span> <span class="nv">E</span><span class="p">,</span>
+            <span class="n">doDecompress</span><span class="p">(</span><span class="nv">EE</span><span class="p">,</span> <span class="o">?</span><span class="nv">MIN_CODE</span><span class="p">,</span> <span class="p">[</span><span class="nv">Code</span><span class="p">],</span> <span class="nv">Dict</span><span class="p">,</span> <span class="p">[</span><span class="nv">Code</span><span class="p">])</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">doDecompress</span><span class="p">([],</span> <span class="p">_,</span> <span class="p">_,</span> <span class="p">_,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Result</span><span class="p">;</span>
+
+<span class="nf">doDecompress</span><span class="p">([</span><span class="nv">Code</span><span class="p">|</span><span class="nv">E</span><span class="p">],</span> <span class="nv">Index</span><span class="p">,</span> <span class="nv">Conjecture</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">,</span> <span class="nv">Result</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Value</span> <span class="o">=</span> <span class="n">is_ascii_or_in_dict</span><span class="p">(</span><span class="nv">Dict</span><span class="p">,</span> <span class="nv">Code</span><span class="p">),</span>
+    <span class="k">if</span>
+        <span class="nv">Value</span> <span class="o">=:=</span> <span class="p">[]</span> <span class="o">-&gt;</span>
+            <span class="nv">NewConjecture</span> <span class="o">=</span> <span class="nv">Conjecture</span> <span class="o">++</span> <span class="n">listify</span><span class="p">(</span><span class="n">first_char_of</span><span class="p">(</span><span class="nv">Conjecture</span><span class="p">)),</span>
+            <span class="nv">NewDict</span> <span class="o">=</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">append</span><span class="p">(</span><span class="nv">Index</span><span class="p">,</span> <span class="nv">NewConjecture</span><span class="p">,</span> <span class="nv">Dict</span><span class="p">),</span>
+            <span class="n">doDecompress</span><span class="p">(</span><span class="nv">E</span><span class="p">,</span> <span class="nv">Index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">listify</span><span class="p">(</span><span class="nv">NewConjecture</span><span class="p">),</span> <span class="nv">NewDict</span><span class="p">,</span> <span class="nv">Result</span> <span class="o">++</span> <span class="n">listify</span><span class="p">(</span><span class="nv">NewConjecture</span><span class="p">));</span>
+        <span class="n">true</span> <span class="o">-&gt;</span>
+            <span class="nv">NewDict</span> <span class="o">=</span> <span class="nn">dict</span><span class="p">:</span><span class="nf">append</span><span class="p">(</span><span class="nv">Index</span><span class="p">,</span> <span class="nv">Conjecture</span> <span class="o">++</span> <span class="n">listify</span><span class="p">(</span><span class="n">first_char_of</span><span class="p">(</span><span class="nv">Value</span><span class="p">)),</span> <span class="nv">Dict</span><span class="p">),</span>
+            <span class="n">doDecompress</span><span class="p">(</span><span class="nv">E</span><span class="p">,</span> <span class="nv">Index</span> <span class="o">+</span> <span class="mi">1</span><span class="p">,</span> <span class="n">listify</span><span class="p">(</span><span class="nv">Value</span><span class="p">),</span> <span class="nv">NewDict</span><span class="p">,</span> <span class="nv">Result</span> <span class="o">++</span> <span class="n">listify</span><span class="p">(</span><span class="nv">Value</span><span class="p">))</span>
+    <span class="k">end</span><span class="p">.</span>
+
+<span class="nf">first_char_of</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="k">when</span> <span class="nb">is_list</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">if</span>
+        <span class="nb">length</span><span class="p">(</span><span class="nv">List</span><span class="p">)</span> <span class="o">&gt;=</span> <span class="mi">1</span> <span class="o">-&gt;</span>
+            <span class="nn">lists</span><span class="p">:</span><span class="nf">nth</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="nv">List</span><span class="p">);</span>
+        <span class="n">true</span> <span class="o">-&gt;</span>
+            <span class="p">[]</span>
+    <span class="k">end</span><span class="p">;</span>
+<span class="nf">first_char_of</span><span class="p">(</span><span class="nv">Char</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nv">Char</span><span class="p">.</span>
+
+<span class="nf">test</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="nv">SS</span> <span class="o">=</span> <span class="p">[</span><span class="s">""</span><span class="p">,</span>
+          <span class="s">"A"</span><span class="p">,</span>
+          <span class="s">"ABABABAB"</span><span class="p">,</span>
+          <span class="s">"AAAAAAAA"</span><span class="p">,</span>
+          <span class="s">"BABAABBAAABBBBAAAAA"</span><span class="p">,</span>
+          <span class="s">"TOBEORNOTTOBEORTOBEORNOT"</span><span class="p">,</span>
+          <span class="s">"WWWWWWWWWWWWBWWWWWWWWWWWWBBBWWWWWWWWWWWWWWWWWWWWWWWWBWWWWWWWWWWWWWW"</span><span class="p">,</span>
+          <span class="s">"AABABBBABAABABBBABBABB"</span> <span class="p">],</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[[</span><span class="nb">length</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">SS</span><span class="p">]]),</span>
+    <span class="nv">EE</span> <span class="o">=</span> <span class="p">[</span><span class="n">compress</span><span class="p">(</span><span class="nv">S</span><span class="p">)</span> <span class="p">||</span> <span class="nv">S</span> <span class="o">&lt;-</span> <span class="nv">SS</span><span class="p">],</span>
+    <span class="nn">io</span><span class="p">:</span><span class="nf">format</span><span class="p">(</span><span class="s">"</span><span class="si">~p~n</span><span class="s">"</span><span class="p">,</span> <span class="p">[[</span><span class="nb">length</span><span class="p">(</span><span class="nv">X</span><span class="p">)</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="nv">EE</span><span class="p">]]),</span>
+    <span class="nv">SS1</span> <span class="o">=</span> <span class="p">[</span><span class="n">decompress</span><span class="p">(</span><span class="nv">E</span><span class="p">)</span> <span class="p">||</span> <span class="nv">E</span> <span class="o">&lt;-</span> <span class="nv">EE</span><span class="p">],</span>
+    <span class="nv">SS</span> <span class="o">=:=</span> <span class="nv">SS1</span><span class="p">.</span>
+</pre></div>
+<p>上述代码对Unicode字符串进行压缩时就会失败，但我们可以将<code>MIN_CODE</code>define得比每个Unicode的数值都大时，就工作正常了。</p>
+<p>参考：<br/>
+<a href="http://en.wikipedia.org/wiki/Lempel%E2%80%93Ziv%E2%80%93Welch">LZW on Wikipedia</a><br/>
+<a href="http://en.wikipedia.org/wiki/LZ77_and_LZ78">LZ77 &amp; LZ78</a><br/>
+<a href="http://en.wikipedia.org/wiki/Run-length_encoding">Run-length Encoding</a> </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

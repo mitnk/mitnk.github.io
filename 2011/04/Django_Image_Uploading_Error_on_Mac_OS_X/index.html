@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Django Image Uploading Error On Mac Os X</h1>
+        <div class="entry-content">
+            <p><strong>Update (2011-11-18):</strong>
+Ubuntu机器上也出现了一个与此类似的问题，解决方案是执行下面命令后再重装PIL库</p>
+<div class="highlight"><pre>sudo apt-get install libjpeg-dev libpng-dev zlib1g-dev liblcms1-dev python-dev
+</pre></div>
+<p><strong>Update (2012-12-22):</strong></p>
+<p>There is no <code>/usr/share/libtool/config.sub</code> and <code>/usr/share/libtool/config.guess</code> in my Mac OS 10.8<br/>
+But we can get them from <a href="http://www.gnu.org/software/libtool/news.html">http://www.gnu.org/software/libtool/news.html</a>.</p>
+<p>And if PIL still doesn't work. install <code>brew install libjpeg</code> and <code>brew link jpeg</code>.</p>
+<p>Change PIL setup.py like <code>/usr/local/Cellar/jpeg/8d</code>, then built PIL with <code>python setup.py build_ext -i</code></p>
+<h2>Old Article</h2>
+<p>做项目的时候遇到在Admin Sites下面上传jpg图片报错的问题：
+Upload a valid image. The file you uploaded was either not an image or a corrupted.</p>
+<p>Google了下，发现<a href="http://djangodays.com/2008/09/03/django-imagefield-validation-error-caused-by-incorrect-pil-installation-on-mac/">这是Mac下PIL没有被正确安装的原因</a></p>
+<p>解决方案是先装Apple XCodeTools
+再装jpg图片的一个库：<a href="http://sourceforge.net/projects/libjpeg/files/">libjpeg</a></p>
+<div class="highlight"><pre>cp /usr/share/libtool/config.sub .
+cp /usr/share/libtool/config.guess .
+./configure –enable-shared
+make
+sudo mkdir -p /usr/local/include
+sudo mkdir -p /usr/local/bin
+sudo mkdir -p /usr/local/lib
+sudo mkdir -p /usr/local/man/man1
+sudo make install
+</pre></div>
+<p>然后重装PIL就ok了</p>
+<div class="highlight"><pre># in setup.py
+JPEG_ROOT = "/usr/local/include"
+ZLIB_ROOT = "/usr/local/include"
+# rebuild and install
+python setup.py build_ext -i
+# 这一步测试通过才行！
+python selftest.py
+sudo python setup.py install
+</pre></div>
+<p>详细信息请参照Django Days的文章：<a href="http://djangodays.com/2008/09/03/django-imagefield-validation-error-caused-by-incorrect-pil-installation-on-mac/">Django ImageField validation error caused by incorrect PIL installation on MAC</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

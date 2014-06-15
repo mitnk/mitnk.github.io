@@ -1,0 +1,165 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Git Info Command</h1>
+        <div class="entry-content">
+            <p>用惯了 svn info 命令之后
+会期待 git 也有这样的功能
+可惜没有。</p>
+<p>不过已经<a href="http://inquirylabs.com/blog2009/2008/06/12/git-info-kinda-like-svn-info/">有人写了个git-info 脚本</a>实现了类似的功能：</p>
+<div class="highlight"><pre><span class="c">#!/bin/bash</span>
+
+<span class="c"># author: Duane Johnson</span>
+<span class="c"># email: duane.johnson@gmail.com</span>
+<span class="c"># date: 2008 Jun 12</span>
+<span class="c"># license: MIT</span>
+<span class="c"># </span>
+<span class="c"># Based on discussion at http://kerneltrap.org/mailarchive/git/2007/11/12/406496</span>
+
+<span class="nb">pushd</span> . &gt;/dev/null
+
+<span class="c"># Find base of git directory</span>
+<span class="k">while</span> <span class="o">[</span> ! -d .git <span class="o">]</span> <span class="o">&amp;&amp;</span> <span class="o">[</span> ! <span class="sb">`</span><span class="nb">pwd</span><span class="sb">`</span> <span class="o">=</span> <span class="s2">"/"</span> <span class="o">]</span>; <span class="k">do </span><span class="nb">cd</span> ..; <span class="k">done</span>
+
+<span class="c"># Show various information about this git directory</span>
+<span class="k">if</span> <span class="o">[</span> -d .git <span class="o">]</span>; <span class="k">then</span>
+<span class="k">  </span><span class="nb">echo</span> <span class="s2">"== Remote URL: `git remote -v`"</span>
+
+  <span class="nb">echo</span> <span class="s2">"== Remote Branches: "</span>
+  git branch -r
+  <span class="nb">echo</span>
+
+<span class="nb">  echo</span> <span class="s2">"== Local Branches:"</span>
+  git branch
+  <span class="nb">echo</span>
+
+<span class="nb">  echo</span> <span class="s2">"== Configuration (.git/config)"</span>
+  cat .git/config
+  <span class="nb">echo</span>
+
+<span class="nb">  echo</span> <span class="s2">"== Most Recent Commit"</span>
+  git log --max-count<span class="o">=</span>1
+  <span class="nb">echo</span>
+
+<span class="nb">  echo</span> <span class="s2">"Type 'git log' for more commits, or 'git show' for full commit details."</span>
+<span class="k">else</span>
+<span class="k">  </span><span class="nb">echo</span> <span class="s2">"Not a git repository."</span>
+<span class="k">fi</span>
+
+<span class="nb">popd</span> &gt;/dev/null
+</pre></div>
+<p>输出大概是这样：</p>
+<div class="highlight"><pre>== Remote URL: origin git@github.com:canadaduane/my-project.git
+== Remote Branches:
+  origin/work
+  trunk
+  trunk@1309
+  trunk@2570
+  trunk@8
+
+== Local Branches:
+  master
+* work
+
+== Configuration (.git/config)
+[core]
+  repositoryformatversion = 0
+  filemode = true
+  bare = false
+  logallrefupdates = true
+[svn-remote "svn"]
+  url = svn+ssh://svn.my-project.com/srv/svn
+  fetch = my-project/trunk:refs/remotes/trunk
+[remote "origin"]
+  url = git@github.com:canadaduane/my-project.git
+  fetch = refs/heads/*:refs/remotes/origin/*
+[github]
+  user = canadaduane
+  repo = my-project
+
+== Most Recent Commit
+commit b47dce8b4102faf1cedc8aa3554cb58d76e0cbc1
+Author: Duane Johnson &lt;duane.johnson@gmail.com&gt;
+Date:   Wed Jun 11 17:00:33 2008 -0600
+
+    Added changes to database schema that will allow decentralization from content pointers table
+
+type 'git log' for more, or 'git show' for full commit details.
+</pre></div>
+<p>所以你也可以用 <code>git info</code> 命令了。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

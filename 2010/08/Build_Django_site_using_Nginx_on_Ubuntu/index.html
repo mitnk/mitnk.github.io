@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Build Django Site Using Nginx On Ubuntu</h1>
+        <div class="entry-content">
+            <p>1) 安装django, fastcgi, nginx</p>
+<div class="highlight"><pre>$ sudo apt-get install python-flup nginx subversion
+$ cd projects
+$ svn co http://code.djangoproject.com/svn/django/trunk/ django-trunk
+$ sudo ln -s /home/foo/projects/django-trunk/django /usr/lib/python2.6/dist-packages/django
+</pre></div>
+<p>2) 根据自己的需求修改nginx配置文件</p>
+<div class="highlight"><pre>$ sudo vim /etc/nginx/nginx.conf
+</pre></div>
+<p>例如这样：</p>
+<div class="highlight"><pre>user www-data;
+worker_processes  1;
+
+error_log  /var/log/nginx/error.log;
+pid        /var/run/nginx.pid;
+
+events {
+    worker_connections  1024;
+    # multi_accept on;
+}
+
+http {
+    include       /etc/nginx/mime.types;
+
+    access_log  /var/log/nginx/access.log;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    #keepalive_timeout  0;
+    keepalive_timeout  65;
+    tcp_nodelay        on;
+
+    gzip  on;
+    gzip_disable "MSIE [1-6]\.(?!.*SV1)";
+    gzip_comp_level  6;
+    gzip_types text/plain text/css application/json application/x-javascript text/xml application/xml application/xml+rss text/javascript;
+
+    include /etc/nginx/conf.d/*.conf;
+    include /etc/nginx/sites-enabled/*;
+}
+</pre></div>
+<p>3) 配置站点文件</p>
+<div class="highlight"><pre>$ sudo vim /etc/nginx/sites-available/foo.com
+</pre></div>
+<p>内容如：</p>
+<div class="highlight"><pre>server {
+    listen 80;
+    server_name demo.foo.com;
+    location / { alias /home/foo/demo/; }
+}
+
+server {
+    listen 80;
+    server_name www.foo.com foo.com;
+
+    if ($host != 'foo.com') {
+        rewrite ^/(.*)$ http://foo.com/$1 permanent;
+    }
+
+    access_log /home/foo/projects/foocom/log/access.log;
+    error_log /home/foo/projects/foocom/log/error.log;
+
+    location / {
+        fastcgi_pass 127.0.0.1:7718;
+        fastcgi_param PATH_INFO $fastcgi_script_name;
+        fastcgi_param REQUEST_METHOD $request_method;
+        fastcgi_param QUERY_STRING $query_string;
+        fastcgi_param CONTENT_TYPE $content_type;
+        fastcgi_param CONTENT_LENGTH $content_length;
+        fastcgi_pass_header Authorization;
+        fastcgi_intercept_errors off;
+        fastcgi_param  REMOTE_ADDR        $remote_addr;
+        fastcgi_param  REMOTE_PORT        $remote_port;
+        fastcgi_param  SERVER_ADDR        $server_addr;
+        fastcgi_param  SERVER_PORT        $server_port;
+        fastcgi_param  SERVER_NAME        $server_name;
+    }
+
+    location /robots.txt {
+        alias /home/foo/projects/foocom/media/robots.txt;
+    }
+
+    location /twitcn_media/ {
+        alias /home/foo/projects/foocom/media/twitcn/;
+    }
+
+    location /site_media/ {
+        expires 7d;
+        alias /home/foo/projects/foocom/media/;
+    }
+
+    location /media/ {
+        alias /home/foo/projects/django-trunk/django/contrib/admin/media/;
+    }
+}
+</pre></div>
+<p>然后建立link：</p>
+<div class="highlight"><pre>$ sudo ln -s /etc/nginx/sites-available/foo.com /etc/nginx/sites-enabled/foo.com
+</pre></div>
+<p>4) 启动djangosite, nginx</p>
+<div class="highlight"><pre>sudo /etc/init.d/nginx restart
+python /home/foo/projects/foocom/manage.py runfcgi host=127.0.0.1 port=7718 pidfile=/home/foo/projects/foocom/foocom.pid maxspare=2
+</pre></div>
+<p>See also: <a href="/39/">Ubuntu 10.04 VPS 环境搭建</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

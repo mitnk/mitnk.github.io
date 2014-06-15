@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">New To Erlang</h1>
+        <div class="entry-content">
+            <p>之前从<a href="http://www.cnblogs.com/lidaobing/">李道兵</a>、<a href="http://blog.codingnow.com/">云风</a>、<a href="http://www.douban.com/people/hongqn/">洪强宁</a>那里听到过Erlang语言<br/>
+对其没有任何概念，除了知道它是一门编程语言<br/>
+春节几天假里花了点时间学习了一下<br/>
+在这里分享下。。。  </p>
+<p>Ubuntu系统本身就自带了一个Erlang解释器<br/>
+在Terminal下执行erl即可<br/>
+（如果没有就用sudo apt-get install erlang安装一下）  </p>
+<p>让我们执行第一个Erlang语句吧：  </p>
+<div class="highlight"><pre><span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">17</span> <span class="o">/</span> <span class="mi">8</span><span class="p">.</span>
+<span class="go">4.125</span>
+</pre></div>
+<p>（不要看漏后面的点号哦。。。）  </p>
+<p>Erlang能执行单句的特性真是太棒了<br/>
+Python程序员常以Python可以方便地用作计算器而洋洋自得<br/>
+现在要知道Erlang也是可以的：）  </p>
+<p>再看下面一段代码：  </p>
+<div class="highlight"><pre><span class="gp">2&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">123456789</span><span class="p">.</span>
+<span class="go">123456789</span>
+<span class="gp">3&gt;</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span> <span class="o">*</span> <span class="nv">X</span><span class="p">.</span>
+<span class="go">232305722798259244150093798251441</span>
+<span class="gp">4&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">123</span><span class="p">.</span>
+<span class="gt">** exception error: no match of right hand side value 123</span>
+</pre></div>
+<p>Erlang和Python一样本身就支持很大很大的数字！ 很强吧！  </p>
+<p>首先这里的X并不是变量<br/>
+（至少不像C、Jave、Python语言里的变量）<br/>
+因为他不是变量所以你不能更改X的值<br/>
+（如X=123.这个操作）<br/>
+然后，这里的=号也不是赋值操作符<br/>
+注意上面的Error信息，它说两边值不匹配<br/>
+也就是Erlang里的=号为匹配操作符  </p>
+<p>为方便描述，我们还是叫这里的X为变量<br/>
+只不过是只能被“赋值”一次（通过匹配操作符）  </p>
+<p>在C语言中我们有时需要定义一个常量<br/>
+我们通常会用宏来定义，如：  </p>
+<div class="highlight"><pre><span class="cp">#define NULL 0</span>
+</pre></div>
+<p>而在Erlang里我们不用这么麻烦<br/>
+直接说null就好了（小写开头的名称）  </p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">null</span><span class="p">.</span>
+<span class="go">null</span>
+</pre></div>
+<p>也就是说Erlang里不能用小写字母开头的名称来作变量名<br/>
+比如在前例中不能有x = 123456789. 来操作  </p>
+<p>说过一些基本的东东后，再来瞧瞧Erlang的函数吧<br/>
+（Erlang本身是一门函数式编程语言）  </p>
+<p>下面是一个计算阶乘的函数<br/>
+请将这些代码存为 fact.erl 文件  </p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">fact</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">fact</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+<span class="nf">fact</span><span class="p">(</span><span class="mi">0</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">1</span><span class="p">;</span>
+<span class="nf">fact</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">fact</span><span class="p">(</span><span class="nv">N</span> <span class="o">-</span> <span class="mi">1</span><span class="p">)</span> <span class="o">*</span> <span class="nv">N</span><span class="p">.</span>
+</pre></div>
+<p>然后是编译执行的过程：  </p>
+<div class="highlight"><pre><span class="go">$ erlc fact.erl</span>
+<span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="nn">fact</span><span class="p">:</span><span class="nf">fact</span><span class="p">(</span><span class="mi">7</span><span class="p">).</span>
+<span class="go">5040</span>
+</pre></div>
+<p>用erlc编译后，会在同文件夹下生成一个beam文件  </p>
+<p>再写一个有关list数据结构的函数<br/>
+在写之前先用代码演示下list的一个有意思的语法  </p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">].</span>
+<span class="go">[1,3,5,7]</span>
+<span class="gp">2&gt;</span> <span class="nv">L</span><span class="p">.</span>
+<span class="go">[1,3,5,7]</span>
+<span class="gp">3&gt;</span> <span class="p">[</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">]</span> <span class="o">=</span> <span class="nv">L</span><span class="p">.</span>
+<span class="go">[1,3,5,7]</span>
+<span class="gp">4&gt;</span> <span class="nv">H</span><span class="p">.</span>
+<span class="go">1</span>
+<span class="gp">5&gt;</span> <span class="nv">T</span><span class="p">.</span>
+<span class="go">[3,5,7]</span>
+<span class="gp">6&gt;</span> <span class="p">[</span><span class="nv">H1</span><span class="p">|</span><span class="nv">T1</span><span class="p">]</span> <span class="o">=</span> <span class="nv">T</span><span class="p">.</span>
+<span class="go">[3,5,7]</span>
+<span class="gp">7&gt;</span> <span class="nv">H1</span><span class="p">.</span>
+<span class="go">3</span>
+<span class="gp">8&gt;</span> <span class="nv">T1</span><span class="p">.</span>
+<span class="go">[5,7]</span>
+<span class="gp">9&gt;</span> <span class="p">[</span><span class="nv">H2</span><span class="p">|</span><span class="nv">T2</span><span class="p">]</span> <span class="o">=</span> <span class="p">[</span><span class="mi">7</span><span class="p">].</span>
+<span class="go">[7]</span>
+<span class="gp">10&gt;</span> <span class="nv">H2</span><span class="p">.</span>
+<span class="go">7</span>
+<span class="gp">11&gt;</span> <span class="nv">T2</span><span class="p">.</span>
+<span class="go">[]</span>
+</pre></div>
+<p>我想读了这段代码就会明白list的head和tail语法了<br/>
+那么下面写个sum函数以计算一个list所有元素之和  </p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">utils</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">sum</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+<span class="nf">sum</span><span class="p">([])</span> <span class="o">-&gt;</span> <span class="mi">0</span><span class="p">;</span>
+<span class="nf">sum</span><span class="p">([</span><span class="nv">H</span><span class="p">|</span><span class="nv">T</span><span class="p">])</span> <span class="o">-&gt;</span> <span class="nv">H</span> <span class="o">+</span> <span class="n">sum</span><span class="p">(</span><span class="nv">T</span><span class="p">).</span>
+</pre></div>
+<p>将上面代码存为utils.erl并编译执行：  </p>
+<div class="highlight"><pre><span class="go">$ erlc utils.erl</span>
+<span class="go">$ erl</span>
+<span class="gp">1&gt;</span> <span class="nv">L</span> <span class="o">=</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span>
+<span class="go">[1,2,3,4,5]</span>
+<span class="gp">2&gt;</span> <span class="nn">utils</span><span class="p">:</span><span class="nf">sum</span><span class="p">(</span><span class="nv">L</span><span class="p">).</span>
+<span class="go">15</span>
+</pre></div>
+<p>读到这里应该会对Erlang有个初步概念了<br/>
+当然本篇只提到了顺序编程（Sequential Programming）<br/>
+而Erlang擅长的是并行编程（也是它的设计初衷）<br/>
+以后再写罢。  </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

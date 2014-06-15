@@ -1,0 +1,116 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Set Up Ssl Https Server</h1>
+        <div class="entry-content">
+            <p>先在 <a href="http://namecheap.com">namecheap.com</a> 购买ssl证书（这里比较便宜）</p>
+<h2>生成CSR</h2>
+<div class="highlight"><pre>openssl req -nodes -newkey rsa:2048 -keyout myserver.key -out server.csr
+</pre></div>
+<p><img alt="ssl info" src="http://ww4.sinaimg.cn/large/a74ecc4cjw1dwlgiw7ozzj.jpg"/></p>
+<p>信息参考上面图片填写<br/>
+如果要一个证书同时支持多个子域名的话<br/>
+<code>Common Name</code> 要用通配符 <code>*.example.com</code></p>
+<p>参考<a href="https://support.comodo.com/index.php?_m=knowledgebase&amp;_a=viewarticle&amp;kbarticleid=3&amp;nav=0,33">这个教程</a></p>
+<h2>激活SSL证书</h2>
+<p>在 namecheap.com 用上面的CSR激活</p>
+<ol>
+<li>提交CSR请求  </li>
+<li>等待认可Email  </li>
+<li>提交认证号码激活  </li>
+<li>会收到一个含有 crt 附件的邮件  </li>
+</ol>
+<h2>给Nginx配置SSL</h2>
+<p>解压收到的附件，并合并三个文件：</p>
+<div class="highlight"><pre>cat example_com.crt PositiveSSLCA2.crt AddTrustExternalCARoot.crt &gt; example.com.crt
+</pre></div>
+<p>然后在Nignx 里设「<a href="http://nginx.org/en/docs/http/configuring_https_servers.html">参考这里</a>」：</p>
+<div class="highlight"><pre><span class="n">server</span> <span class="p">{</span>
+    <span class="n">listen</span> <span class="mi">80</span><span class="p">;</span>
+    <span class="n">listen</span> <span class="mi">443</span> <span class="n">ssl</span><span class="p">;</span>
+    <span class="n">server_name</span> <span class="n">xxx</span><span class="p">.</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="p">;</span>
+    <span class="n">ssl_certificate</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">example</span><span class="p">.</span><span class="n">com</span><span class="p">.</span><span class="n">crt</span><span class="p">;</span>
+    <span class="n">ssl_certificate_key</span> <span class="o">/</span><span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">myserver</span><span class="p">.</span><span class="n">key</span><span class="p">;</span>
+
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+<p>这样你的站点就同时支持 HTTP 和 HTTPS 了。</p>
+<p>Done.</p>
+<p>也可以参考<a href="http://blog.wensheng.com/2012/03/using-namecheap-ssl-with-nginx.html">这个教程</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

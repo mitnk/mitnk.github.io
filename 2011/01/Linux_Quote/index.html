@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Linux Quote</h1>
+        <div class="entry-content">
+            <p><b>反斜杠</b> <br/>
+你可以将一个 \ 放到一个字符的前面起转义作用。  </p>
+<div class="highlight"><pre>$ echo hello world!
+hello world!
+$ rm file\ with\ spaces.txt
+$ echo This could be \
+a very \
+long line.
+This could be a very long line.
+</pre></div>
+<p><b>单引号</b> </p>
+<div class="highlight"><pre>$ echo a       b
+a b
+$ echo a\ \ \ \ \ \ \ b
+a       b
+$ echo 'a       b'
+a       b
+$ echo 'can-quote*any $meta#chars'
+can-quote*any $meta#chars
+</pre></div>
+<p><b>双引号</b> </p>
+<div class="highlight"><pre>$ echo 'Is your home directory $HOME?'
+Is your home directory $HOME?
+$ echo "Is your home directory $HOME?"
+Is your home directory /home/mitnk?
+$ echo "Current path is `pwd`"
+Current path is /home/mitnk/projects
+</pre></div>
+<p><b>点号（`）</b> </p>
+<div class="highlight"><pre>$ echo "Current path is `pwd`"
+Current path is /home/mitnk/projects
+$ echo `pwd`
+/home/mitnk/projects
+$ echo "Today is `date`"
+Today is Wed Mar  2 00:51:50 CST 2011
+</pre></div>
+<p><b>在文件名中使用引号</b> </p>
+<div class="highlight"><pre>1. cp /dev/null 'a file with spaces in the name'
+2. mv a\ file a_file
+3. mv a 'a?'
+(use "?" and "*" in a filename is playing with fire.)
+</pre></div>
+<p><b>在引号中使用引号</b> </p>
+<div class="highlight"><pre>1. echo "Don't do that"
+2. echo 'The quote of the day is: "TGIF"'
+</pre></div>
+<p><b>看看你引号是不是用错了</b> <br/>
+当你不确定引号是不是用对时<br/>
+可以在命令的前面加上echo试试<br/>
+（虽然echo不是总合适）<br/>
+<b>在引号中使用引用相同的引号</b> </p>
+<div class="highlight"><pre>1. echo "The word is \"Friday\""
+2. echo 'Don\'t quote me'
+3. echo 'a'b'c'
+3.1. echo 'a'$HOME'c'
+</pre></div>
+<p><b>HERE IS documents</b> </p>
+<div class="highlight"><pre>% sort &gt; file &lt;&lt; EndOfSort
+zygote
+abacus
+EndOfSort
+</pre></div>
+<p>详细解説见： <a href="http://www.grymoire.com/Unix/Quote.html">www.grymoire.com</a> </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

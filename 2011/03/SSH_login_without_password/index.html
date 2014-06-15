@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Ssh Login Without Password</h1>
+        <div class="entry-content">
+            <p>有时我们会频繁地用ssh登录一台机器做事情<br/>
+有时因为ssh登录时需要密码使得一些自动化脚本不能很好的来撰写<br/>
+本篇简单说下如何使得ssh登录时不用密码  </p>
+<p><b>目标：</b><br/>
+有两台机器 系统都为Linux<br/>
+本地机器A（自己的工作平台）<br/>
+远程机器B（拥有用户b，装有 openssh-server）<br/>
+从A ssh 到 B 时不需要密码  </p>
+<p><b>解决方步骤：</b><br/>
+1) 查看A机器下有无此文件：  </p>
+<div class="highlight"><pre>~/.ssh/id_rsa.pub
+</pre></div>
+<p>如果有，跳到第2步； 如果没有使用下面命令生成之  </p>
+<div class="highlight"><pre>$ ssh-keygen
+( 提示输入passphrase时，直接回车，不要输入任何内容 )
+</pre></div>
+<p>2) 用下面命令将上面 public_key 放到机器B上（使它认识你的机器A）  </p>
+<div class="highlight"><pre>$ ssh b@B mkdir -p .ssh
+( -p 参数告诉 mkdir 如果文件夹已经存在也不要抱怨 )
+$ cat .ssh/id_rsa.pub | ssh b@B 'cat &gt;&gt; .ssh/authorized_keys'
+( 上面两条命令都需要输入b用户的密码 )
+</pre></div>
+<p>从此，世界变得清静了！！<br/>
+ssh 时不再需要b的密码了！！  </p>
+<hr/>
+<p>如果遇有问题（跟ssh版本有关系）可以尝试以下几条<br/>
+1) 把public key 也放到 .ssh/authorized_keys2 里面一份<br/>
+2) 把B中 .ssh 文件夹属性改为 700<br/>
+3) 把B中 .ssh/authorized_keys2 属性改为 640  </p>
+<p>出处: <a href="http://linuxproblem.org/art_9.html">linuxproblem.org</a> </p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

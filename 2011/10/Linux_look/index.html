@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Linux Look</h1>
+        <div class="entry-content">
+            <p>为了更好地学习英文，我用github来管理我的生词。</p>
+<div class="highlight"><pre>$ tree en-words/
+en-words/
+└── 2011
+    ├── april
+    │   └── ultimate_pessimism.txt
+    ├── october
+    │   └── knowledge_and_decisions.txt
+    └── september
+        ├── justice12.txt
+        ├── learned_optimism.txt
+        ├── learned_optimism_dict.txt
+        ├── longman.txt
+        └── programming_erlang.txt
+</pre></div>
+<p>每遇到一个新词，我会查一下以前是不是遇到过。一般我会用grep命令查找，而且它工作的很好。</p>
+<p>今天我想基于grep写个脚本程序放到local目录，这样就不用每次查看都要输入一长串命令了。我想给它起名为lookup，在我输入look后按了两次Tab键之后，发现系统有一个look命令。我就man了一下，发现这个命令太有用了。</p>
+<p>它主要是在一个文本文件里输出包含某前缀的单词，最有用的时，当省略文件名参数时，它会默认查找 /usr/share/dict/words 这个字典文件。</p>
+<p>比如你想不起一个单词的拼写，比如possiblity，但你可以想起前几个字母。这时你可以用look命令来查找</p>
+<div class="highlight"><pre>$ look possi
+possibilism
+possibilist
+possibilitate
+possibility
+possible
+possibleness
+possibly
+</pre></div>
+<p>非常贴心，是不是？</p>
+<p>在我决定用look写我的lookup命令后，我的lookup程序就成了这个样子：</p>
+<div class="highlight"><pre>$ cat /usr/local/bin/lookup
+find ~/projects/en-words -name "*.txt" | xargs look $@
+</pre></div>
+<p>比如我想查以前是否记过democracy这个单词，就可以这样做：</p>
+<div class="highlight"><pre>$ lookup democ
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

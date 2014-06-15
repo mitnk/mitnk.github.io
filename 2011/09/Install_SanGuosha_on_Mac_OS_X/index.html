@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Sanguosha On Mac Os X</h1>
+        <div class="entry-content">
+            <p>这两天想玩三国杀，web版总加载不出来。 就去安装Adoba Air版的<a href="http://www.sanguosha.com/web2/downloads.asp">桌面版三国杀</a></p>
+<p>点击那个“在线安装”按钮后，Air倒是安装好了，不过安装三国杀时总是下载不下来。而这个页面提供一个air包，就下载下来了</p>
+<div class="highlight"><pre>$ open SanGuoSha.air
+</pre></div>
+<p>不过这个命令不能执行或安装。</p>
+<p>好吧，继续用页面上安装，试了N次都安装不好，有次都下载了80%左右后又没反应了！！！</p>
+<p>然后想，这个air包在Windows上应该能双击打开，但在Mac上应该也能用上才对</p>
+<p>在页面上再点“在线安装”按钮一次，然后在Shell运行：</p>
+<div class="highlight"><pre>$ pa ax | grep -i "air"
+</pre></div>
+<p>还真找到air安装的进程了，上面用的是sanguosha.com的地址</p>
+<p>我把它改成本地后是这样：</p>
+<div class="highlight"><pre>$ ~/Library/Preferences/Macromedia/Flash\ Player/www.macromedia.com/bin/airinstaller2x0/airinstaller2x0 -playerVersion=10,3,183,5 -sandboxType=remote -securityDomain=airdownload.adobe.com -https=false -fromUserEvent=true -- -x1 file:///Users/mitnk/Downloads/SanGuoSha.air -- launchFromBrowser
+</pre></div>
+<p>不过Flash不让访问http以外的资源。没问题，咱们用http协议应该就成，执行python 的 SimpleHTTPServer</p>
+<div class="highlight"><pre>$ cd ~/Downloads
+$ python -m SimpleHTTPServer 8001
+</pre></div>
+<p>再执行下面命令(注意我们改掉了地址参数)：</p>
+<div class="highlight"><pre>$ ~/Library/Preferences/Macromedia/Flash\ Player/www.macromedia.com/bin/airinstaller2x0/airinstaller2x0 -playerVersion=10,3,183,5 -sandboxType=remote -securityDomain=airdownload.adobe.com -https=false -fromUserEvent=true -- -x1 http://127.0.0.1:8001/SanGuoSha.air -- launchFromBrowser
+</pre></div>
+<p>成功啦！！耶！</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

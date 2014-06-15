@@ -1,0 +1,164 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Bound Unbound And Static Method In Python</h1>
+        <div class="entry-content">
+            <p>先看下面一段代码</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">A</span><span class="p">:</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+<span class="n">a</span> <span class="o">=</span> <span class="n">A</span><span class="p">()</span>
+<span class="k">print</span> <span class="n">A</span><span class="o">.</span><span class="n">foo</span>
+<span class="k">print</span> <span class="n">a</span><span class="o">.</span><span class="n">foo</span>
+</pre></div>
+<p>输出</p>
+<div class="highlight"><pre>&lt;unbound method A.foo&gt;
+&lt;bound method A.foo of &lt;__main__.A instance at 0x10b06a560&gt;&gt;
+</pre></div>
+<p>这里的关键字是 unbound 和 bound。在<a href="http://docs.python.org/release/2.3.4/lib/typesmethods.html">一个 Python 2.3.4 的文档</a>中，它们的定义是这样的</p>
+<blockquote>
+<p>
+Methods are functions that are called using the attribute notation. There are two flavors: built-in methods (such as append() on lists) and class instance methods. 
+</p>
+<p>...</p>
+<p>
+Class instance methods are either bound or unbound, referring to whether the method was accessed through an instance or a class, respectively. 
+</p>
+<p>...</p>
+</blockquote>
+<p>在 ptyhon mail list 中<a href="http://mail.python.org/pipermail/tutor/2001-November/009887.html">Kalle Svensson对 bound / unbound methods 的解释</a>简明易懂：</p>
+<hr/>
+<p>Consider a function and a method:</p>
+<div class="highlight"><pre>def f(x):
+    print x
+
+class C:
+    def m(self, x):
+        print x
+</pre></div>
+<p>The function takes one argument and prints it, so does the method, if used on
+an instance:</p>
+<div class="highlight"><pre>&gt;&gt;&gt; c = C()
+&gt;&gt;&gt; f(1)
+1
+&gt;&gt;&gt; c.m(1)
+1
+</pre></div>
+<p>This means the first method argument, self, appeared from nowhere.  This is
+because the method is bound to the instance c.  When a method is not bound to
+any instance, you have to supply all arguments yourself, like:</p>
+<div class="highlight"><pre>&gt;&gt;&gt; C.m(c, 1)
+1
+</pre></div>
+<p>This also means that c.m and C.m are not the same thing.  They're <em>almost</em> the same, but c.m is bound to the instance c, and C.m is unbound.</p>
+<hr/>
+<p>而 Stackoverflow 上 <a href="http://stackoverflow.com/a/114289/665869">Armin Ronacher 给出了更加深入的解释</a>，非常值得一读</p>
+<p>以下为全文引用：</p>
+<p>Methods in Python are a very, very simple thing once you understood the basics of the descriptor system. Imagine the following class:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">(</span><span class="bp">self</span><span class="p">):</span>
+        <span class="k">pass</span>
+</pre></div>
+<p>Now let's have a look at that class in the shell:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">foo</span>
+<span class="o">&lt;</span><span class="n">unbound</span> <span class="n">method</span> <span class="n">C</span><span class="o">.</span><span class="n">foo</span><span class="o">&gt;</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'foo'</span><span class="p">]</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">foo</span> <span class="n">at</span> <span class="mh">0x17d05b0</span><span class="o">&gt;</span>
+</pre></div>
+<p>As you can see if you access the foo attribute on the class you get back an unbound method, however inside the class storage (the dict) there is a function. Why's that? The reason for this is that the class of your class implements a <strong>getattribute</strong> that resolves descriptors. Sounds complex, but is not. C.foo is roughly equivalent to this code in that special case:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'foo'</span><span class="p">]</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">unbound</span> <span class="n">method</span> <span class="n">C</span><span class="o">.</span><span class="n">foo</span><span class="o">&gt;</span>
+</pre></div>
+<p>That's because functions have a <strong>get</strong> method which makes them descriptors. If you have an instance of a class it's nearly the same, just that None is the class instance:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">c</span> <span class="o">=</span> <span class="n">C</span><span class="p">()</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'foo'</span><span class="p">]</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">bound</span> <span class="n">method</span> <span class="n">C</span><span class="o">.</span><span class="n">foo</span> <span class="n">of</span> <span class="o">&lt;</span><span class="n">__main__</span><span class="o">.</span><span class="n">C</span> <span class="nb">object</span> <span class="n">at</span> <span class="mh">0x17bd4d0</span><span class="o">&gt;&gt;</span>
+</pre></div>
+<p>Now why does Python do that? Because the method object binds the first parameter of a function to the instance of the class. That's where self comes from. Now sometimes you don't want your class to make a function a method, that's where staticmethod comes into play:</p>
+<div class="highlight"><pre><span class="k">class</span> <span class="nc">C</span><span class="p">(</span><span class="nb">object</span><span class="p">):</span>
+    <span class="nd">@staticmethod</span>
+    <span class="k">def</span> <span class="nf">foo</span><span class="p">():</span>
+        <span class="k">pass</span>
+</pre></div>
+<p>The staticmethod decorator wraps your class and implements a dummy <strong>get</strong> that returns the wrapped function as function and not as a method:</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="n">C</span><span class="o">.</span><span class="n">__dict__</span><span class="p">[</span><span class="s">'foo'</span><span class="p">]</span><span class="o">.</span><span class="n">__get__</span><span class="p">(</span><span class="bp">None</span><span class="p">,</span> <span class="n">C</span><span class="p">)</span>
+<span class="o">&lt;</span><span class="n">function</span> <span class="n">foo</span> <span class="n">at</span> <span class="mh">0x17d0c30</span><span class="o">&gt;</span>
+</pre></div>
+<p>Hope that explains it.</p>
+<p>=== End of Quote ===</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

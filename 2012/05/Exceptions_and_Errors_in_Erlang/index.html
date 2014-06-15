@@ -1,0 +1,255 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Exceptions And Errors In Erlang</h1>
+        <div class="entry-content">
+            <p><strong>What does exception look like?</strong></p>
+<div class="highlight"><pre><span class="p">-</span><span class="ni">module</span><span class="p">(</span><span class="n">shop</span><span class="p">).</span>
+<span class="p">-</span><span class="ni">export</span><span class="p">([</span><span class="n">cost</span><span class="o">/</span><span class="mi">1</span><span class="p">]).</span>
+
+<span class="nf">cost</span><span class="p">(</span><span class="n">apple</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">2</span><span class="p">;</span>
+<span class="nf">cost</span><span class="p">(</span><span class="n">orange</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="mi">3</span><span class="p">.</span>
+</pre></div>
+<p>This is what happened when we ran it:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">shop</span><span class="p">:</span><span class="nf">cost</span><span class="p">(</span><span class="n">apple</span><span class="p">).</span>
+<span class="go">2</span>
+<span class="gp">2&gt;</span> <span class="nn">shop</span><span class="p">:</span><span class="nf">cost</span><span class="p">(</span><span class="n">pear</span><span class="p">).</span>
+<span class="gt">** exception error: no function clause matching shop:cost(pear) (shop.erl, line 4)</span>
+</pre></div>
+<p><strong>Raising an Exception:</strong></p>
+<p><code>exit(Why)</code></p>
+<p>This is used when you really want to terminate the current process.
+If this exception is not caught, the message <code>{’EXIT’,Pid,Why}</code> will be
+broadcast to all processes that are linked to the current process.</p>
+<p><code>throw(Why)</code></p>
+<p>This is used to throw an exception that a caller might want to catch.
+In this case we document that our function might throw this exception.</p>
+<p><code>erlang:error(Why)</code></p>
+<p>This is used for denoting “crashing errors.” That is, something rather
+nasty has happened that callers are not really expected to handle.
+This is on par with internally generated errors.</p>
+<p><strong>try...catch Syntax</strong></p>
+<div class="highlight"><pre><span class="k">try</span> <span class="nv">FuncOrExpressionSequence</span> <span class="k">of</span>
+    <span class="nv">Pattern1</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expressions1</span><span class="p">;</span>
+    <span class="nv">Pattern2</span> <span class="p">[</span><span class="k">when</span> <span class="nv">Guard2</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">Expressions2</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="k">catch</span>
+    <span class="nv">ExceptionType</span><span class="p">:</span> <span class="nv">ExPattern1</span> <span class="p">[</span><span class="k">when</span> <span class="nv">ExGuard1</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">ExExpressions1</span><span class="p">;</span>
+    <span class="nv">ExceptionType</span><span class="p">:</span> <span class="nv">ExPattern2</span> <span class="p">[</span><span class="k">when</span> <span class="nv">ExGuard2</span><span class="p">]</span> <span class="o">-&gt;</span> <span class="nv">ExExpressions2</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="k">after</span>
+    <span class="nv">AfterExpressions</span>
+<span class="k">end</span>
+</pre></div>
+<p>Example:</p>
+<div class="highlight"><pre><span class="nf">generate_exception</span><span class="p">(</span><span class="mi">1</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">a</span><span class="p">;</span>
+<span class="nf">generate_exception</span><span class="p">(</span><span class="mi">2</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">throw</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="nf">generate_exception</span><span class="p">(</span><span class="mi">3</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nb">exit</span><span class="p">(</span><span class="n">a</span><span class="p">);</span>
+<span class="nf">generate_exception</span><span class="p">(</span><span class="mi">4</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="n">'EXIT'</span><span class="p">,</span> <span class="n">a</span><span class="p">};</span>
+<span class="nf">generate_exception</span><span class="p">(</span><span class="mi">5</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="nn">erlang</span><span class="p">:</span><span class="nf">error</span><span class="p">(</span><span class="n">a</span><span class="p">).</span>
+
+<span class="nf">demo1</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">[</span><span class="n">catcher</span><span class="p">(</span><span class="nv">I</span><span class="p">)</span> <span class="p">||</span> <span class="nv">I</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]].</span>
+
+<span class="nf">catcher</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">try</span> <span class="n">generate_exception</span><span class="p">(</span><span class="nv">N</span><span class="p">)</span> <span class="k">of</span>
+        <span class="nv">Val</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">N</span><span class="p">,</span> <span class="n">normal</span><span class="p">,</span> <span class="nv">Val</span><span class="p">}</span>
+    <span class="k">catch</span>
+        <span class="nn">throw</span><span class="p">:</span><span class="nv">X</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">N</span><span class="p">,</span> <span class="n">caught</span><span class="p">,</span> <span class="n">thrown</span><span class="p">,</span> <span class="nv">X</span><span class="p">};</span>
+        <span class="nb">exit</span><span class="p">:</span><span class="nv">X</span>  <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">N</span><span class="p">,</span> <span class="n">caught</span><span class="p">,</span> <span class="n">exited</span><span class="p">,</span> <span class="nv">X</span><span class="p">};</span>
+        <span class="nn">error</span><span class="p">:</span><span class="nv">X</span> <span class="o">-&gt;</span> <span class="p">{</span><span class="nv">N</span><span class="p">,</span> <span class="n">caught</span><span class="p">,</span> <span class="n">error</span><span class="p">,</span> <span class="nv">X</span><span class="p">}</span>
+    <span class="k">end</span><span class="p">.</span>
+</pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nn">try_test</span><span class="p">:</span><span class="nf">demo1</span><span class="p">().</span>
+<span class="go">[{1,normal,a},</span>
+<span class="go"> {2,caught,thrown,a},</span>
+<span class="go"> {3,caught,exited,a},</span>
+<span class="go"> {4,normal,{'EXIT',a}},</span>
+<span class="go"> {5,caught,error,a}]</span>
+</pre></div>
+<p>The other way to trap an exception is to use the primitive catch.  When you
+catch an exception, it is converted into a tuple that describes the error.</p>
+<div class="highlight"><pre><span class="nf">demo2</span><span class="p">()</span> <span class="o">-&gt;</span>
+    <span class="p">[{</span><span class="nv">I</span><span class="p">,</span> <span class="p">(</span><span class="k">catch</span> <span class="n">generate_exception</span><span class="p">(</span><span class="nv">I</span><span class="p">))}</span> <span class="p">||</span> <span class="nv">I</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">]].</span>
+</pre></div>
+<p>Run it:</p>
+<div class="highlight"><pre><span class="gp">2&gt;</span> <span class="nn">try_test</span><span class="p">:</span><span class="nf">demo2</span><span class="p">().</span>
+<span class="go">[{1,a},</span>
+<span class="go"> {2,a},</span>
+<span class="go"> {3,{'EXIT',a}},</span>
+<span class="go"> {4,{'EXIT',a}}, {5,{'EXIT',{a,[{try_test,generate_exception,1},</span>
+<span class="go">                 {try_test,'-demo2/0-fun-0-',1},</span>
+<span class="go">                 {lists,map,2},</span>
+<span class="go">                 {lists,map,2},</span>
+<span class="go">                 {erl_eval,do_apply,5},</span>
+<span class="go">                 {shell,exprs,6},</span>
+<span class="go">                 {shell,eval_loop,3}]}}}]</span>
+</pre></div>
+<p><strong>Catching Every Possible Exception</strong></p>
+<div class="highlight"><pre><span class="k">try</span> <span class="nv">Expr</span> <span class="k">catch</span>
+    <span class="p">_:_</span> <span class="o">-&gt;</span> <span class="p">...</span> <span class="nv">Code</span> <span class="n">to</span> <span class="n">handle</span> <span class="n">all</span> <span class="n">exceptions</span>  <span class="p">...</span>
+<span class="k">end</span>
+</pre></div>
+<p>(End of Exception)</p>
+<hr/>
+<h2>Errors in Concurrent Programs</h2>
+<p><strong>Linking Processes</strong></p>
+<p>Two processes, A and B. They are linked together (as shown by the dotted line
+in the diagram). The link was made when one of the processes called the BIF
+link(P), with P being the PID of the other process. Once linked, the two
+processes will implicitly monitor each other.
+If A dies, then B will be sent something called an exit signal (That is
+<code>{'EXIT',A,Why}</code>). If B dies, then A receives the signal.</p>
+<p>If the receiver hasn’t taken any special steps, the exit signal will cause it,
+too, to exit. However, a process can ask to trap these exit signals. When a
+process is in this state, it is called a <em>system process</em>.</p>
+<p><strong>An <code>on_exit</code> Handler</strong></p>
+<div class="highlight"><pre><span class="nf">on_exit</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span>
+        <span class="nb">process_flag</span><span class="p">(</span><span class="n">trap_exit</span><span class="p">,</span> <span class="n">true</span><span class="p">),</span>
+        <span class="nb">link</span><span class="p">(</span><span class="nv">Pid</span><span class="p">),</span>
+        <span class="k">receive</span>
+            <span class="p">{</span><span class="n">'EXIT'</span><span class="p">,</span> <span class="nv">Pid</span><span class="p">,</span> <span class="nv">Why</span><span class="p">}</span> <span class="o">-&gt;</span>
+                <span class="nv">Fun</span><span class="p">(</span><span class="nv">Why</span><span class="p">)</span>
+        <span class="k">end</span>
+    <span class="k">end</span><span class="p">).</span>
+</pre></div>
+<p>In line 3, the statement process_flag(trap_exit, true) turns the spawned
+process into a system process. link(Pid) (line 4) links the newly spawned
+process to Pid. Finally, when the process dies, an exit signal is received
+(line 6) and processed (line 7).</p>
+<p>Test it:</p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">F</span> <span class="o">=</span> <span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="k">receive</span>
+<span class="go">            X -&gt; list_to_atom(X)</span>
+<span class="go">        end</span>
+<span class="go">    end.</span>
+<span class="go">#Fun&lt;erl_eval.20.69967518&gt;</span>
+
+<span class="go">% We’ll spawn this:</span>
+<span class="gp">2&gt;</span> <span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn</span><span class="p">(</span><span class="nv">F</span><span class="p">).</span>
+<span class="go">&lt;0.61.0&gt;</span>
+
+<span class="go">% And we’ll set up an on_exit handler to monitor it:</span>
+<span class="gp">3&gt;</span> <span class="nn">lib_misc</span><span class="p">:</span><span class="nf">on_exit</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span>
+<span class="go">                    fun(Why) -&gt;</span>
+<span class="go">                        io:format(" ~p died with:~p~n",[Pid, Why])</span>
+<span class="go">                    end).</span>
+<span class="go">&lt;0.63.0&gt;</span>
+
+<span class="go">%% If we send an atom to Pid, the process will die (because it tries to</span>
+<span class="go">%% evaluate list_to_atom of a nonlist), and the on_exit handler will be called:</span>
+<span class="gp">4&gt;</span> <span class="nv">Pid</span> <span class="o">!</span> <span class="n">hello</span><span class="p">.</span>
+<span class="go">hello</span>
+<span class="go">&lt;0.61.0&gt; died with:{badarg,[{erlang,list_to_atom,[hello]}]}</span>
+</pre></div>
+<p><strong>Programming Idioms for Trapping Exits</strong></p>
+<p>Idiom 1: I Don’t Care If a Process I Create Crashes</p>
+<div class="highlight"><pre><span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">...</span> <span class="k">end</span><span class="p">)</span>
+</pre></div>
+<p>Idiom 2: I Want to Die If a Process I Create Crashes</p>
+<div class="highlight"><pre><span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn_link</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">...</span> <span class="k">end</span><span class="p">)</span>
+</pre></div>
+<p>Idiom 3: I Want to Handle Errors If a Process I Create Crashes</p>
+<div class="highlight"><pre><span class="p">...</span>
+<span class="nb">process_flag</span><span class="p">(</span><span class="n">trap_exit</span><span class="p">,</span> <span class="n">true</span><span class="p">),</span>
+<span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn_link</span><span class="p">(</span><span class="k">fun</span><span class="p">()</span> <span class="o">-&gt;</span> <span class="p">...</span> <span class="k">end</span><span class="p">),</span>
+<span class="p">...</span>
+<span class="nf">loop</span><span class="p">(...).</span>
+
+<span class="nf">loop</span><span class="p">(</span><span class="nv">State</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="k">receive</span>
+        <span class="p">{</span><span class="n">'EXIT'</span><span class="p">,</span> <span class="nv">SomePid</span><span class="p">,</span> <span class="nv">Reason</span><span class="p">}</span> <span class="o">-&gt;</span>
+              <span class="c">%% do something with the error</span>
+              <span class="n">loop</span><span class="p">(</span><span class="nv">State1</span><span class="p">);</span>
+        <span class="p">...</span>
+    <span class="k">end</span>
+</pre></div>
+<p><strong>A Keep-Alive Process</strong></p>
+<div class="highlight"><pre><span class="nf">keep_alive</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="o">-&gt;</span>
+    <span class="nb">register</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Pid</span> <span class="o">=</span> <span class="nb">spawn</span><span class="p">(</span><span class="nv">Fun</span><span class="p">)),</span>
+    <span class="n">on_exit</span><span class="p">(</span><span class="nv">Pid</span><span class="p">,</span> <span class="k">fun</span><span class="p">(_</span><span class="nv">Why</span><span class="p">)</span> <span class="o">-&gt;</span> <span class="n">keep_alive</span><span class="p">(</span><span class="nv">Name</span><span class="p">,</span> <span class="nv">Fun</span><span class="p">)</span> <span class="k">end</span><span class="p">).</span>
+</pre></div>
+<p>This makes a registered process called Name that evaluates spawn(Fun).
+If the process dies for any reason, then it is restarted.</p>
+<p>There is a possibility the process dies in the gap between these two statements.
+If the process dies before on_exit gets evaluated, then no link will be created,
+and the on_exit process will not work as you ex- pected. This could happen if
+two programs try to evaluate keep_alive at the same time and with the same
+value of Name. This is called a <code>race condition</code>.</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

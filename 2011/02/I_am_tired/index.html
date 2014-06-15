@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">I Am Tired</h1>
+        <div class="entry-content">
+            <p>这段时间工作超级没有状态，总是想着什么时候下班。</p>
+<p>就写了一段代码：</p>
+<div class="highlight"><pre><span class="nv">unit</span><span class="o">=</span><span class="sb">`</span>uptime | sed -e <span class="s1">'s/^.*up //'</span> -e <span class="s1">'s/,.*//'</span> | cut -d <span class="s2">" "</span> -f2<span class="sb">`</span>
+<span class="k">if</span> <span class="o">[</span> <span class="nv">$unit</span> <span class="o">=</span> <span class="s2">"min"</span> <span class="o">]</span>; <span class="k">then</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">"I don't think so... You've been here less than an Hour !!"</span>
+<span class="k">elif</span> <span class="o">[</span> <span class="nv">$unit</span> <span class="o">=</span> <span class="s2">"day"</span> <span class="o">]</span>; <span class="k">then</span>
+<span class="k">    </span><span class="nb">echo</span> <span class="s2">"Just Go! You've been here for days!!!!"</span>
+<span class="k">else</span>
+<span class="k">    </span><span class="nv">hour</span><span class="o">=</span><span class="sb">`</span>uptime | awk <span class="s1">'{print $3}'</span> | cut -d <span class="s2">":"</span> -f1<span class="sb">`</span>
+    <span class="nv">min</span><span class="o">=</span><span class="sb">`</span>uptime | awk <span class="s1">'{print $3}'</span> | cut -d <span class="s2">":"</span> -f2 | cut -d <span class="s2">","</span> -f1<span class="sb">`</span>
+    <span class="k">if</span> <span class="o">[</span> <span class="nv">$hour</span> -ge 9 <span class="o">]</span>; <span class="k">then</span>
+<span class="k">        </span><span class="nb">echo</span> <span class="s2">"You can go NOW !!!"</span>
+    <span class="k">else</span>
+<span class="k">        </span><span class="nb">echo</span> <span class="s2">"You can leave office in `expr 8 - $hour` hours, `expr 60 - $min` minutes!"</span>
+    <span class="k">fi</span>
+<span class="k">fi</span>
+</pre></div>
+<p>测试环境：<br/>
+Ubuntu 10.10 / Ubuntu 9.10</p>
+<p>用法：  </p>
+<p>1) 把上面代码保存为 iamtired 文件<br/>
+2) 将这个文件保存到 /usr/local/bin 文件夹下<br/>
+3) 将其属性改成 755 （sudo chmod 755 /usr/local/bin/iamtired ）  </p>
+<p>在你的机器上执行 iamtired 命令  </p>
+<div class="highlight"><pre>$ iamtire
+I don't think so... You've been here less than an Hour !!
+</pre></div>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

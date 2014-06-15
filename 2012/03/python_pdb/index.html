@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Python Pdb</h1>
+        <div class="entry-content">
+            <h3>pdb常用的启动方式</h3>
+<p>a) 通过 pdb.run 方法：</p>
+<div class="highlight"><pre><span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">pdb</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">mymodule</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="n">pdb</span><span class="o">.</span><span class="n">run</span><span class="p">(</span><span class="s">'mymodule.test()'</span><span class="p">)</span>
+</pre></div>
+<p>b) 命令行参数方式</p>
+<div class="highlight"><pre>python -m pdb myscript.py
+</pre></div>
+<p>c) 最常用的是将下面一行插入到欲Debug的代码特定位置：</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pdb</span><span class="p">;</span> <span class="n">pdb</span><span class="o">.</span><span class="n">set_trace</span><span class="p">()</span>
+</pre></div>
+<p>然后执行代码。</p>
+<h3>(Pdb)模式下的常用命令</h3>
+<p>q<br/>
+退出debug</p>
+<p>h 
+即help，打印所有可以命令</p>
+<p>h w <br/>
+打印命令 <code>w</code> 的含意</p>
+<p>n<br/>
+执行当前行直到到达下一行或直到它返回</p>
+<p>s<br/>
+执行当前行，一有可能就停止（比如当前行有一个函数调用）。它和n(next)的区别是当前行中有函数调用时s(step)会停止当前行的执行而去调用那个函数，而n不会停止，直到计算完成这一行（到达下一行）。</p>
+<p>b(reak) [[filename:]lineno | function[, condition]]<br/>
+设置断点，可以是行号或函数。如 <code>b 10</code>, <code>b foo</code>, <code>b foo,n == 5</code>，最后在函数<code>foo()</code>入口处设置一个断点，但仅当n的值是5时才有效。当<code>b</code>命令无参数时，打印所有断点。</p>
+<p>tb(reak) [[filename:]lineno | function[, condition]]<br/>
+临时断点，只hit一次。</p>
+<p>disable [bpnumber [bpnumber ...]]<br/>
+使指点行的断点（们）失效</p>
+<p>enable [bpnumber [bpnumber ...]]<br/>
+使指定行上的断点（们）有效</p>
+<p>c<br/>
+继续执行程序，直到遇到下一个断点</p>
+<p>w<br/>
+即where，打印当前执行点的位置</p>
+<p>l [first, [,last]]<br/>
+输出当前行附近的源码</p>
+<p>p expression<br/>
+执行一个表达式当打印其值。</p>
+<p>a(rgs)<br/>
+打印当前函数的参数及其值</p>
+<p>&lt;直接回车&gt;<br/>
+重复执行上次的命令</p>
+<p>并遇到pdb不认识的命令时，会将它当成python表达式执行。如果你想执行的表达时，最前面加上 <code>!</code> 字符，比如 <code>!n == 5</code></p>
+<p>多个debug命令可以写在一行上，中间用两个分号分隔，如 <code>s;;s</code>。</p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

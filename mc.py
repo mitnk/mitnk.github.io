@@ -7,7 +7,6 @@ django.setup()
 from django.template.loader import render_to_string
 from pathlib import Path
 import datetime
-import markdown
 import re
 
 
@@ -51,8 +50,7 @@ def _create_html_file(title):
 def make_html(md_file):
     title = _parse_title(md_file.split('/')[-1])
     with open(md_file, 'r') as f:
-        text = f.read()
-    content = markdown.markdown(text)
+        content = f.read()
     context = {
         'content': content,
         'title': title.replace('_', ' ').title(),

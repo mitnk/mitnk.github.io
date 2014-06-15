@@ -1,11 +1,12 @@
 {% extends "base.html" %}
+{% load common_tags %}
 
 {% block content %}
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
         <h1 class="entry-title">{{ title }}</h1>
         <div class="entry-content">
-            {{ content|safe }}
+            {{ content|pygments_markdown|safe }}
         </div>
     </article>
 

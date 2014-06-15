@@ -56,18 +56,19 @@
 <p>只dump一个单独的表</p>
 <div class="highlight"><pre>$ pg_dump -t mytab mydb &gt; db.sql
 </pre></div>
-<p>Dump 所以dtroit schema是以emp开始的表，但不包括employee_log这个表</p>
-<div class="highlight"><pre>$ pg_dump -t 'detroit.emp*' -T detroit.employee_log mydb &gt; db.sql
-</pre></div>
-<p>Dump 所有的 schemas 名字以east 或 west 开头并以gsm结束的，但不包括名字中包含test的scema</p>
-<div class="highlight"><pre>$ pg_dump -n 'east*gsm' -n 'west*gsm' -N '*test*' mydb &gt; db.sql
-$ pg_dump -n '(east|west)*gsm' -N '*test*' mydb &gt; db.sql
-</pre></div>
 <p>只dump一个单独表的结构（不含数据）</p>
 <div class="highlight"><pre>$ pg_dump -t mytab -s mydb
 </pre></div>
 <p>只dump一个单独表的数据（不含结构）</p>
 <div class="highlight"><pre>$ pg_dump -t mytab -a mydb
+</pre></div>
+<p>只dump特定行</p>
+<div class="highlight"><pre>$ psql db_name
+# COPY (SELECT * FROM mytable WHERE ... ) TO '/path/to/myfile.sql';
+# COPY mytable FROM 'myfile.sql'
+</pre></div>
+<p>Restore：</p>
+<div class="highlight"><pre>$ psql db_name -f mydb.sql
 </pre></div>
         </div>
     </article>

@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Django Performance Tips</h1>
+        <div class="entry-content">
+            <p>Django第一次公开发布是在2005年7月，svn版本号是8825。而在同年12月Django BDFL Jacob 就写过一个关于Django的性能指南[1]. 在技术领域，很多东东，比如框架，比如语言过时很快，但有些东西是不变的。而这篇指南我认为就是不变的东西，它不只是关于Django性能指南，我觉得它可以做为所有Web Server的性能参考。</p>
+<p><strong>用一个独立的media文件服务器</strong></p>
+<p>Django不是设计来Host静态文件的。如果你用一个Apache实例来serve Django和静态文件，那性能一定不会好到哪去。如果你买不起一个额外服务器，那至少用一个额外的进程。</p>
+<p><strong>用一个独立的数据库服务器</strong></p>
+<p>如果允许，用一个独立的数据库服务器。因为Apache和PostgreSQL（或MySQL等）会抢占系统各种资源。</p>
+<p><strong>用PostgreSQL</strong></p>
+<p>这个大概就会MySQL社区骂，但以我的经验，PostgreSQL几乎在所有方面都比MySQL快。</p>
+<p><strong>内存越大越好</strong></p>
+<p>内存的价格大概 $200 每G，但和程序员的价格比起来，太便宜了。买你能负担得起的最大内存，然后再多买一点。</p>
+<p>更快的CPU并不会给性能带来多大提升，90%服务器都是在等IO。如果你有多台Server，那内存尽量给数据库服务器用。如果可能将整个数据库都放到内存里。</p>
+<p><strong>关掉 keep-alive选项</strong></p>
+<p>我真不知道这个选项是干什么的，但关掉它，你能提升大概50%的Django服务器性能。当然你可不要将serve静态文件服务器这个选项给关掉了。。</p>
+<p><strong>用Memcached</strong></p>
+<p>虽然Django支持不同的Cache后端，但一秒钟都不要想，直接用Memcached吧。</p>
+<p><strong>微调、微调再微调</strong></p>
+<p>Web服务，数据库引擎，机器本身的默认配置都不够好，你总能将它们调得更好。有N多文章介绍这些主题，以下几个文章仅是其中很少一部分：</p>
+<ul>
+<li><a href="http://www.revsys.com/writings/postgresql-performance.html">Performance Tuning PostgreSQL by Frank Wiles</a></li>
+<li><a href="http://www.bookpool.com/sm/0596003064">High Performance MySQL (if you’re the MySQL type)</a>.</li>
+<li><a href="http://www.powerpostgresql.com/PerfList">Power PostgreSQL performance tips</a>.</li>
+<li><a href="http://www.varlena.com/GeneralBits/Tidbits/annotated_conf_e.html">The annotated postgresql.conf</a>.</li>
+<li>The <a href="http://archives.postgresql.org/pgsql-performance/">postgresql-performance</a> mailing list.</li>
+<li>ONLamp’s <a href="http://www.onlamp.com/pub/a/onlamp/2004/02/05/lamp_tuning.html">Introducing LAMP Tuning Techniques</a>.</li>
+<li><a href="http://alumnus.caltech.edu/~dank/fixing-overloaded-web-server.html">Fixing an overloaded web server</a>.</li>
+</ul>
+<p>[1] <a href="http://jacobian.org/writing/django-performance-tips/">http://jacobian.org/writing/django-performance-tips/</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

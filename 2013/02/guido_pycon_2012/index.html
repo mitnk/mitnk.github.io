@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Guido Pycon 2012</h1>
+        <div class="entry-content">
+            <p>Guido gave a great talk [1] on Pycon 2012, on the follow trolls:</p>
+<ul>
+<li>Language Comparisons<ul>
+<li>"Python sucks, Ruby rules"</li>
+</ul>
+</li>
+<li>Python 3<ul>
+<li>"When will you admit Python 3 is a mistake?"</li>
+</ul>
+</li>
+<li>PyPy<ul>
+<li>"Since PyPy is so much faster than CPython, why not just abandon CPython"</li>
+</ul>
+</li>
+<li>Dynamic Typing<ul>
+<li>"I don't want my app to fail with an AttributeError after running for 4 hours"</li>
+</ul>
+</li>
+<li>Speed<ul>
+<li>"Python is too slow for real work"</li>
+<li>"Why don't you write a compiler"</li>
+</ul>
+</li>
+<li>The GIL<ul>
+<li>"Python is useless because of the GIL"</li>
+<li>"You cannot use it on a multi-core computer"</li>
+<li>"Why don't you support real threads?"</li>
+</ul>
+</li>
+<li>Async I/O and Concurrency<ul>
+<li>"When will you integrate Stackless?"</li>
+<li>"When will you add a proper event loop?"</li>
+<li>"Why don't you add gevent to the stdlib?"</li>
+<li>"Why don't you add channels / message passing / actors / Erlang-style processors /
+   {my favorite synchronization abstraction}?"</li>
+</ul>
+</li>
+<li>The Browser<ul>
+<li>"Please make Python work in the browser. It would solve all the world's problem."</li>
+</ul>
+</li>
+<li>Mobile<ul>
+<li>"You work for Google [1]. Why didn't you make Python language of choice for Andriod?"</li>
+</ul>
+</li>
+<li>Function Programming<ul>
+<li>"Why did you kill reduce()?"</li>
+<li>"Please fix lambda."</li>
+<li>"Please add more functional features."</li>
+</ul>
+</li>
+<li>The Standard Library<ul>
+<li>"Why hasn't {my favorite package} been added to the standard library yet?"</li>
+</ul>
+</li>
+<li>Garbage Collection<ul>
+<li>"Python doesn't have garbage collection."</li>
+<li>"Reference counting is too slow."</li>
+</ul>
+</li>
+<li>Language Evolution<ul>
+<li>"Stop changing the language already!"</li>
+<li>"Please add {my favorite feature}!"</li>
+</ul>
+</li>
+</ul>
+<p>This is an old keynote. But if you didn't watch it and are interested with the trolls list above, go to watch it.
+The video is on Youtube [1], But you can download it from my server[3], though I won't give my
+guarantee on the link validity period.</p>
+<p>And there is a recap for this keynote [4], I put it here:</p>
+<p>--</p>
+<p>Guido is wearing a "Python is for girls" T-shirt.</p>
+<p>He showed a Python logo made out of foam on a latte. Yuko Honda really did it.</p>
+<p>He had some comments about trolls.</p>
+<p>Troll, n:
+A leading question whose main purpose is to provoke an argument that cannot be won.
+A person who asks such questions.
+Guido said that Python, Ruby, and Perl are exactly the same language from 10,000 feet. They should be our friends. Lisp is not all that different from Python, although you might not notice it. Ruby is not kicking Python's butt in any particular case.</p>
+<p>They added unicode literals back to Python 3.3 just to make compatibility with Python 2.7 easier.</p>
+<p>"I should have used a real presentation tool instead of Google Docs." (Doh! He's a Googler!)</p>
+<p>More and more projects are being ported to Python 3.</p>
+<p>People are actually capable of using one code base for Python 2.7 and Python 3.3. There's a helpful library called "Six".</p>
+<p>The Python 3 migration is painful now, but it's going to be worth it.</p>
+<p>If PyPy is faster than cPython, why not abandon cPython? No one is using PyPy in production. PyPy is still hard for people writing C extensions. cPython is still a great glue system (for Fortran, C, and random binary code). "PyPy still has a long way to go. Speed is not everything." PyPy and cPython will live together in slightly different contexts for years. cPython will remain the reference implementation. </p>
+<p>People still criticize dynamic typing, saying it's not safe. "The type checking in compilers is actually really weak." For instance, most of the time, a type checker can't tell you if an int represents inches or centimeters. The only way to create good code is to test, audit, hire smart people, etc. Test! A type checking compiler can only find a narrow set of errors; no one has conquered the problem of writing perfect software.</p>
+<p>A large program written in a statically typed language will often have a dynamically typed, interpreted subsystem, done via string manipulation, or something else.</p>
+<p>Dynamic typing is not inherently inferior to static typing.</p>
+<p>Guido hopes people are "doing interesting things with static analysis."</p>
+<p>Guido pronounces GIL as "Jill".</p>
+<p>"OS level threads are meant for parallel IO, not for parallel computation." Use separate processes for each core. One team was using Python on a machine with 64,000 cores. "You have to be David Beazley to come up with the counterexample."</p>
+<p>Guido has complaints about each of the async libraries, but he doesn't have a solution that he recommends. It's not a problem he has to deal with. gevent is interesting. He can't add stackless to Python because it would make other implementations much more complicated or impossible. He doesn't want to put an event loop in the stdlib because not everyone needs it. Some things are better developed outside of Python. He's not a fan of callback-style approaches; he would prefer the gevent approach. He likes synchronous looking code that under the hood does async, without using threads. All these things deserve more attention.</p>
+<p>We might want to make Python 4 the new language to solve the concurrent programming problem. He wants to see lots of alternatives.</p>
+<p>Introducting a new language to replace JavaScript is such a hard, political problem.</p>
+<p>He was told running Python on Android is "strategically not important." He was asked not to work on it anymore. Other people are going to have to do it.</p>
+<p>"I don't think Python is a functional programming language. map, filter, lambda are not enough to make a functional programming language. Python is very pragmatic. It lets you mess around with state, fiddle with the OS, etc. Those things are really hard in a beautiful language like Haskell. When you have to do messy IO in Haskell, all the messiness becomes even messier.</p>
+<p>Learn a functional language, get excited about the ideas, and let it impact your Python code. You don't have to do everything with a functional style.</p>
+<p>"From data to data" really fits the functional paradigm. You can use that in Python.</p>
+<p>He likes functional programming as a challenge and as an idea. However, 30 years from now, we won't all be writing functional programs all the time.</p>
+<p>You're much better off not being in the stdlib. If you have a broken API, you can never fix it. Python has a very slow release schedule. It's much better to be third-party. Don't feel like you're not successful unless you're in the stdlib. It's better to own your own release cycle. Things in the stdlib should be things that enable everything else; like a context manager.</p>
+<p>Python has reference counting and a garbage collector that resolves cycles, etc. PyPy is the place to play with better memory allocators. "I'm very happy with cPython's memory allocator."</p>
+<p>Let's set our expectations low about adding new features to the language since we just finished Python 3. If you really have a desperate need for an extension to the language, think about using a preprocessor [my term] of some sort. Import hooks can let you do the transformation automatically.</p>
+<p>[1] <a href="https://www.youtube.com/watch?v=EBRMq2Ioxsc">https://www.youtube.com/watch?v=EBRMq2Ioxsc</a><br/>
+[2] Guido is working at Dropbox now<br/>
+[3] http://kindle.io/media/videos/guido-python-2012.flv<br/>
+[4] <a href="http://jjinux.blogspot.jp/2012/03/pycon-keynote-guido-van-rossum.html">PyCon 2012 Keynote of Guido Van Rossum</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

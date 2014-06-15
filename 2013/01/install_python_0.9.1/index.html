@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Install Python 0.9.1</h1>
+        <div class="entry-content">
+            <p>Python官网有一个0.9.1的古老版本[1]，这个源码包大小只有380K，而且可以正常编译安装（在Mac 10.8、Arch Linux上测试通过）：</p>
+<div class="highlight"><pre>wget http://www.python.org/download/releases/early/Python-0.9.1.tar.gz
+tar xf Python-0.9.1.tar.gz
+cd python-0.9.1/src/
+make
+cp -v python /usr/local/bin/python0.9
+</pre></div>
+<p>当然了功能非常有限：</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">python0</span><span class="o">.</span><span class="mi">9</span> 
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">os</span>
+<span class="n">Unhandled</span> <span class="n">exception</span><span class="p">:</span> <span class="n">undefined</span> <span class="n">name</span><span class="p">:</span> <span class="n">os</span>
+<span class="n">Stack</span> <span class="n">backtrace</span> <span class="p">(</span><span class="n">innermost</span> <span class="n">last</span><span class="p">):</span>
+  <span class="n">File</span> <span class="s">"&lt;stdin&gt;"</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)]</span>
+<span class="n">Parsing</span> <span class="n">error</span><span class="p">:</span> <span class="nb">file</span> <span class="o">&lt;</span><span class="n">stdin</span><span class="o">&gt;</span><span class="p">,</span> <span class="n">line</span> <span class="mi">1</span><span class="p">:</span>
+<span class="p">[</span><span class="n">x</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="nb">range</span><span class="p">(</span><span class="mi">7</span><span class="p">)]</span>
+      <span class="o">^</span>
+<span class="n">Unhandled</span> <span class="n">exception</span><span class="p">:</span> <span class="n">run</span><span class="o">-</span><span class="n">time</span> <span class="n">error</span><span class="p">:</span> <span class="n">syntax</span> <span class="n">error</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">+</span> <span class="p">[</span><span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">4</span><span class="p">]</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="kn">import</span> <span class="nn">math</span>
+<span class="o">&gt;&gt;&gt;</span> <span class="nb">dir</span><span class="p">(</span><span class="n">math</span><span class="p">)</span>
+<span class="p">[</span><span class="s">'acos'</span><span class="p">,</span> <span class="s">'asin'</span><span class="p">,</span> <span class="s">'atan'</span><span class="p">,</span> <span class="s">'atan2'</span><span class="p">,</span> <span class="s">'ceil'</span><span class="p">,</span> <span class="s">'cos'</span><span class="p">,</span> <span class="s">'cosh'</span><span class="p">,</span> <span class="s">'e'</span><span class="p">,</span> <span class="s">'exp'</span><span class="p">,</span> <span class="s">'fabs'</span><span class="p">,</span> <span class="s">'floor'</span><span class="p">,</span> <span class="s">'log'</span><span class="p">,</span> <span class="s">'log10'</span><span class="p">,</span> <span class="s">'pi'</span><span class="p">,</span> <span class="s">'pow'</span><span class="p">,</span> <span class="s">'sin'</span><span class="p">,</span> <span class="s">'sinh'</span><span class="p">,</span> <span class="s">'sqrt'</span><span class="p">,</span> <span class="s">'tan'</span><span class="p">,</span> <span class="s">'tanh'</span><span class="p">]</span>
+</pre></div>
+<p>这么小的代码量（只有8k行Python代码，和3w行C代码），非常适合读来了解Python语言内部实现。（虽然具体实现与现在的2.x/3.x相比，可能已经完全不同了）</p>
+<p>[1] <a href="http://www.python.org/download/releases/early/">http://www.python.org/download/releases/early/</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

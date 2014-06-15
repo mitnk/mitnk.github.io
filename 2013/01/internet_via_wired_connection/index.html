@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Internet Via Wired Connection</h1>
+        <div class="entry-content">
+            <p>Short answer: Run <code>sudo dhcpcd</code>.</p>
+<h2>Original Investigating Article</h2>
+<p>I was in a cafe called XiangRiKui, where is weird that without wireless network. If you want to connect to the Internet, they will provide you a Ethernet cable. This time, I only took my EPC with Arch Linux installed. And I didn't config any wired connection.</p>
+<p><img alt="Xiangrikui Cafe" src="/images/2013/01/xiangrikui_cafe.jpg"/></p>
+<p>I had to connect to internet with my iPhone's personal hotspot, and open Arch Linux's guide page[1]. And here is the instructions:</p>
+<div class="highlight"><pre>$ ip link
+</pre></div>
+<p>The output was:</p>
+<div class="highlight"><pre>1: lo: &lt;LOOPBACK,UP,LOWER_UP&gt; mtu 16436 qdisc noqueue state UNKNOWN mode DEFAULT 
+    link/loopback 00:00:00:00:00:00 brd 00:00:00:00:00:00
+2: enp1s0: &lt;BROADCAST,MULTICAST&gt; mtu 1500 qdisc noop state DOWN mode DEFAULT qlen 1000
+    link/ether bc:ae:c6:3e:b3:70 brd ff:ff:ff:ff:ff:ff
+3: wlan0: &lt;BROADCAST,MULTICAST,UP,LOWER_UP&gt; mtu 1500 qdisc mq state UP mode DORMANT qlen 1000
+    link/ether 46:5e:a0:b3:d4:ec brd ff:ff:ff:ff:ff:ff
+</pre></div>
+<p>The interface <code>enp1s0</code> should be wired interface, since Ethernet interfaces are begin with a letter <code>e</code>. If we're unsure, try:</p>
+<div class="highlight"><pre>$ iwconfig
+</pre></div>
+<p>The output was:</p>
+<div class="highlight"><pre>wlan0     IEEE 802.11bgn  ESSID:"mitnk's iPhone"  
+      Mode:Managed  Frequency:2.417 GHz  Access Point: EE:7D:28:E3:E1:88   
+      Bit Rate=6 Mb/s   Tx-Power=19 dBm   
+      Retry  long limit:7   RTS thr:off   Fragment thr:off
+      Power Management:off
+      Link Quality=65/70  Signal level=-45 dBm  
+      Rx invalid nwid:0  Rx invalid crypt:0  Rx invalid frag:0
+      Tx excessive retries:5  Invalid misc:17   Missed beacon:0
+
+lo        no wireless extensions.
+
+enp1s0    no wireless extensions.
+</pre></div>
+<p>This indicated that <code>lo</code> and <code>enp1s0</code> is NOT wireless interfaces.</p>
+<p>Now we activate this interface:</p>
+<div class="highlight"><pre>$ sudo ip link set enp1s0 up
+</pre></div>
+<p>Genericly, we need to know <strong>Subnet mask</strong>, <strong>Gateway's IP address</strong>, etc. But
+we can use <code>dhcpcd</code> do this for us. Just type:</p>
+<div class="highlight"><pre>$ sudo dhcpcd
+</pre></div>
+<p>To check, run command <code>ifconfig</code>, if you can see something like
+<code>inet 192.168.11.168</code> under <code>enp1s0</code>, the wired connection was done successfully.</p>
+<p>[1] <a href="https://wiki.archlinux.org/index.php/Beginners'_Guide#Wired">Arch Linux Beginners' Guide</a></p>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

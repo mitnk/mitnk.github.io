@@ -45,16 +45,21 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">A Simple Englishchinese Dictionary</h1>
+        <h1 class="entry-title">Linux Run Multiple Commands At Once</h1>
         <div class="entry-content">
-            <p>写了一个简单的英汉查询插件，同时支持 Firefox 和 Chrome.</p>
-<p><img border="4" src="/images/2012/07/mdict.png"/></p>
-<p>Firefox用户请到 <a href="https://addons.mozilla.org/en-US/firefox/addon/mdict/">Mozilla Addon站点下载</a></p>
-<p>Chrome开发者如果想发布插件必须要用信用卡支付5美元<br/>
-且不支持国内信用卡，所以我发布不到 Google app Store了  </p>
-<p>Chrome用户 <a href="http://mitnk.com/site_media/mdict_0.9.0.crx">本站下载安装</a></p>
-<p>代码在 github 上：<br/>
-<a href="https://github.com/mitnk/mdict">https://github.com/mitnk/mdict</a></p>
+            <p>在Linux下，我们常常会执行一系列的命令来完成某件事。通常我们一个命令一个命令地输入，在等到前一个命令完成了，我们再输入后一个命令。</p>
+<p>其实我们可以用分号 ; 来一次执行多个命令。比如</p>
+<div class="highlight"><pre><span class="nb">cd</span>; ls
+</pre></div>
+<p>这条命令是cd到HOME目录下，然后执行ls命令。</p>
+<p>还有一种方法是用两个 &amp; 号，即： <code>&amp;&amp;</code>。比如：</p>
+<div class="highlight"><pre>./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
+</pre></div>
+<p>与用分号的区别是，如果前一个命令执行失败了（返回值不是0），那么后一条命令就不会执行。</p>
+<p>给多条命令计时：</p>
+<div class="highlight"><pre><span class="nb">time</span> <span class="o">{</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install; <span class="o">}</span>
+</pre></div>
+<p>注意最后一条命令后面有个分号。</p>
         </div>
     </article>
 

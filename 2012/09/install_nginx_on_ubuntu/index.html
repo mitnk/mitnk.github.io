@@ -45,16 +45,67 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">A Simple Englishchinese Dictionary</h1>
+        <h1 class="entry-title">Install Nginx On Ubuntu</h1>
         <div class="entry-content">
-            <p>写了一个简单的英汉查询插件，同时支持 Firefox 和 Chrome.</p>
-<p><img border="4" src="/images/2012/07/mdict.png"/></p>
-<p>Firefox用户请到 <a href="https://addons.mozilla.org/en-US/firefox/addon/mdict/">Mozilla Addon站点下载</a></p>
-<p>Chrome开发者如果想发布插件必须要用信用卡支付5美元<br/>
-且不支持国内信用卡，所以我发布不到 Google app Store了  </p>
-<p>Chrome用户 <a href="http://mitnk.com/site_media/mdict_0.9.0.crx">本站下载安装</a></p>
-<p>代码在 github 上：<br/>
-<a href="https://github.com/mitnk/mdict">https://github.com/mitnk/mdict</a></p>
+            <h2>Install Requirements</h2>
+<div class="highlight"><pre>sudo apt-get install make gcc build-essential openssl libssl-dev
+</pre></div>
+<h2>Download</h2>
+<div class="highlight"><pre>wget http://nginx.org/download/nginx-1.2.8.tar.gz
+wget ftp://ftp.csx.cam.ac.uk/pub/software/programming/pcre/pcre-8.30.tar.gz
+</pre></div>
+<h2>Install</h2>
+<div class="highlight"><pre>./configure --with-http_ssl_module --with-pcre<span class="o">=</span>../pcre-8.30 <span class="o">&amp;&amp;</span> <span class="se">\</span>
+make <span class="o">&amp;&amp;</span> <span class="se">\</span>
+sudo make install
+</pre></div>
+<h2>配置</h2>
+<div class="highlight"><pre>sudo vim /usr/local/nginx/conf/nginx.conf
+</pre></div>
+<p>Add the following info</p>
+<div class="highlight"><pre>worker_processes  2;
+
+events {
+    worker_connections  1024;
+}
+
+http {
+    include       mime.types;
+    include       uwsgi_params;
+    default_type  application/octet-stream;
+    client_max_body_size 100m;
+
+    sendfile        on;
+    #tcp_nopush     on;
+
+    keepalive_timeout  65;
+
+    gzip  on;
+    gzip_types text/plain text/css application/x-javascript text/xml application/xml application/xml+rss text/javascript application/json;
+    #include /home/ocean/uwsgi/sites/*;
+}
+</pre></div>
+<p>启动</p>
+<blockquote>
+-s signal Send signal to a master process: stop, quit, reopen, reload. (version &gt;= 0.7.53)
+-v Print version.
+</blockquote>
+<div class="highlight"><pre>sudo /usr/local/nginx/sbin/nginx
+</pre></div>
+<p>让nginx自动启动, <a href="http://serverfault.com/questions/69350/launch-nginx-on-startup">出处</a></p>
+<div class="highlight"><pre>cd /etc/init.d
+sudo vim nginx.sh
+</pre></div>
+<p>Input the following code:</p>
+<div class="highlight"><pre>#!/bin/bash
+# this script starts the nginx process attached to passenger
+sudo /usr/local/nginx/sbin/nginx
+</pre></div>
+<p>save and exit.</p>
+<div class="highlight"><pre>sudo chmod +x nginx.sh
+sudo update-rc.d nginx.sh defaults
+</pre></div>
+<p>Done.</p>
         </div>
     </article>
 

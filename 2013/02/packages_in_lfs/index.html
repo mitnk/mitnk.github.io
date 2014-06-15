@@ -1,0 +1,580 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/paginator.css" />
+
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+
+
+  <title>Mitnk's Blog</title>
+</head>
+
+<body>
+<div id="header">
+    <div class="wrapper">
+        <p class="title">Mitnk's Blog</p>
+        <p>Welcome here.</p>
+    </div>
+</div>
+
+<div id="wrapper">
+    <div id="menu">
+        <ul>
+            <li><a href="/">Home</a></li>
+            <li><a href="/about/">About</a></li>
+            <!--
+            <li><a href="/category/">Archives</a></li>
+            -->
+            <li> <div id="header-search">
+<form id="cse-form" action="http://www.google.com/cse">
+  <input type="hidden" name="siteurl" value="mitnk.com" />
+  <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+  <input type="text" id="cse-input" value="Search" name='q' onFocus="enter_search_box()" onBlur="leave_search_box()" />
+</form>
+</div>
+ </li>
+        </ul>
+    </div>
+
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Packages In Lfs</h1>
+        <div class="entry-content">
+            <p>终于完成了一个LFS系统。将这个过程用到的包包们整理一下：</p>
+<ul>
+<li>
+<p><strong>Linux-3.5.2 API Headers</strong></p>
+<ul>
+<li>The Linux API Headers expose the kernel's API for use by Glibc.</li>
+</ul>
+</li>
+<li>
+<p><strong>Man-Pages-3.42</strong></p>
+<ul>
+<li>This package contains over 1900 man pages</li>
+</ul>
+</li>
+<li>
+<p><strong>Glibc-2.16.0 (17.6)</strong></p>
+<ul>
+<li>This package contains the main C library. This library provides the basic
+    routines for allocating memory, searching directories, opening and 
+    closing files, reading and writing files, string handling, pattern
+    matching, arithmetic, and so on.</li>
+<li>Installed programs: catchsegv, gencat, getconf, getent, iconv,
+    iconvconfig, ldconfig, ldd, lddlibc4, locale, localedef, mtrace, nscd,
+    pcprofiledump, pt_chown, rpcgen, sln, sotruss, sprof, tzselect, xtrace,
+    zdump, and zic</li>
+</ul>
+</li>
+<li>
+<p><strong>Zlib-1.2.7</strong></p>
+<ul>
+<li>The Zlib package contains compression and decompression routines used by
+    some programs</li>
+</ul>
+</li>
+<li>
+<p><strong>File-5.11</strong></p>
+<ul>
+<li>The File package contains a utility for determining the type of files.</li>
+<li>Installed programs: file</li>
+</ul>
+</li>
+<li>
+<p><strong>Bintuils-2.22</strong></p>
+<ul>
+<li>The Bintuils package contains a linker, an assembler, and other tools
+    for handling object files</li>
+<li>Installed programs: addr2line, ar, as, c++filt, elfedit, gprof, ld,
+    ld.bfd, nm, objcopy, objdump, ranlib, readelf, size, strings, and strip</li>
+</ul>
+</li>
+<li>
+<p><strong>GMP-5.0.5</strong></p>
+<ul>
+<li>The GMP package contains math libraries. These have useful functions for
+    arbitrary presision arithmetic</li>
+</ul>
+</li>
+<li>
+<p><strong>MPFR-3.1.1</strong></p>
+<ul>
+<li>The MPFR package contains functions for multiple precision math</li>
+</ul>
+</li>
+<li>
+<p><strong>MPC-1.0</strong></p>
+<ul>
+<li>The MPC package contains a library for the arithmetic of complex number
+    with arbitrarily high precision and correct rounding of the result.</li>
+</ul>
+</li>
+<li>
+<p><strong>GCC-4.7.1 (53.5)</strong></p>
+<ul>
+<li>The GCC package contains the GNU compiler collection, which includes the
+    C and C++ compilers.</li>
+<li>Installed programs: c++, cc (link to gcc), cpp, g++, gcc, gccbug,
+    and gcov</li>
+</ul>
+</li>
+<li>
+<p><strong>Sed-4.2.1</strong></p>
+</li>
+<li>
+<p><strong>Bzip2-1.0.6</strong></p>
+<ul>
+<li>The Bzip2 package contains programs for compressing and decompressing
+    files. Compressing text files with bzip2 yields a much better
+    compression percentage than with the traditional gzip.</li>
+<li>Installed programs: bunzip2 (link to bzip2), bzcat (link to bzip2),
+    bzcmp (link to bzdiff), bzdiff, bzegrep (link to bzgrep), 
+    bzfgrep (link to bzgrep), bzgrep, bzip2, bzip2recover, bzless 
+    (link to bzmore), and bzmore</li>
+</ul>
+</li>
+<li>
+<p><strong>Pkg-config-0.27</strong></p>
+<ul>
+<li>the pkg-config package contains a tool for passing the include path
+    and/or library paths to build tools during the configure and make
+    file execution.</li>
+<li>Installed programs: pkg-config</li>
+</ul>
+</li>
+<li>
+<p><strong>Ncurses-5.9</strong></p>
+<ul>
+<li>The Ncurses package contains libraries for terminal-independent handling
+    of character screens.</li>
+<li>Installed programs: captoinfo (link to tic), clear, infocmp,
+    infotocap (link to tic), ncursesw5-config, reset (link to tset),
+    tabs, tic, toe, tput, and tset</li>
+</ul>
+</li>
+<li>
+<p><strong>Util-linux-2.21.2</strong></p>
+<ul>
+<li>The Util-linux package contains miscellaneous utility programs. Among
+    them are utilities for handling file systems, consoles, partitions,
+    and messages.</li>
+<li>Installed programs: addpart, agetty, blkid, blockdev, cal, cfdisk, chcpu,
+    chkdupexe, chrt, col, colcrt, colrm, column, ctrlaltdel, cytune,
+    delpart, dmesg, fallocate, fdformat, fdisk, findfs, findmnt, flock,
+    fsck, fsck.cramfs, fsck.minix, fsfreeze, fstrim, getopt, hexdump,
+    hwclock, i386, ionice, ipcmk, ipcrm, ipcs, isosize, ldattach, linux32,
+    linux64, logger, look, losetup, lsblk, lscpu, mcookie, mkfs, mkfs.bfs,
+    mkfs.cramfs, mkfs.minix, mkswap, more, mount, mountpoint, namei, partx,
+    pg, pivot_root, prlimit, raw, readprofile, rename, renice, rev,
+    rtcwake, script, scriptreplay, setarch, setsid, setterm, sfdisk,
+    swaplabel, swapoff (link to swapon), swapon, switch_root, tailf,
+    taskset, tunelp, ul, umount, unshare, uuidd, uuidgen, wall, whereis,
+    wipefs, and x86_64</li>
+</ul>
+</li>
+<li>
+<p><strong>Psmisc-22.19</strong></p>
+<ul>
+<li>The Psmisc package contains programs for displaying information about
+    running processes.</li>
+<li>Installed programs: fuser, killall, peekfd, prtstat, pstree,
+    and pstree.x11 (link to pstree)</li>
+</ul>
+</li>
+<li>
+<p><strong>E2fsprogs-1.42.5 (1.7)</strong></p>
+<ul>
+<li>The E2fsprogs package contains the utilities for handling the ext2 file
+    system. It also supports the ext3 and ext4 journaling file systems.</li>
+<li>Installed programs: badblocks, chattr, compile_et, debugfs, dumpe2fs,
+    e2freefrag, e2fsck, e2image, e2initrd_helper, e2label, e2undo,
+    e4defrag, filefrag, fsck.ext2, fsck.ext3, fsck.ext4, fsck.ext4dev,
+    logsave, lsattr, mk_cmds, mke2fs, mkfs.ext2, mkfs.ext3, mkfs.ext4,
+    mkfs.ext4dev, mklost+found, resize2fs, and tune2fs</li>
+</ul>
+</li>
+<li>
+<p><strong>Shadow-4.1.5.1</strong></p>
+<ul>
+<li>The Shadow package contains programs for handling passwords in secure way</li>
+<li>Installed programs: chage, chfn, chgpasswd, chpasswd, chsh, expiry,
+    faillog, gpasswd, groupadd, groupdel, groupmems, groupmod, grpck,
+    grpconv, grpunconv, lastlog, login, logoutd, newgrp, newusers, nologin,
+    passwd, pwck, pwconv, pwunconv, sg (link to newgrp), su, useradd,
+    userdel, usermod, vigr (link to vipw), and vipw</li>
+</ul>
+</li>
+<li>
+<p><strong>Coreutils-8.19 (4.0)</strong></p>
+<ul>
+<li>The Coreutils package contains utilities for showing and setting the
+    basic system characteristics.</li>
+<li>Installed programs: base64, basename, cat, chcon, chgrp, chmod, chown,
+    chroot, cksum, comm, cp, csplit, cut, date, dd, df, dir, dircolors,
+    dirname, du, echo, env, expand, expr, factor, false, fmt, fold, groups,
+    head, hostid, id, install, join, link, ln, logname, ls, md5sum, mkdir,
+    mkfifo, mknod, mktemp, mv, nice, nl, nohup, nproc, od, paste, pathchk,
+    pinky, pr, printenv, printf, ptx, pwd, readlink, realpath, rm, rmdir,
+    runcon, seq, sha1sum, sha224sum, sha256sum, sha384sum, sha512sum,
+    shred, shuf, sleep, sort, split, stat, stdbuf, stty, sum, sync, tac,
+    tail, tee, test, timeout, touch, tr, true, truncate, tsort, tty, uname,
+    unexpand, uniq, unlink, users, vdir, wc, who, whoami, and yes</li>
+</ul>
+</li>
+<li>
+<p><strong>Iana-Etc-2.30</strong></p>
+<ul>
+<li>The Iana-Etc package provides data for network services and protocols.</li>
+</ul>
+</li>
+<li>
+<p><strong>M4-1.4.16</strong></p>
+<ul>
+<li>The M4 package contains a macro processor</li>
+<li>Installed processor: m4</li>
+</ul>
+</li>
+<li>
+<p><strong>Bison-2.6.2</strong></p>
+<ul>
+<li>The Bison contains a parser generator</li>
+<li>Installed programs: bison and yacc</li>
+</ul>
+</li>
+<li>
+<p><strong>Procps-3.2.8</strong></p>
+<ul>
+<li>The Procps package contains programs for monitoring processes.</li>
+<li>Installed programs: free, kill, pgrep, pkill, pmap, ps, pwdx, skill,
+    slabtop, snice, sysctl, tload, top, uptime, vmstat, w, and watch</li>
+</ul>
+</li>
+<li>
+<p><strong>Grep-2.14</strong></p>
+<ul>
+<li>Installed programs: egrep, fgrep, and grep</li>
+</ul>
+</li>
+<li>
+<p><strong>Readline-6.2</strong></p>
+<ul>
+<li>The Readline package is a set of libraries that offers command-line
+    editing and history capabilities.</li>
+</ul>
+</li>
+<li>
+<p><strong>Bash-4.2 (1.7)</strong></p>
+<ul>
+<li>The Bash package contains the Bourne-Again SHell.</li>
+<li>Installed programs: bash, bashbug, and sh (link to bash)</li>
+</ul>
+</li>
+<li>
+<p><strong>Libtool-2.4.2 (3.0)</strong></p>
+<ul>
+<li>The Libtool package contains the GNU generic library support script. It
+    wraps the complexity of using shared libraries in a consistent, portable
+    interface.</li>
+<li>Installed programs: libtool and libtoolize</li>
+</ul>
+</li>
+<li>
+<p><strong>GDBM-1.10</strong></p>
+<ul>
+<li>The GDBM package contains the GNU Database Manager. This is a disk file
+    format database which stores key/data-pairs in single files. The actual
+    data of any record being stored is indexed by a unique key, which
+    can be retrieved in less time than if it was stored in a text file.</li>
+</ul>
+</li>
+<li>
+<p><strong>Inetutils-1.9.1</strong></p>
+<ul>
+<li>The Inetutils package contains programs for basic networking</li>
+<li>Installed programs: ftp, hostname, ping, ping6, rcp, rexec, rlogin, rsh,
+    talk, telnet, tftp, and traceroute</li>
+</ul>
+</li>
+<li>
+<p><strong>Perl-5.16.1 (7.5)</strong></p>
+<ul>
+<li>The Perl package contains the Practical Extraction and Report Language.</li>
+<li>Install programs: a2p, c2ph, config_data, corelist, cpan, cpan2dist,
+    cpanp, cpanp-run-perl, dprofpp, enc2xs, find2perl, h2ph, h2xs,
+    instmodsh, json_pp, libnetcfg, perl, perl5.16.1 (link to perl),
+    perlbug, perldoc, perlivp, perlthanks (link to perlbug), piconv,
+    pl2pm, pod2html, pod2latex, pod2man, pod2text, pod2usage, podchecker,
+    podselect, prove, psed (link to s2p), pstruct (link to c2ph), ptar,
+    ptardiff, ptargrep, s2p, shasum, splain, and xsubpp</li>
+</ul>
+</li>
+<li>
+<p><strong>Autoconf-2.69 (4.5)</strong></p>
+<ul>
+<li>The Autoconf package contains programs for producing shell scripts that
+    can automatically configure source code</li>
+<li>Install programs: autoconf, autoheader, autom4te, autoreconf, autoscan,
+    autoupdate, and ifnames</li>
+</ul>
+</li>
+<li>
+<p><strong>Automake-1.12.3</strong></p>
+<ul>
+<li>The Automake package contains programs for generating Makefiles for use
+    with Autoconf.</li>
+<li>Installed programs: acinstall, aclocal, aclocal-1.12, automake,
+    automake-1.12, compile, config.guess, config.sub, depcomp, elisp-comp,
+    install-sh, mdate-sh, missing, mkinstalldirs, py-compile, symlink-tree,
+    and ylwrap</li>
+</ul>
+</li>
+<li>
+<p><strong>Diffutils-3.2</strong></p>
+<ul>
+<li>The Diffutils package contains programs that show the differences between
+    files or directories.</li>
+<li>Installed programs: cmp, diff, diff3, and sdiff</li>
+</ul>
+</li>
+<li>
+<p><strong>Gawk-4.0.1</strong></p>
+<ul>
+<li>The Gawk package contains programs for manipulating text files</li>
+<li>Installed programs: awk (link to gawk), dgawk, gawk, gawk-4.0.1, grcat,
+    igawk, pgawk, pgawk-4.0.1, and pwcat</li>
+</ul>
+</li>
+<li>
+<p><strong>Findutils-4.4.2</strong></p>
+<ul>
+<li>The Findutils package contains programs to find files. These programs are
+    provided to recursively search through a directory tree and to create,
+    maintain, and search a database.</li>
+<li>Installed programs: bigram, code, find, frcode, locate, oldfind,
+    updatedb, and xargs</li>
+</ul>
+</li>
+<li>
+<p><strong>Flex-2.5.37</strong></p>
+<ul>
+<li>The Flex package contains a utility for generating programs that recognize
+    patterns in text</li>
+<li>Installed programs: flex and lex</li>
+</ul>
+</li>
+<li>
+<p><strong>Gettext-0.18.1.1 (2.3)</strong></p>
+<ul>
+<li>The Gettext package contains utilities for internationalization and 
+    localization. These allow programs to be compiled with NLS (Native
+    Language Support), enabling them to output messages in the user's native
+    language.</li>
+<li>Installed programs: autopoint, config.charset, config.rpath, envsubst,
+    gettext, gettext.sh, gettextize, hostname, msgattrib, msgcat, msgcmp,
+    msgcomm, msgconv, msgen, msgexec, msgfilter, msgfmt, msggrep, msginit,
+    msgmerge, msgunfmt, msguniq, ngettext, recode-sr-latin, and xgettext</li>
+</ul>
+</li>
+<li>
+<p><strong>Groff-1.21</strong></p>
+<ul>
+<li>The Groff package contains programs for processing and formatting text</li>
+<li>Installed programs: addftinfo, afmtodit, chem, eqn, eqn2graph, gdiffmk,
+    geqn (link to eqn), grap2graph, grn, grodvi, groff, groffer, grog,
+    grolbp, grolj4, grops, grotty, gtbl (link to tbl), hpftodit, indxbib,
+    lkbib, lookbib, mmroff, neqn, nroff, pdfroff, pfbtops, pic, pic2graph,
+    post-grohtml, preconv, pre-grohtml, refer, roff2dvi, roff2html,
+    roff2pdf, roff2ps, roff2text, roff2x, soelim, tbl, tfmtodit, and troff</li>
+</ul>
+</li>
+<li>
+<p><strong>Xz-5.0.4</strong></p>
+<ul>
+<li>The Xz package contains programs for compressing and decompressing files.
+    It provides capabilities for the lzma and the newer xz compression
+    formats. Compressing text file with xz yields a better compression
+    percentage than with gzip or bzip2 commands</li>
+<li>Installed programs: lzcat (link to xz), lzcmp (link to xzdiff),
+    lzdiff (link to xzdiff), lzegrep (link to xzgrep),
+    lzfgrep (link to xzgrep), lzgrep (link to xzgrep),
+    lzless (link to xzless), lzma (link to xz), lzmadec, lzmainfo,
+    lzmore (link to xzmore), unlzma (link to xz), unxz, (link to xz), xz,
+    xzcat (link to xz), xzcmp (link to xzdiff), xzdec, xzdiff,
+    xzegrep (link to xzgrep), xzfgrep (link to xzgrep), xzgrep, xzless,
+    xzmore</li>
+</ul>
+</li>
+<li>
+<p><strong>GRUB-2.00</strong></p>
+<ul>
+<li>The GRUB package contains the GRand Unified Bootloader.</li>
+</ul>
+</li>
+<li>
+<p><strong>Less-444</strong></p>
+<ul>
+<li>The Less package contains a text file viewer.</li>
+<li>Installed programs: less, lessecho, and lesskey</li>
+</ul>
+</li>
+<li>
+<p><strong>Gzip-1.5</strong></p>
+<ul>
+<li>The Gzip package contains programs for compressing and decompressing files.</li>
+<li>Installed programs: gunzip, gzexe, gzip, uncompress, zcat, zcmp, zdiff,
+    zegrep, zfgrep, zforce, zgrep, zless, zmore, and znew</li>
+</ul>
+</li>
+<li>
+<p><strong>IPRoute2-3.5.1</strong></p>
+<ul>
+<li>The IPRoute2 package contains programs for basic and advanced IPV4-based
+    networking.</li>
+<li>Installed programs: ctstat (link to lnstat), genl, ifcfg, ifstat, ip,
+    lnstat, nstat, routef, routel, rtacct, rtmon, rtpr,
+    rtstat (link to lnstat), ss, and tc</li>
+</ul>
+</li>
+<li>
+<p><strong>Kbd-1.15.3</strong></p>
+<ul>
+<li>The Kbd package contains key-table files, console fonts, and keyboard
+    utilities.</li>
+<li>Installed programs: chvt, deallocvt, dumpkeys, fgconsole, getkeycodes,
+    kbd_mode, kbdrate, loadkeys, loadunimap, mapscrn, openvt,
+    psfaddtable (link to psfxtable), psfgettable (link to psfxtable),
+    psfstriptable (link to psfxtable), psfxtable, setfont, setkeycodes,
+    setleds, setmetamode, showconsolefont, showkey, unicode_start,
+    and unicode_stop</li>
+</ul>
+</li>
+<li>
+<p><strong>Kmod-9</strong></p>
+<ul>
+<li>The Kmod package console libraries and utilities for loading kernel
+    moudules</li>
+<li>Installed programs: depmod (link to kmod), insmod (link to kmod), kmod,
+    kmod-nolib, lsmod (link to kmod), modinfo (link to kmod),
+    modprobe (link to kmod), and rmmod (link to kmod)</li>
+</ul>
+</li>
+<li>
+<p><strong>Libpipeline-1.2.1</strong></p>
+<ul>
+<li>The Libpipeline package contains a library for manipulating pipelines of
+    subprocess in a flexible and convenient way.</li>
+</ul>
+</li>
+<li>
+<p><strong>Make-3.82</strong></p>
+<ul>
+<li>The Make package contains a program for compiling packages.</li>
+<li>Installed programs: make</li>
+</ul>
+</li>
+<li>
+<p><strong>Man-DB-2.6.2</strong></p>
+<ul>
+<li>The Man-DB package contains programs for finding and viewing man pages.</li>
+<li>Installed programs: accessdb, apropos (link to whatis), catman, lexgrog,
+    man, mandb, manpath, whatis, and zsoelim</li>
+</ul>
+</li>
+<li>
+<p><strong>Patch-2.6.1</strong></p>
+<ul>
+<li>The Patch package contains a program for modifying or creating files by
+    applying a “patch” file typically created by the diff program.</li>
+<li>Installed programs: patch</li>
+</ul>
+</li>
+<li>
+<p><strong>Sysklogd-1.5</strong></p>
+<ul>
+<li>The Sysklogd package contains programs for logging system messages,
+    such as those given by the kernel when unusual things happen.</li>
+<li>Installed programs: klogd and syslogd</li>
+</ul>
+</li>
+<li>
+<p><strong>Sysvinit-2.88dsf</strong></p>
+<ul>
+<li>The Sysvinit package contains programs for controlling the startup,
+    running, and shutdown of the system.</li>
+<li>Installed programs: bootlogd, fstab-decode, halt, init, killall5, last,
+    lastb (link to last), mesg, pidof (link to killall5),
+    poweroff (link to halt), reboot (link to halt), runlevel, shutdown,
+    sulogin, telinit (link to init), and utmpdump</li>
+</ul>
+</li>
+<li>
+<p><strong>Tar-1.26 (2.4)</strong></p>
+<ul>
+<li>The Tar package contains an archiving program.</li>
+<li>Installed programs: rmt and tar</li>
+</ul>
+</li>
+<li>
+<p><strong>Texinfo-4.13a</strong></p>
+<ul>
+<li>The Texinfo package contains programs for reading, writing, and converting
+    info pages.</li>
+<li>Installed programs: info, infokey, install-info, makeinfo, pdftexi2dvi,
+    texi2dvi, texi2pdf, and texindex</li>
+</ul>
+</li>
+<li>
+<p><strong>Udev-188 (from systemd-188)</strong></p>
+<ul>
+<li>The Udev package contains programs for dynamic creation of device nodes.
+    The development of udev has been merged with systemd, but most of
+    systemd is incompatible with LFS. Here we build and install just the
+    needed udev files.</li>
+<li>Installed programs: accelerometer, ata_id, cdrom_id, collect, mtd_probe,
+    scsi_id, v4l_id, udevadm, and udevd</li>
+</ul>
+</li>
+<li>
+<p><strong>Vim-7.3 (1.1)</strong></p>
+</li>
+</ul>
+        </div>
+    </article>
+
+    <div class="entry-meta">
+        Posted at June 15, 2014
+    </div>
+
+</div>
+
+    </div>
+
+    <div id="footer">
+      Power by <a href="http://twitter.com/mitnk">@mitnk</a> 2012
+    </div>
+</div>
+
+<script type="text/javascript" src="/media/js/main.js"> </script>
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

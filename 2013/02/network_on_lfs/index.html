@@ -45,16 +45,23 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">A Simple Englishchinese Dictionary</h1>
+        <h1 class="entry-title">Network On Lfs</h1>
         <div class="entry-content">
-            <p>写了一个简单的英汉查询插件，同时支持 Firefox 和 Chrome.</p>
-<p><img border="4" src="/images/2012/07/mdict.png"/></p>
-<p>Firefox用户请到 <a href="https://addons.mozilla.org/en-US/firefox/addon/mdict/">Mozilla Addon站点下载</a></p>
-<p>Chrome开发者如果想发布插件必须要用信用卡支付5美元<br/>
-且不支持国内信用卡，所以我发布不到 Google app Store了  </p>
-<p>Chrome用户 <a href="http://mitnk.com/site_media/mdict_0.9.0.crx">本站下载安装</a></p>
-<p>代码在 github 上：<br/>
-<a href="https://github.com/mitnk/mdict">https://github.com/mitnk/mdict</a></p>
+            <p>To connect to a wireless network on LFS, we should read some content from BLFS.</p>
+<p>First, we need install Net-tools, which contains the <code>ifconfig</code> program.</p>
+<p>Install Wireless Tools for <code>iwconfig</code> program.</p>
+<p>Install libnl and openssl for wpa_supplicant.</p>
+<p>Install wpa_supplicant.</p>
+<p>Config wpa_supplicant:</p>
+<p>wpa_passphrase SSID SECRET_PASSWORD &gt; /etc/wpa_supplicant.conf</p>
+<p>Using the following command to connect:</p>
+<div class="highlight"><pre>wpa_supplicant -B -c/etc/wpa_supplicant.conf -iwlan0 -Dnl80211,wext
+sleep 2 # let it settle
+dhcpcd
+</pre></div>
+<p>If you cannot see the wireless interface with <code>iwconfig</code> after rebooting, you may need to
+recompile your Kernel with proper wireless device driver. Use <code>lspci | grep -i net</code> to check
+which wireless device you are using.</p>
         </div>
     </article>
 

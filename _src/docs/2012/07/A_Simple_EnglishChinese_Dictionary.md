@@ -1,6 +1,6 @@
 写了一个简单的英汉查询插件，同时支持 Firefox 和 Chrome.
 
-![MDict](https://static-ssl-cdn.addons.mozilla.net/img/uploads/previews/full/73/73263.png)
+<img src="/images/2012/07/mdict.png" border="4">
 
 Firefox用户请到 [Mozilla Addon站点下载](https://addons.mozilla.org/en-US/firefox/addon/mdict/)
 

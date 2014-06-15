@@ -1,0 +1,4 @@
+Django==1.7b4
+Markdown==2.4.1
+Pygments==1.6
+beautifulsoup4==4.3.2

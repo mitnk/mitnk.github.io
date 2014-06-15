@@ -88,6 +88,25 @@ def compile(md_file, wiki=False):
         html = make_html(md_file, wiki=wiki)
 
 
+def generatesitemap():
+    dir_ = './site_map/'
+    if not os.path.exists(dir_):
+        os.mkdir(dir_)
+
+    html = '<html><head><title>Site Map</title></head><body>'
+    for root, dirs, files in os.walk('./'):
+        if not (root.startswith('./2') or root.startswith('./wiki')):
+            continue
+        for file in files:
+            if file == 'index.html':
+                html += '<a href="{}/">{}</a><br>'.format(root[1:], root.split('/')[-1])
+                print('=== {} {}'.format(root, file))
+
+    html += 'Hi Google.</body></html>'
+    with open('./site_map/index.html', 'w') as f:
+        f.write(html)
+
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2:
@@ -99,11 +118,13 @@ if __name__ == '__main__':
     elif sys.argv[1].lower() == 'compile':
         title = ' '.join(sys.argv[2:])
         compile(title)
-    if sys.argv[1].lower() == 'addwiki':
+    elif sys.argv[1].lower() == 'addwiki':
         title = ' '.join(sys.argv[2:])
         add(title)
     elif sys.argv[1].lower() == 'compilewiki':
         title = ' '.join(sys.argv[2:])
         compile(title, wiki=True)
+    elif sys.argv[1].lower() == 'generatesitemap':
+        generatesitemap()
     else:
         raise NotImplementedError()

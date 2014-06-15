@@ -38,9 +38,8 @@ def create(title):
     _create_md_file(title)
 
 
-def _create_html_file(md_file):
+def _create_html_file(title):
     today = datetime.date.today()
-    title = _parse_title(md_file.split('/')[-1])
     dir_ = Path('./{:04d}/{:02d}/{}/'.format(today.year, today.month, title))
     if not dir_.exists():
         dir_.mkdir(parents=True)
@@ -50,12 +49,17 @@ def _create_html_file(md_file):
 
 
 def make_html(md_file):
+    title = _parse_title(md_file.split('/')[-1])
     with open(md_file, 'r') as f:
         text = f.read()
     content = markdown.markdown(text)
-    context = {'content': content}
+    context = {
+        'content': content,
+        'title': title.replace('_', ' ').title(),
+        'time_added': datetime.datetime.now(),
+    }
     html = render_to_string('article.html', context)
-    file_html = _create_html_file(md_file)
+    file_html = _create_html_file(title)
     with open(file_html, 'w') as f:
         f.write(html)
     print('html generated: {}'.format(file_html))

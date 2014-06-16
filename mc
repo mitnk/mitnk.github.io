@@ -107,6 +107,40 @@ def generatesitemap():
         f.write(html)
 
 
+def find_latest_articles(count=10):
+    article_list = []
+    for root, dirs, files in os.walk('./'):
+        if not root.startswith('./2'):
+            continue
+        for file in files:
+            if file != 'index.html':
+                continue
+            article_list.append(os.path.join(root, file))
+    article_list.sort(reverse=True)
+    return article_list[:count]
+
+
+def generateindex():
+    class _Article(object):
+        pass
+
+    article_list = []
+    result = find_latest_articles()
+    for item in result:
+        obj = _Article()
+        obj.url = item[1:].rstrip('index.html')
+        obj.title = ' '.join(item.split('/')[-2].split('_')).title()
+        article_list.append(obj)
+
+    context = {
+        'article_list': article_list,
+    }
+    html = render_to_string('index.html', context)
+    with open('./index.html', 'w') as f:
+        f.write(html)
+    print('index.html generated.')
+
+
 if __name__ == '__main__':
     import sys
     if len(sys.argv) < 2:
@@ -126,5 +160,7 @@ if __name__ == '__main__':
         compile(title, wiki=True)
     elif sys.argv[1].lower() == 'generatesitemap':
         generatesitemap()
+    elif sys.argv[1].lower() == 'generateindex':
+        generateindex()
     else:
         raise NotImplementedError()

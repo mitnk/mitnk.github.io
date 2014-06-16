@@ -4,7 +4,23 @@
     <div style="margin-top:40px;font-size:36px;text-align:center;">404 Not Found</div>
     <hr/>
     <div style="font-size:14px;text-align:center;">
-        <a href="/">mitnk.com</a>
+        <div id="header-search">
+            But you can ..
+        <form id="cse-form" action="http://www.google.com/cse">
+          <input type="hidden" name="siteurl" value="mitnk.com" />
+          <input type="hidden" value="001178881884595255196:zxbbdpwksnw" name="cx" />
+          <input type="text" id="cse-input" value="Search" name='q' />
+          <input type="submit" value="search on mitnk.com">
+        </form>
+        </div>
     </div>
+    <script>
+      var url = document.URL;
+      var items = url.split('/');
+      var words = items[items.length - 2];
+      var q = words.split('_').join(' ');
+      var div = document.getElementById('cse-input');
+      div.value = q;
+    </script>
 </BODY>
 </HTML>

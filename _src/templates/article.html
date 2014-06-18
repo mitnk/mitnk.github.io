@@ -21,5 +21,9 @@
         Posted at {{ time_added|date:"N j, Y" }}
     </div>
 
+    <div id="comment_container">
+        {% include "disqus.html" %}
+    </div>
+
 </div>
 {% endblock %}

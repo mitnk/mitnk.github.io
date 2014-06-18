@@ -4,7 +4,6 @@
 
 {% block extra_css %}
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
-  <link type="text/css" rel="stylesheet" href="/media/css/comments.css" />
 {% endblock %}
 
 {% load common_tags %}
@@ -22,9 +21,11 @@
         Posted at {{ time_added|date:"N j, Y" }}
     </div>
 
+    {% if not is_wiki %}
     <div id="comment_container">
         {% include "disqus.html" %}
     </div>
+    {% endif %}
 
 </div>
 {% endblock %}

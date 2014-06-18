@@ -61,6 +61,7 @@ def make_html(md_file, wiki=False):
         'content': content,
         'title': title.replace('_', ' ').title(),
         'time_added': datetime.datetime.now(),
+        'is_wiki': wiki,
     }
     html = render_to_string('article.html', context)
     file_html = _create_html_file(title, year, month, wiki=wiki)

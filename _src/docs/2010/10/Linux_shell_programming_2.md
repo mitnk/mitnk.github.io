@@ -7,6 +7,11 @@
         echo "No file found."
     fi
 
+we can put `if-else` into one line like this:
+
+    :::bash
+    if [ $USER = 'mitnk' ] ; then echo 'Hello'; else echo 'Hi'; fi
+
 **test command or [expr]**
 
     :::bash

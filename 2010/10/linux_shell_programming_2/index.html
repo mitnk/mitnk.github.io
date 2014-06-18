@@ -54,6 +54,9 @@
 <span class="k">    </span><span class="nb">echo</span> <span class="s2">"No file found."</span>
 <span class="k">fi</span>
 </pre></div>
+<p>we can put <code>if-else</code> into one line like this:</p>
+<div class="highlight"><pre><span class="k">if</span> <span class="o">[</span> <span class="nv">$USER</span> <span class="o">=</span> <span class="s1">'mitnk'</span> <span class="o">]</span> ; <span class="k">then </span><span class="nb">echo</span> <span class="s1">'Hello'</span>; <span class="k">else </span><span class="nb">echo</span> <span class="s1">'Hi'</span>; <span class="k">fi</span>
+</pre></div>
 <p><strong>test command or [expr]</strong></p>
 <div class="highlight"><pre><span class="k">if </span><span class="nb">test</span> <span class="nv">$1</span> -gt 0; <span class="k">then</span>
 <span class="k">    </span><span class="nb">echo</span> <span class="s2">"$1 number is positive"</span>
@@ -165,7 +168,7 @@ expression1  -o  expression2    Logical OR
     </article>
 
     <div class="entry-meta">
-        Posted at June 16, 2014
+        Posted at June 17, 2014
     </div>
 
 </div>

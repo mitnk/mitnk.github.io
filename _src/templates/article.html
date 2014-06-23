@@ -20,12 +20,5 @@
     <div class="entry-meta">
         Posted at {{ time_added|date:"N j, Y" }}
     </div>
-
-    {% if not is_wiki %}
-    <div id="comment_container">
-        {% include "disqus.html" %}
-    </div>
-    {% endif %}
-
 </div>
 {% endblock %}

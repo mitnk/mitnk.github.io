@@ -37,11 +37,11 @@ def add(title):
     _create_md_file(title)
 
 
-def _create_html_file(title, year, month, wiki=False):
+def _create_html_file(slug, year, month, wiki=False):
     if wiki:
-        dir_ = Path('./wiki/{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
+        dir_ = Path('./wiki/{:04d}/{:02d}/{}/'.format(year, month, slug.lower()))
     else:
-        dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, title.lower()))
+        dir_ = Path('./{:04d}/{:02d}/{}/'.format(year, month, slug.lower()))
 
     if not dir_.exists():
         dir_.mkdir(parents=True)
@@ -50,13 +50,23 @@ def _create_html_file(title, year, month, wiki=False):
     return '{}'.format(file_.absolute())
 
 
+def get_title_with_markdown_format(md_file):
+    with open(md_file) as f:
+        result = re.findall(r'^([^\n]*)\n==*\n', f.read().strip())
+        return result[0] if result else None
+
+
 def make_html(md_file, wiki=False):
     strings = md_file.split('/')
-    title = _parse_title(strings[-1])
+    slug = _parse_title(strings[-1])
+    title = get_title_with_markdown_format(md_file) or slug
     month = int(strings[-2])
     year = int(strings[-3])
     with open(md_file, 'r') as f:
         content = f.read()
+        result = re.findall(r'^[^\n]*\n==*\n', content)
+        if result:
+            content = content.replace(result[0], '')
     context = {
         'content': content,
         'title': title.replace('_', ' ').title(),
@@ -64,7 +74,7 @@ def make_html(md_file, wiki=False):
         'is_wiki': wiki,
     }
     html = render_to_string('article.html', context)
-    file_html = _create_html_file(title, year, month, wiki=wiki)
+    file_html = _create_html_file(slug, year, month, wiki=wiki)
     with open(file_html, 'w') as f:
         f.write(html)
     print('html generated: {}'.format(file_html))

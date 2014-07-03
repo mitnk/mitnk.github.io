@@ -1,18 +1,18 @@
 Linux curl 用法
 ==============
 
-curl is a tool to transfer data from or to a server, using one of the supported protocols (DICT, FILE, FTP, FTPS, GOPHER, HTTP, HTTPS, IMAP, IMAPS, LDAP, LDAPS, POP3, POP3S, RTMP, RTSP, SCP, SFTP, SMTP, SMTPS, TELNET AND TFTP). The command is designed to work without user interaction.
+curl 是用HTTP、FTP等协议取得一个服务器上的内容。
 
-<span class="cr">Note</span>: When reading these examples, you'd better to open a shell to have a try yourself.
+不加任何参数是将网页源码取下来：
 
     curl ifconfig.me
     curl mitnk.com
 
--i (HTTP) Include the HTTP-header in the output.
+可以用 -i 来同时取得 HTTP-header：
 
     curl -i ifconfig.me
 
--I (HTTP/FTP/FILE) Fetch the HTTP-header only!
+而用 -I 只取 HEADER 本身：
 
     curl -I mitnk.com
     curl -I www.google.com/ncr
@@ -56,6 +56,37 @@ curl is a tool to transfer data from or to a server, using one of the supported 
     curl -b "name=joe;passwd=123456" mitnk.com
     curl -e mitnk.com/ -LI mitnk.com/1
 
+--max-time 整个过程限时
+--connect-timeout 连接服务器的时间限制
+
+    curl --connect-timeout 10 --max-time 30 www.youtube.com
+
+以上命令为获取youtube的内容，但如果10秒内没有连接上服务器，curl退出。
+如果整个获取时间超过30秒的话，curl也退出。
+
+
+--header 请求时定制HEADER内容
+
+    curl --header 'good: morning' --header 'bad: afternoon' www.google.com
+
+
+POST Requests:
+
+With fields:
+
+    curl --data "param1=value1&param2=value2" http://example.com/resource.cgi
+
+Multipart:
+
+    curl --form "fileupload=@filename.txt" http://example.com/resource.cgi
+
+Without data:
+
+    curl --data '' http://example.com/resource.cgi
+    curl -X POST http://example.com/resource.cgi
+    curl --request POST http://example.com/resource.cgi
+
+These post request examples are from [Superuser.com](http://superuser.com/a/149335/100560)
 
 实例
 

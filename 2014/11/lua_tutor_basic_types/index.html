@@ -131,6 +131,31 @@ number
 <span class="o">&gt;</span> <span class="mi">10</span> <span class="o">+</span> <span class="s1">'</span><span class="s">234'</span>  <span class="c1">-- lua automatically convert string to number if necessary</span>
 <span class="mi">244</span>
 </pre></div>
+<h2>table</h2>
+<p>lua中的table同时表达了列表和哈希表两种数据类型</p>
+<div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="p">{}</span>  <span class="c1">-- create an empty table</span>
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">100</span> <span class="k">do</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="o">=</span> <span class="n">i</span> <span class="o">*</span> <span class="n">i</span> <span class="k">end</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>  <span class="c1">--&gt; 25</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="p">)</span>  <span class="c1">--&gt; 100</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">101</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="p">)</span>  <span class="c1">--&gt; 101</span>
+<span class="n">a</span><span class="p">[</span><span class="mi">500</span><span class="p">]</span> <span class="o">=</span> <span class="mi">3</span>
+<span class="nb">print</span><span class="p">(</span><span class="o">#</span><span class="n">a</span><span class="p">)</span>  <span class="c1">--&gt; still be 101, because of gaps between 101 and 500</span>
+
+<span class="n">b</span> <span class="o">=</span> <span class="n">a</span>
+<span class="n">b</span><span class="p">[</span><span class="mi">5</span><span class="p">]</span> <span class="o">=</span> <span class="mi">26</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="mi">5</span><span class="p">])</span>  <span class="c1">--&gt; 26  -- because a and b are identical</span>
+
+<span class="n">a</span><span class="p">[</span><span class="s1">'</span><span class="s">name'</span><span class="p">]</span> <span class="o">=</span> <span class="s1">'</span><span class="s">Hugo'</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">'</span><span class="s">name'</span><span class="p">])</span>  <span class="c1">--&gt; Hugo</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">.</span><span class="n">name</span><span class="p">)</span>  <span class="c1">--&gt; Hugo</span>
+<span class="n">a</span><span class="p">.</span><span class="n">age</span> <span class="o">=</span> <span class="mi">7</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="s1">'</span><span class="s">age'</span><span class="p">])</span>  <span class="c1">--&gt; 7</span>
+</pre></div>
+<h2>function</h2>
+<p>lua中的函数和普通变量一样，和Python一样可以被传来传去的，没什么可说的。</p>
+<p>这就是lua语言中的所有类型了。</p>
         </div>
     </article>
 </div>

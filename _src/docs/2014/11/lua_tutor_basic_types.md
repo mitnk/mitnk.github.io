@@ -158,6 +158,37 @@ string
     244
 
 
+table
+-----
+
+lua中的table同时表达了列表和哈希表两种数据类型
+
+    :::lua
+    a = {}  -- create an empty table
+    for i = 1, 100 do a[i] = i * i end
+    print(a[5])  --> 25
+
+    print(#a)  --> 100
+    a[101] = 3
+    print(#a)  --> 101
+    a[500] = 3
+    print(#a)  --> still be 101, because of gaps between 101 and 500
+
+    b = a
+    b[5] = 26
+    print(a[5])  --> 26  -- because a and b are identical
+
+    a['name'] = 'Hugo'
+    print(a['name'])  --> Hugo
+    print(a.name)  --> Hugo
+    a.age = 7
+    print(a['age'])  --> 7
 
 
+function
+--------
 
+lua中的函数和普通变量一样，和Python一样可以被传来传去的，没什么可说的。
+
+
+这就是lua语言中的所有类型了。

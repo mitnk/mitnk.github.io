@@ -171,7 +171,5 @@ if __name__ == '__main__':
         compile(title, wiki=True)
     elif sys.argv[1].lower() == 'generatesitemap':
         generatesitemap()
-    elif sys.argv[1].lower() == 'generateindex':
-        generateindex()
     else:
         raise NotImplementedError()

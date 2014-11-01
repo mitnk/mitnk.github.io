@@ -20,14 +20,116 @@
         <div class="entry-content">
             <p>最近开始学习流行脚本语言中最简单的<a href="http://www.lua.org/about.html">lua语言</a>。
 而这个部落格已经长满野草了， 故在这里新添篇笔记吧（而不是在Evernote里：）。</p>
+<h2>安装</h2>
 <p>我是用brew把lua (v5.2.3)安装到mac上的</p>
-<div class="highlight"><pre><span class="nv">$ </span>brew install lua
+<div class="highlight"><pre>$ brew install lua
 </pre></div>
 <p>lua的Say Hi</p>
 <div class="highlight"><pre><span class="err">$</span> <span class="n">lua</span>
 <span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="s2">"</span><span class="s">Hello World"</span><span class="p">)</span>
 <span class="n">Hello</span> <span class="n">World</span>
 <span class="o">&gt;</span> <span class="nb">os.exit</span><span class="p">()</span>
+</pre></div>
+<p>通过文件执行lua是这样的</p>
+<div class="highlight"><pre>$ lua hello.lua
+</pre></div>
+<h2>表达式</h2>
+<p>lua中的回车符和空格一样，对程序解析没有影响</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">3</span> <span class="n">b</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="mi">2</span> <span class="c1">-- ugly, but valid</span>
+<span class="o">&gt;</span> <span class="nb">print</span><span class="p">(</span><span class="n">b</span><span class="p">)</span>
+<span class="mi">6</span>
+</pre></div>
+<h2>import文件</h2>
+<p>如下面一个文件 hello.lua</p>
+<div class="highlight"><pre><span class="k">function</span> <span class="nf">hi</span><span class="p">()</span>
+    <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s">hi'</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+<p>将函数 <code>hi()</code> 引入到上下文中有三种方式</p>
+<p>1) 启动lua时用 <code>-i</code> 执行此文件</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">lua</span> <span class="o">-</span><span class="n">i</span> <span class="n">hello</span><span class="p">.</span><span class="n">lua</span>
+<span class="o">&gt;</span> <span class="n">hi</span><span class="p">()</span>
+<span class="n">hi</span>
+</pre></div>
+<p>2) 用 dofile 执行此文件</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="nb">dofile</span><span class="p">(</span><span class="s1">'</span><span class="s">hello.lua'</span><span class="p">)</span>
+<span class="o">&gt;</span> <span class="n">hi</span><span class="p">()</span>
+<span class="n">hi</span>
+</pre></div>
+<p>3) 以 require lib 的方式引入</p>
+<div class="highlight"><pre><span class="err">$</span> <span class="n">lua</span> <span class="o">-</span><span class="n">l</span> <span class="n">hello</span>
+<span class="o">&gt;</span> <span class="n">hi</span><span class="p">()</span>
+<span class="n">hi</span>
+</pre></div>
+<h2>注释</h2>
+<div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1">-- single line comment</span>
+<span class="cm">--[[</span>
+<span class="cm">    you can put multiple lines of comments</span>
+<span class="cm">    here.</span>
+<span class="cm">]]</span>
+<span class="n">b</span> <span class="o">=</span> <span class="mi">2</span>
+<span class="cm">--[==[</span>
+<span class="cm">    you can put any number of = between []</span>
+<span class="cm">    if there are ]] inside comment content</span>
+<span class="cm">]==]</span>
+<span class="n">c</span> <span class="o">=</span> <span class="mi">3</span>
+</pre></div>
+<h2>基本类型</h2>
+<p>lua中共有八种类型</p>
+<ul>
+<li>nil</li>
+<li>boolean</li>
+<li>number</li>
+<li>string</li>
+<li>userdata</li>
+<li>function</li>
+<li>thread</li>
+<li>table</li>
+</ul>
+<h2>nil 和 boolean</h2>
+<p>没有定义过的变量的值为 nil</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="o">=</span> <span class="nb">type</span><span class="p">(</span><span class="n">foo</span><span class="p">)</span>
+<span class="kc">nil</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="n">foo</span>
+<span class="kc">nil</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="n">foo</span> <span class="o">==</span> <span class="kc">nil</span>
+<span class="kc">true</span>
+<span class="o">&gt;</span> <span class="n">foo</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="n">foo</span>
+<span class="mi">1</span>
+</pre></div>
+<p>将一个变量设为nil会使被删除，其内存最终会被GC回收。</p>
+<p>boolean类型里只有两个值: <code>true</code> 和 <code>false</code>. 在bool判定中只有 <code>false</code> 和 <code>nil</code>为假，
+其余都会为真（包括0或空table）</p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="kc">false</span>
+<span class="o">&gt;</span> <span class="k">if</span> <span class="n">a</span> <span class="k">then</span>
+<span class="o">&gt;&gt;</span>  <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s">hi'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="k">end</span>
+<span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span>
+<span class="o">&gt;</span> <span class="k">if</span> <span class="n">a</span> <span class="k">then</span>
+<span class="o">&gt;&gt;</span>  <span class="nb">print</span><span class="p">(</span><span class="s1">'</span><span class="s">hi'</span><span class="p">)</span>
+<span class="o">&gt;&gt;</span> <span class="k">end</span>
+<span class="n">hi</span>
+</pre></div>
+<h2>number</h2>
+<p>lua没有专门的整数integer类型，所以 2 和 2.5 的类型是一样的</p>
+<div class="highlight"><pre>&gt; = type(2)
+number
+&gt; = type(2.5)
+number
+</pre></div>
+<h2>string</h2>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="n">a</span> <span class="o">=</span> <span class="s1">'</span><span class="s">hi'</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="n">a</span> <span class="o">..</span> <span class="s1">'</span><span class="s"> there'</span>
+<span class="n">hi</span> <span class="n">there</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="s1">'</span><span class="se">\097</span><span class="s">'</span>
+<span class="n">a</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="s1">'</span><span class="s">\x61\x62\x63'</span>
+<span class="n">abc</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="nb">tonumber</span><span class="p">(</span><span class="s1">'</span><span class="s">2'</span><span class="p">)</span> <span class="o">+</span> <span class="mi">3</span>
+<span class="mi">5</span>
+<span class="o">&gt;</span> <span class="mi">10</span> <span class="o">+</span> <span class="s1">'</span><span class="s">234'</span>  <span class="c1">-- lua automatically convert string to number if necessary</span>
+<span class="mi">244</span>
 </pre></div>
         </div>
     </article>

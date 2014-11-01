@@ -33,7 +33,6 @@ h6 {font-size: 1em;}
 }
 
 #header p {
-    font-style: italic;
     font-size: 1.2em;
     margin: 0;
     padding-top:0.5em;
@@ -43,7 +42,7 @@ h6 {font-size: 1em;}
 #header p.title {
     padding-top: 0.8em;
     padding-bottom:0;
-    font-size: 240%;
+    font-size: 220%;
     font-weight: bold;
 }
 

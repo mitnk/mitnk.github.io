@@ -3,41 +3,20 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
-
   <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
-  <link type="text/css" rel="stylesheet" href="/media/css/main.css" />
-{% block extra_css %}{% endblock %}
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
   <title>{% block title %}竹一木的部落格{% endblock %}</title>
 </head>
-
 <body>
-<div id="header">
-    <div class="wrapper">
-        <p class="title">竹一木的部落格</p>
-        <p>强制自己写点什么</p>
-    </div>
-</div>
 
 <div id="wrapper">
-    <div id="menu">
-        <ul>
-            <li><a href="/">Home</a></li>
-            <li><a href="/about/">About</a></li>
-            <li> {% include "google_cse.html" %} </li>
-        </ul>
-    </div>
-
     <div id="content">
         {% block content %}{% endblock %}
     </div>
-
-    <div id="footer">
-        Power by <a href="http://twitter.com/mitnk">@mitn</a><a href="/site_map/">k</a> 2012
-    </div>
 </div>
 
-<script type="text/javascript" src="/media/js/main.js"> </script>
 <script type="text/javascript">
   var _gaq = _gaq || [];
   _gaq.push(['_setAccount', 'UA-18137446-1']);

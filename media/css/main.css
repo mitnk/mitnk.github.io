@@ -70,7 +70,6 @@ h6 {font-size: 1em;}
 #content a { color:#AA0000; }
 #content a:hover { color:#FFFFFF; background-color:#AA0000; }
 
-
 .entry {  margin-left: 10px; }
 .entry h1 { font-family:Georgia; font-size:20px; }
 .entry-content { line-height: 23px; font-size:16px; }
@@ -86,9 +85,3 @@ h6 {font-size: 1em;}
     font-size:12px;
     text-align:center;
 }
-
-.cg { color: green; }
-.cr { color: red; }
-.cb { color: blue; }
-
-#comment_container {margin-top:20px;}

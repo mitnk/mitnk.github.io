@@ -6,11 +6,12 @@ lua编程语言基本类型
 
 我是用brew把lua (v5.2.3)安装到mac上的
 
-$ brew install lua
+    :::bash
+    $ brew install lua
 
 lua的Say Hi
 
-    :::lua
+    :::c
     $ lua
     > print("Hello World")
     Hello World

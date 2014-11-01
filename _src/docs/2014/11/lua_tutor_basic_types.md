@@ -11,7 +11,7 @@ lua编程语言基本类型
 
 lua的Say Hi
 
-    :::c
+    :::lua
     $ lua
     > print("Hello World")
     Hello World

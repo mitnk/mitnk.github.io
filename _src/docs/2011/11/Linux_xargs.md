@@ -1,8 +1,11 @@
+Linux xargs 的用法
+=================
+
 xargs是一个非常有用的工具，用来构建另一个命令的参数并执行它。
 
 比如将一个文件夹下所有的.sh文件加上可执行权限，可以这样做：
 
-    $ ls *.sh | xargs chmod +x 
+    $ ls *.sh | xargs chmod +x
 
 
 在Unix中 cp 这样的命令可以接收多个参数，这时最后一个参数会是目标文件夹。命令
@@ -28,6 +31,6 @@ xargs是一个非常有用的工具，用来构建另一个命令的参数并执
 
 当然z可以换成别的东东（Unix命令中的Option与其数值之间有无空格均可）：
 
-    $ find . -type f -name "*.mobi" | xargs -I xxx cp xxx ebooks/
+    $ find . -type f -name "*.mobi" | xargs -I{} cp '{}' ebooks/
 
 学会xargs的这两种用法也就够用了。

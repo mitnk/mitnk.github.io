@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
+
+  <title>画图表工具Matplotlib</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">画图表工具Matplotlib</h1>
+        <div class="entry-content">
+            <p>matplotlib的安装</p>
+<div class="highlight"><pre>$ sudo pip3.4 install matplotlib
+</pre></div>
+<p>当前版本：</p>
+<div class="highlight"><pre>$ pip3.4 freeze | grep mat
+matplotlib==1.4.2
+</pre></div>
+<p>画一个直线吧</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="line" src="/media/img/2014/11/line.png" width="400"/></p>
+<p>可以保存为png图片</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'line.png'</span><span class="p">)</span>
+</pre></div>
+<p>画个 <code>y = x^2 - 300</code> 吧</p>
+<div class="highlight"><pre><span class="n">L</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">300</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">])</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="parabola" src="/media/img/2014/11/parabola.png" width="400"/></p>
+<p>把它和 <code>y = x</code> 画到一个图上面：</p>
+<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<span class="n">X</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">300</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
+
+<span class="n">ax</span> <span class="o">=</span> <span class="n">fig</span><span class="o">.</span><span class="n">add_subplot</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">X</span><span class="p">,</span> <span class="n">X</span><span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">'left'</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">'bottom'</span><span class="p">]</span><span class="o">.</span><span class="n">set_position</span><span class="p">(</span><span class="s">'center'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">'right'</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">'none'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">spines</span><span class="p">[</span><span class="s">'top'</span><span class="p">]</span><span class="o">.</span><span class="n">set_color</span><span class="p">(</span><span class="s">'none'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s">'bottom'</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">yaxis</span><span class="o">.</span><span class="n">set_ticks_position</span><span class="p">(</span><span class="s">'left'</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="parabola_and_line" src="/media/img/2014/11/parabola_and_line.png" width="400"/></p>
+<p>画个统计图</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
+<span class="kn">import</span> <span class="nn">pylab</span>
+<span class="kn">from</span> <span class="nn">matplotlib.dates</span> <span class="kn">import</span> <span class="n">DayLocator</span><span class="p">,</span> <span class="n">DateFormatter</span><span class="p">,</span> <span class="n">drange</span>
+
+<span class="n">d1</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">10</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">d2</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">date</span><span class="p">(</span><span class="mi">2014</span><span class="p">,</span> <span class="mi">11</span><span class="p">,</span> <span class="mi">1</span><span class="p">)</span>
+<span class="n">delta</span> <span class="o">=</span> <span class="n">datetime</span><span class="o">.</span><span class="n">timedelta</span><span class="p">(</span><span class="n">days</span><span class="o">=</span><span class="mi">1</span><span class="p">)</span>
+
+<span class="n">dates</span> <span class="o">=</span> <span class="n">drange</span><span class="p">(</span><span class="n">d1</span><span class="p">,</span> <span class="n">d2</span><span class="p">,</span> <span class="n">delta</span><span class="p">)</span>
+<span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="mf">110.92</span><span class="p">,</span> <span class="mf">71.55</span><span class="p">,</span> <span class="mf">38.54</span><span class="p">,</span> <span class="mf">58.79</span><span class="p">,</span> <span class="mf">29.11</span><span class="p">,</span> <span class="mf">69.95</span><span class="p">,</span> <span class="mf">96.76</span><span class="p">,</span> <span class="mf">111.07</span><span class="p">,</span> <span class="mf">151.88</span><span class="p">,</span> <span class="mf">121.92</span><span class="p">,</span> <span class="mf">143.47</span><span class="p">,</span> <span class="mf">149.78</span><span class="p">,</span> <span class="mf">98.65</span><span class="p">,</span> <span class="mf">93.64</span><span class="p">,</span> <span class="mf">88.23</span><span class="p">,</span> <span class="mf">62.77</span><span class="p">,</span> <span class="mf">64.05</span><span class="p">,</span> <span class="mf">73.40</span><span class="p">,</span> <span class="mf">72.12</span><span class="p">,</span> <span class="mf">12.29</span><span class="p">,</span> <span class="mf">17.36</span><span class="p">,</span> <span class="mf">27.26</span><span class="p">,</span> <span class="mf">29.62</span><span class="p">,</span> <span class="mf">24.08</span><span class="p">,</span> <span class="mf">22.95</span><span class="p">,</span> <span class="mf">30.86</span><span class="p">,</span> <span class="mf">21.21</span><span class="p">,</span> <span class="mf">76.04</span><span class="p">,</span> <span class="mf">82.15</span><span class="p">,</span> <span class="mf">104.78</span><span class="p">,</span> <span class="mf">55.37</span><span class="p">]</span>
+
+<span class="n">fig</span><span class="p">,</span> <span class="n">ax</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">subplots</span><span class="p">()</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">dates</span><span class="p">,</span> <span class="n">Y</span><span class="p">)</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">set_xlim</span><span class="p">(</span> <span class="n">dates</span><span class="p">[</span><span class="mi">0</span><span class="p">],</span> <span class="n">dates</span><span class="p">[</span><span class="o">-</span><span class="mi">1</span><span class="p">]</span> <span class="p">)</span>
+
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_locator</span><span class="p">(</span><span class="n">DayLocator</span><span class="p">())</span>
+<span class="n">ax</span><span class="o">.</span><span class="n">xaxis</span><span class="o">.</span><span class="n">set_major_formatter</span><span class="p">(</span><span class="n">DateFormatter</span><span class="p">(</span><span class="s">'%Y-%m-</span><span class="si">%d</span><span class="s">'</span><span class="p">))</span>
+<span class="n">fig</span><span class="o">.</span><span class="n">autofmt_xdate</span><span class="p">()</span>
+
+<span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Players Total Online Time (hours)'</span><span class="p">)</span>
+<span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
+</pre></div>
+<p><img alt="online_time_stats" src="/media/img/2014/11/online_time_stats.png" width="400"/></p>
+<p>更多内容请阅读<a href="http://matplotlib.org/contents.html">matplotlib官方文档</a></p>
+        </div>
+    </article>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

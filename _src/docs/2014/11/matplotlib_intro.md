@@ -14,33 +14,34 @@ matplotlib的安装
 
     :::python
     import pylab
-
     pylab.plot([1, 2, 3, 4])
     pylab.show()
 
-<img src="/media/img/2014/11/line.png" alt="line" width="400">
+<img src="/media/img/2014/11/line.png" alt="line" width="600">
 
 可以保存为png图片
 
     :::python
     import pylab
-
     pylab.plot([1, 2, 3, 4])
     pylab.savefig('line.png')
 
 
-画个 `y = x^2 - 300` 吧
+画个抛物线 `y = x^2 - 300` 吧
 
     :::python
+    import pylab
     L = range(-100, 101)
     pylab.plot(L, [x**2 - 300 for x in L])
     pylab.show()
 
-<img src="/media/img/2014/11/parabola.png" alt="parabola" width="400">
+<img src="/media/img/2014/11/parabola.png" alt="parabola" width="600">
 
 把它和 `y = x` 画到一个图上面：
 
     :::python
+    import pylab
+
     fig = pylab.figure()
     X = range(-100, 101)
     Y = [i**2 - 300 for i in X]
@@ -59,7 +60,7 @@ matplotlib的安装
     pylab.axis([-100, 100, -1000, 1000])
     pylab.show()
 
-<img src="/media/img/2014/11/parabola_and_line.png" alt="parabola_and_line" width="400">
+<img src="/media/img/2014/11/parabola_and_line.png" alt="parabola_and_line" width="600">
 
 画个统计图
 
@@ -86,6 +87,6 @@ matplotlib的安装
     pylab.ylabel('Players Total Online Time (hours)')
     pylab.show()
 
-<img src="/media/img/2014/11/online_time_stats.png" alt="online_time_stats" width="400">
+<img src="/media/img/2014/11/online_time_stats.png" alt="online_time_stats" width="600">
 
 更多内容请阅读[matplotlib官方文档](http://matplotlib.org/contents.html)

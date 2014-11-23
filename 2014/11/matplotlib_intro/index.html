@@ -27,25 +27,26 @@ matplotlib==1.4.2
 </pre></div>
 <p>画一个直线吧</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
-
 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="line" src="/media/img/2014/11/line.png" width="400"/></p>
+<p><img alt="line" src="/media/img/2014/11/line.png" width="600"/></p>
 <p>可以保存为png图片</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
-
 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">4</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">savefig</span><span class="p">(</span><span class="s">'line.png'</span><span class="p">)</span>
 </pre></div>
-<p>画个 <code>y = x^2 - 300</code> 吧</p>
-<div class="highlight"><pre><span class="n">L</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
+<p>画个抛物线 <code>y = x^2 - 300</code> 吧</p>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
+<span class="n">L</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">plot</span><span class="p">(</span><span class="n">L</span><span class="p">,</span> <span class="p">[</span><span class="n">x</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">300</span> <span class="k">for</span> <span class="n">x</span> <span class="ow">in</span> <span class="n">L</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="parabola" src="/media/img/2014/11/parabola.png" width="400"/></p>
+<p><img alt="parabola" src="/media/img/2014/11/parabola.png" width="600"/></p>
 <p>把它和 <code>y = x</code> 画到一个图上面：</p>
-<div class="highlight"><pre><span class="n">fig</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
+<div class="highlight"><pre><span class="kn">import</span> <span class="nn">pylab</span>
+
+<span class="n">fig</span> <span class="o">=</span> <span class="n">pylab</span><span class="o">.</span><span class="n">figure</span><span class="p">()</span>
 <span class="n">X</span> <span class="o">=</span> <span class="nb">range</span><span class="p">(</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">101</span><span class="p">)</span>
 <span class="n">Y</span> <span class="o">=</span> <span class="p">[</span><span class="n">i</span><span class="o">**</span><span class="mi">2</span> <span class="o">-</span> <span class="mi">300</span> <span class="k">for</span> <span class="n">i</span> <span class="ow">in</span> <span class="n">X</span><span class="p">]</span>
 
@@ -63,7 +64,7 @@ matplotlib==1.4.2
 <span class="n">pylab</span><span class="o">.</span><span class="n">axis</span><span class="p">([</span><span class="o">-</span><span class="mi">100</span><span class="p">,</span> <span class="mi">100</span><span class="p">,</span> <span class="o">-</span><span class="mi">1000</span><span class="p">,</span> <span class="mi">1000</span><span class="p">])</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="parabola_and_line" src="/media/img/2014/11/parabola_and_line.png" width="400"/></p>
+<p><img alt="parabola_and_line" src="/media/img/2014/11/parabola_and_line.png" width="600"/></p>
 <p>画个统计图</p>
 <div class="highlight"><pre><span class="kn">import</span> <span class="nn">datetime</span>
 <span class="kn">import</span> <span class="nn">pylab</span>
@@ -87,7 +88,7 @@ matplotlib==1.4.2
 <span class="n">pylab</span><span class="o">.</span><span class="n">ylabel</span><span class="p">(</span><span class="s">'Players Total Online Time (hours)'</span><span class="p">)</span>
 <span class="n">pylab</span><span class="o">.</span><span class="n">show</span><span class="p">()</span>
 </pre></div>
-<p><img alt="online_time_stats" src="/media/img/2014/11/online_time_stats.png" width="400"/></p>
+<p><img alt="online_time_stats" src="/media/img/2014/11/online_time_stats.png" width="600"/></p>
 <p>更多内容请阅读<a href="http://matplotlib.org/contents.html">matplotlib官方文档</a></p>
         </div>
     </article>

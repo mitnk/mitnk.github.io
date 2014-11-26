@@ -110,7 +110,7 @@ def generatesitemap():
             continue
         for file in files:
             if file == 'index.html':
-                html += '<a href="{}/">{}</a><br>'.format(root[1:], root.split('/')[-1])
+                html += '<a href="{}/">{}</a><br>\n'.format(root[1:], root.split('/')[-1])
                 print('=== {} {}'.format(root, file))
 
     html += 'Hi Google.</body></html>'

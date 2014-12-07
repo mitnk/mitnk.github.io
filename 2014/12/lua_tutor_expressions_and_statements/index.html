@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
+
+  <title>Lua语言表达式与控制语句</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Lua语言表达式与控制语句</h1>
+        <div class="entry-content">
+            <p>『Lua（英語發音：/ˈluːə/）程式語言是一個簡潔、輕量、可延伸的手稿語言，
+是葡萄牙語中「Lua」（月亮）的意思。』[1]</p>
+<p>继Lua的基本类型[2]，现在开始表达式(Expressions)和控制语句(Statements) [3]的笔记。</p>
+<h2>表达式</h2>
+<p><strong>代数操作符</strong></p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="o">=</span> <span class="mi">3</span> <span class="o">^</span> <span class="mi">4</span>
+<span class="mi">81</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="o">-</span><span class="mi">7</span> <span class="o">%</span> <span class="mi">3</span>
+<span class="mi">2</span>
+</pre></div>
+<p>对于一个数字<code>x</code>, <code>x % 1</code>是它的小数部分 -- <code>a % b == a - math.floor(a / b) * b</code></p>
+<p><strong>比较操作</strong></p>
+<p>除了不等于不Lua里为 <code>~=</code> 外，其余操作符都与C语言里相同。</p>
+<p><strong>逻辑操作符</strong></p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="o">=</span> <span class="mi">4</span> <span class="ow">or</span> <span class="mi">5</span>  <span class="c1">--&gt; 4</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="mi">4</span> <span class="ow">and</span> <span class="mi">5</span> <span class="c1">--&gt; 5</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="kc">false</span> <span class="ow">and</span> <span class="mi">13</span> <span class="c1">--&gt; false</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="kc">false</span> <span class="ow">or</span> <span class="mi">13</span> <span class="c1">--&gt; 13</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="ow">not</span> <span class="kc">false</span> <span class="c1">--&gt; true</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="ow">not</span> <span class="kc">nil</span> <span class="c1">--&gt; true</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="ow">not</span> <span class="mi">0</span> <span class="c1">--&gt; false</span>
+</pre></div>
+<p><strong>长度计算</strong></p>
+<div class="highlight"><pre><span class="o">&gt;</span> <span class="o">=</span> <span class="o">#</span><span class="s2">"</span><span class="s">Hello"</span> <span class="c1">--&gt; 5</span>
+<span class="o">&gt;</span> <span class="o">=</span> <span class="o">#</span><span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span> <span class="c1">--&gt; 4</span>
+</pre></div>
+<p><strong>Lua操作符优先级列表</strong></p>
+<div class="highlight"><pre><span class="o">^</span>
+<span class="ow">not</span> <span class="o">#</span> <span class="o">-</span> <span class="p">(</span><span class="n">unary</span><span class="p">)</span> <span class="o">*/%</span>
+<span class="o">+-</span>
+<span class="o">..</span>
+<span class="o">&lt;</span> <span class="o">&gt;</span> <span class="o">&lt;=</span> <span class="o">&gt;=</span> <span class="o">~=</span> <span class="o">==</span> <span class="ow">and</span>
+<span class="ow">or</span>
+</pre></div>
+<h2>控制语句（statements）</h2>
+<p><strong>赋值</strong></p>
+<p>a, b, c = 3, 5  -- a = 3; b = 5; c = nil</p>
+<p><strong>局部变量与代码块</strong></p>
+<div class="highlight"><pre><span class="n">x</span> <span class="o">=</span> <span class="mi">10</span>
+<span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>  <span class="c1">-- local to the chunk</span>
+
+<span class="k">while</span> <span class="n">i</span> <span class="o">&lt;=</span> <span class="n">x</span> <span class="k">do</span>
+    <span class="kd">local</span> <span class="n">x</span> <span class="o">=</span> <span class="n">i</span><span class="o">*</span><span class="mi">2</span>  <span class="c1">-- local to the while body</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1">--&gt; 2, 4, 6, 8, ...</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">end</span>
+
+<span class="k">if</span> <span class="n">i</span> <span class="o">&gt;</span> <span class="mi">20</span> <span class="k">then</span>
+    <span class="kd">local</span> <span class="n">x</span>  <span class="c1">-- local to the "then" body</span>
+    <span class="n">x</span> <span class="o">=</span> <span class="mi">20</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>  <span class="c1">-- (would print 22 if test succeeded)</span>
+<span class="k">else</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1">--&gt; 10  (the global one)</span>
+<span class="k">end</span>
+
+<span class="nb">print</span><span class="p">(</span><span class="n">x</span><span class="p">)</span>  <span class="c1">--&gt; 10  (the global one)</span>
+</pre></div>
+<p>注意这个例子不能在解释器交互模式下工作，因为在交互模式下，每一行都是一个Chunk。
+但你可以用 <code>do ... end</code> 来做试验。</p>
+<p><strong>if语句</strong></p>
+<div class="highlight"><pre><span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="mi">0</span> <span class="k">then</span> <span class="n">a</span> <span class="o">=</span> <span class="mi">0</span> <span class="k">end</span>
+
+<span class="k">if</span> <span class="n">a</span> <span class="o">&lt;</span> <span class="n">b</span> <span class="k">then</span> <span class="k">return</span> <span class="n">a</span> <span class="k">else</span> <span class="k">return</span> <span class="n">b</span> <span class="k">end</span>
+
+<span class="k">if</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"</span><span class="s">+"</span> <span class="k">then</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
+<span class="k">elseif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"</span><span class="s">-"</span> <span class="k">then</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">a</span> <span class="o">-</span> <span class="n">b</span>
+<span class="k">elseif</span> <span class="n">op</span> <span class="o">==</span> <span class="s2">"</span><span class="s">*"</span> <span class="k">then</span>
+    <span class="n">r</span> <span class="o">=</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
+<span class="k">else</span>
+    <span class="nb">error</span><span class="p">(</span><span class="s2">"</span><span class="s">invalid operation"</span><span class="p">)</span>
+<span class="k">end</span>
+</pre></div>
+<p><strong>while语句</strong></p>
+<div class="highlight"><pre><span class="n">a</span> <span class="o">=</span> <span class="p">{</span><span class="mi">1</span><span class="p">,</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">5</span><span class="p">,</span> <span class="mi">7</span><span class="p">}</span>
+<span class="kd">local</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span>
+<span class="k">while</span> <span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">]</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">a</span><span class="p">[</span><span class="n">i</span><span class="p">])</span>
+    <span class="n">i</span> <span class="o">=</span> <span class="n">i</span> <span class="o">+</span> <span class="mi">1</span>
+<span class="k">end</span>
+</pre></div>
+<p><strong>for语句</strong></p>
+<p>for语句有两种形式：</p>
+<p>1) Numberic for</p>
+<div class="highlight"><pre><span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mi">3</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">3</span><span class="p">,</span> <span class="mi">1</span><span class="p">,</span> <span class="o">-</span><span class="mi">1</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="k">for</span> <span class="n">i</span> <span class="o">=</span> <span class="mi">1</span><span class="p">,</span> <span class="mf">2.5</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">i</span><span class="p">)</span>
+<span class="k">end</span>
+
+<span class="c1">-- Output are:</span>
+<span class="c1">-- 1</span>
+<span class="c1">-- 2</span>
+<span class="c1">-- 3</span>
+<span class="c1">-- 3</span>
+<span class="c1">-- 2</span>
+<span class="c1">-- 1</span>
+<span class="c1">-- 1</span>
+<span class="c1">-- 2</span>
+</pre></div>
+<p>2) Generic for</p>
+<div class="highlight"><pre><span class="n">child</span> <span class="o">=</span> <span class="p">{</span><span class="n">name</span><span class="o">=</span><span class="s1">'</span><span class="s">Tommy'</span><span class="p">,</span> <span class="n">age</span><span class="o">=</span><span class="mi">7</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">child</span><span class="p">)</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>  <span class="c1">-- there will be a &lt;Tab&gt; between k and v.</span>
+<span class="k">end</span>
+<span class="c1">-- Output:</span>
+<span class="c1">-- age    7</span>
+<span class="c1">-- name   Tommy</span>
+
+<span class="n">days</span> <span class="o">=</span> <span class="p">{</span><span class="s1">'</span><span class="s">a'</span><span class="p">,</span> <span class="s1">'</span><span class="s">b'</span><span class="p">,</span> <span class="s1">'</span><span class="s">c'</span><span class="p">}</span>
+<span class="k">for</span> <span class="n">k</span><span class="p">,</span> <span class="n">v</span> <span class="k">in</span> <span class="nb">pairs</span><span class="p">(</span><span class="n">days</span><span class="p">)</span> <span class="k">do</span>
+    <span class="nb">print</span><span class="p">(</span><span class="n">k</span><span class="p">,</span> <span class="n">v</span><span class="p">)</span>
+<span class="k">end</span>
+<span class="c1">-- Output:</span>
+<span class="c1">-- 1    a</span>
+<span class="c1">-- 2    b</span>
+<span class="c1">-- 3    c</span>
+</pre></div>
+<p><strong>Repeat语句</strong></p>
+<div class="highlight"><pre><span class="c1">-- print the first non-empty input line</span>
+<span class="k">repeat</span>
+    <span class="n">line</span> <span class="o">=</span> <span class="nb">io.read</span><span class="p">()</span>
+<span class="k">until</span> <span class="n">line</span> <span class="o">~=</span> <span class="s2">"</span><span class="s">"</span>
+<span class="nb">print</span><span class="p">(</span><span class="n">line</span><span class="p">)</span>
+</pre></div>
+<p>[0] <a href="http://www.amazon.com/Programming-Lua-Roberto-Ierusalimschy/dp/859037985X">Book: Programming in Lua</a><br/>
+[1] <a href="http://zh.wikipedia.org/wiki/Lua">http://zh.wikipedia.org/wiki/Lua</a><br/>
+[2] <a href="/2014/11/lua_tutor_basic_types/">Lua语言基本类型</a><br/>
+[3] <a href="http://www.codingnow.com/2000/download/lua_manual.html">云风的翻译为语句段</a> </p>
+        </div>
+    </article>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

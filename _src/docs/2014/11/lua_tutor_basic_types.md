@@ -178,6 +178,8 @@ lua中的table同时表达了列表和哈希表两种数据类型
     b[5] = 26
     print(a[5])  --> 26  -- because a and b are identical
 
+    a = {title='Writer'}
+    print(a['title'])  --> Writer
     a['name'] = 'Hugo'
     print(a['name'])  --> Hugo
     print(a.name)  --> Hugo

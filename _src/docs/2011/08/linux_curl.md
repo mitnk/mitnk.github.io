@@ -93,14 +93,3 @@ These post request examples are from [Superuser.com](http://superuser.com/a/1493
 Send HTTP DELETE
 
     curl -X DELETE http://127.0.0.1:8000/api/entry/4/
-
-
-从纵横网上取《永生》第一章的网页
-http://wap.zongheng.com/chapter?bookid=48552&cid=1181961
-
-
-    curl -L -b "WAPPageSize=0" -d "bookid=48552&cid=1181961" -A "Mozilla/5.0 Firefox/6.0" http://wap.zongheng.com/chapter
-
-
-------
-Related Python library: <a href="http://docs.python-requests.org/en/latest/index.html">Requests</a>

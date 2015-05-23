@@ -8,7 +8,7 @@
     <article itemtype="http://schema.org/Blog">
         <h1 class="entry-title">{{ title }}</h1>
         <div class="entry-content">
-            {{ content|pygments_markdown|safe }}
+            {% if use_br %}{{ content|linebreaksbr|pygments_markdown|safe }}{% else %}{{ content|pygments_markdown|safe }}{% endif %}
         </div>
     </article>
 </div>

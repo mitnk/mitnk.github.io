@@ -56,7 +56,7 @@ def get_title_with_markdown_format(md_file):
         return result[0] if result else None
 
 
-def make_html(md_file, wiki=False):
+def make_html(md_file, wiki=False, use_br=False):
     strings = md_file.split('/')
     slug = _parse_title(strings[-1])
     title = get_title_with_markdown_format(md_file) or slug
@@ -71,6 +71,7 @@ def make_html(md_file, wiki=False):
         'content': content,
         'title': title.replace('_', ' ').title(),
         'time_added': datetime.datetime.now(),
+        'use_br': use_br,
         'is_wiki': wiki,
     }
     html = render_to_string('article.html', context)
@@ -90,13 +91,13 @@ def find_md_file_list(wiki=False):
     return md_list
 
 
-def compile(md_file, wiki=False):
+def compile(md_file, wiki=False, use_br=False):
     if md_file == 'all':
         md_list = find_md_file_list(wiki)
         for f in md_list:
-            make_html(f, wiki=wiki)
+            make_html(f, wiki=wiki, use_br=use_br)
     else:
-        make_html(md_file, wiki=wiki)
+        make_html(md_file, wiki=wiki, use_br=use_br)
 
 
 def generatesitemap():
@@ -157,6 +158,7 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Article Maker')
     parser.add_argument('--add', '-a')
     parser.add_argument('--compile', '-c')
+    parser.add_argument('--use_br', action='store_true')
     args = parser.parse_args()
 
     if args.add:
@@ -164,7 +166,7 @@ if __name__ == '__main__':
         add(args.add)
         exit(0)
     elif args.compile:
-        compile(args.compile)
+        compile(args.compile, use_br=args.use_br)
         exit(0)
 
     exit(0)

@@ -96,7 +96,7 @@ def compile(md_file, wiki=False):
         for f in md_list:
             make_html(f, wiki=wiki)
     else:
-        html = make_html(md_file, wiki=wiki)
+        make_html(md_file, wiki=wiki)
 
 
 def generatesitemap():
@@ -153,17 +153,23 @@ def generateindex():
 
 
 if __name__ == '__main__':
+    import argparse
+    parser = argparse.ArgumentParser(description='Article Maker')
+    parser.add_argument('--add', '-a')
+    parser.add_argument('--compile', '-c')
+    args = parser.parse_args()
+
+    if args.add:
+        args = parser.parse_args()
+        add(args.add)
+        exit(0)
+    elif args.compile:
+        compile(args.compile)
+        exit(0)
+
+    exit(0)
     import sys
-    if len(sys.argv) < 2:
-        print("Usage: mc.py add <article title>")
-        exit(1)
-    if sys.argv[1].lower() == 'add':
-        title = ' '.join(sys.argv[2:])
-        add(title)
-    elif sys.argv[1].lower() == 'compile':
-        title = ' '.join(sys.argv[2:])
-        compile(title)
-    elif sys.argv[1].lower() == 'addwiki':
+    if sys.argv[1].lower() == 'addwiki':
         title = ' '.join(sys.argv[2:])
         add(title)
     elif sys.argv[1].lower() == 'compilewiki':

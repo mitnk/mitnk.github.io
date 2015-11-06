@@ -28,3 +28,10 @@ else
   exit 1
 fi
 
+COMPILER="./compile.py"
+for doc in $(git status | grep -o '_src\/docs\/.*\.md$') ; do
+    if [ "$VERBOSE" = 1 ] ; then
+      echo "Running: $VENV_BIN/python \"${COMPILER}\" \"${doc}\""
+    fi
+    $VENV_BIN/python "${COMPILER}" -c "${doc}"
+done

@@ -1,3 +1,6 @@
+安装 Python 0.9.1
+=================
+
 Python官网有一个0.9.1的古老版本[1]，这个源码包大小只有380K，而且可以正常编译安装（在Mac 10.8、Arch Linux上测试通过）：
 
     wget http://www.python.org/download/releases/early/Python-0.9.1.tar.gz

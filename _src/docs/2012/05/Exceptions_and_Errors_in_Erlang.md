@@ -118,14 +118,24 @@ Run it:
 Errors in Concurrent Programs
 -----------------------------
 
+Error handling in concurrent Erlang programs is based on the idea of
+*remote detection and handling of errors*. Instead of handling an error
+in the process where the error occurs, we let the process die and
+correct the error in some other process.
+
+The Erlang philosophy for building fault-tolerant software can be
+summed up in two easy-to-remember phrases: “Let some other process
+fix the error” and “Let it crash.”
+
 **Linking Processes**
 
-Two processes, A and B. They are linked together (as shown by the dotted line
-in the diagram). The link was made when one of the processes called the BIF
-link(P), with P being the PID of the other process. Once linked, the two
-processes will implicitly monitor each other.
-If A dies, then B will be sent something called an exit signal (That is
-`{'EXIT',A,Why}`). If B dies, then A receives the signal.
+Processes can be linked. If the two processes A and B are linked and
+A terminates for any reason, an error signal will be sent to B and
+the other way around.
+
+**Monitors** are similar to links but are one-directional. If A monitors B
+and if B terminates for any reason, a “down” message will be sent to A
+but not the other way around.
 
 If the receiver hasn’t taken any special steps, the exit signal will cause it,
 too, to exit. However, a process can ask to trap these exit signals. When a

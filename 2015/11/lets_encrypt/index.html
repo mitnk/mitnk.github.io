@@ -37,10 +37,9 @@ SSL证书市场或者SSL证书历史。</p>
 申请内测。</p>
 <p>经过折腾终于将两个域名都归于HTTPS之下。记录下获取SSL证书的过程。</p>
 <h2>为Nignx手动获取Let's Encrypt的SSL证书</h2>
-<p>LE的一个愿景是让HTTP Server（如Apache、Nginx等）的HTTPS/SSL设置完全自动化。
-就是说你只需要执行一个命令，一切都搞定。但实现情况太复杂，也许你的HTTP
-Server不能随意重启（因为即时用户太多）；也许设置太过定制，LE命令无法帮你
-修改设置。所以这里只记录了如何只从LE拿到所需的各个证书文件，然后手动应用这些文件。</p>
+<p>Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只需要执行一个命令，几个交互，
+一切都搞定。但现阶段（至少对Nginx来说）还没有达到这个程度。
+所以这里只记录了如何只从LE拿到所需的各个证书文件，然后手动应用这些文件。</p>
 <p>1) <strong>安装letsencrypt客户端</strong></p>
 <p>用git从Github上拿到最新代码，然后用``生成一个VirtualEnv环境。</p>
 <div class="highlight"><pre><span class="nv">$ </span>git clone https://github.com/letsencrypt/letsencrypt

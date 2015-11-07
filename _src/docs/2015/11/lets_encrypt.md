@@ -136,7 +136,10 @@ Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只�
     ssl_certificate     /etc/letsencrypt/live/your-domain.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
 
-然后Reload Nginx即可。最后在Console1中可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:
+然后Reload Nginx即可。 一般来说这两个文件的路径是不变的，它们只是指向最新文件的软链接。
+也就是说， 当你以后renew了这些文件后，只需要Reload Server就行了。
+
+最后在Console1中可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:
 
     :::
     (letsencrypt) $ deactivate

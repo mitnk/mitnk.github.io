@@ -112,7 +112,9 @@ server_name your-domain.com your-domain.com;
 ssl_certificate     /etc/letsencrypt/live/your-domain.com/fullchain.pem;
 ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
 </pre></div>
-<p>然后Reload Nginx即可。最后在Console1中可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:</p>
+<p>然后Reload Nginx即可。 一般来说这两个文件的路径是不变的，它们只是指向最新文件的软链接。
+也就是说， 当你以后renew了这些文件后，只需要Reload Server就行了。</p>
+<p>最后在Console1中可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:</p>
 <div class="highlight"><pre>(letsencrypt) $ deactivate
 </pre></div>
 <p>关于LE的HTTPS效果可以点击现在本页面左上角的 HTTPS （绿色）小锁。从详情里可以看出

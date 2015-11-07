@@ -19,7 +19,7 @@ blockquote, quote { padding-left: 8px; display: block; color: #0F7332; border-le
 p code {padding:1px 5px;}
 code {background-color:#EEEEEE; color:#222222; margin:0 2px; padding:0 6px; font-size:14px; font-family: Monaco,Consolas,Menlo,Lucida Console,Liberation Mono,DejaVu Sans Mono,Bitstream Vera Sans Mono,Courier New,monospace,serif;}
 
-.entry {  margin-bottom: 2em; }
+.entry {  margin-bottom: 5em; }
 .entry h1 { font-family:Georgia; font-size:2.5em; }
 .entry-content { line-height: 23px; font-size:16px; }
 .entry-content h2 { font-size:1.1em; }

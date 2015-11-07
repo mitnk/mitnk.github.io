@@ -137,10 +137,10 @@ Server不能随意重启（因为即时用户太多）；也许设置太过定�
     ssl_certificate     /etc/letsencrypt/live/your-domain.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/your-domain.com/privkey.pem;
 
-然后Reload Nginx即可。最后可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:
+然后Reload Nginx即可。最后在Console1中可以在任意文件夹下用下面命令退出 letsencrypt VirtualEnv:
 
     :::
-    $ deactivate
+    (letsencrypt) $ deactivate
 
 关于LE的HTTPS效果可以点击现在本页面左上角的 HTTPS （绿色）小锁。从详情里可以看出
 LE发布的证书当前只有3个月有效期。在此之前必须 renew 你的SSL 证书。

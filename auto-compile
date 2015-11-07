@@ -15,22 +15,26 @@ XDG_DATA_HOME=${XDG_DATA_HOME:-~/.local/share}
 VENV_NAME="mitnk.github.io"
 VENV_PATH=${VENV_PATH:-"$XDG_DATA_HOME/$VENV_NAME"}
 VENV_BIN=${VENV_PATH}/bin
-
-
+FILE_REQUIREMENTS="./requirements.txt"
 
 
 if [ ! -d $VENV_PATH ]; then
-  echo "Creating virtual environment..."
+  printf "Creating virtual environment..."
   pyvenv $VENV_PATH
+
+  if [ -f "${FILE_REQUIREMENTS}" ]; then
+    while read p; do
+      $VENV_BIN/pip install -q $p
+      printf .
+    done < "${FILE_REQUIREMENTS}"
+  else
+    echo "Error: ${FILE_REQUIREMENTS} does not exist"
+    exit 1
+  fi
+
+  printf "ok\n"
 fi
 
-FILE_REQUIREMENTS="./requirements.txt"
-if [ -f "${FILE_REQUIREMENTS}" ]; then
-  $VENV_BIN/pip install -q -r "${FILE_REQUIREMENTS}"
-else
-  echo "Error: ${FILE_REQUIREMENTS} does not exist"
-  exit 1
-fi
 
 COMPILER="./compile.py"
 for doc in $(git status | grep -o '_src\/docs\/.*\.md$') ; do

@@ -86,12 +86,7 @@ When you ready, type Enter Key to continue
 你这几个子域名都会前面设置的Nginx所覆盖。对<strong>每一次</strong>这样的信息都要去Console2里
 做以下事情：</p>
 <div class="highlight"><pre><span class="nv">$ </span><span class="nb">cd</span> /home/mitnk/acme-challenge/
-<span class="nv">$ </span>vim ABCXYZ
-</pre></div>
-<p>然后复制内容 <code>ABCXYZ.456789</code> 进 <code>ABCXYZ</code> 文件，保存退出vim。然后去掉文件里的 <code>\n</code> 字符
-（如果有这个字符，LE现在就认为内容不匹配）:</p>
-<div class="highlight"><pre><span class="nv">$ </span>cat ABCXYZ <span class="p">|</span> tr -d <span class="s1">'\n'</span> &gt; abc
-<span class="nv">$ </span>mv abc ABCXYZ
+<span class="nv">$ </span><span class="nb">printf</span> <span class="s2">"%s"</span> ABCXYZ.456789 &gt; ABCXYZ
 </pre></div>
 <p>然后切换回Console1回车。</p>
 <p>4) <strong>遇到错误 Error creating new authz ？ </strong></p>

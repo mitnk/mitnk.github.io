@@ -98,14 +98,7 @@ Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只�
 
     :::bash
     $ cd /home/mitnk/acme-challenge/
-    $ vim ABCXYZ
-
-然后复制内容 `ABCXYZ.456789` 进 `ABCXYZ` 文件，保存退出vim。然后去掉文件里的 `\n` 字符
-（如果有这个字符，LE现在就认为内容不匹配）:
-
-    :::bash
-    $ cat ABCXYZ | tr -d '\n' > abc
-    $ mv abc ABCXYZ
+    $ printf "%s" ABCXYZ.456789 > ABCXYZ
 
 然后切换回Console1回车。
 

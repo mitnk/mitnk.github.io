@@ -11,7 +11,7 @@ import re
 
 
 def _parse_title(title):
-    title = re.sub('[^_a-zA-Z0-9. ]', '', title)
+    title = re.sub('[^-_a-zA-Z0-9. ]', '', title)
     title = re.sub('  *', ' ', title).strip()
     title = re.sub(' ', '_', title)
     title = re.sub('\.md$', '', title, flags=re.IGNORECASE)
@@ -37,7 +37,30 @@ def add(title):
     _create_md_file(title)
 
 
-def _create_html_file(slug, year, month, wiki=False):
+def create_html_file(md_path, wiki=False):
+    if not md_path.startswith('_src/docs/'):
+        raise ValueError('Must put md files under _src/docs/ '
+                         'and run scripts under project\' root dir')
+    tokens = re.sub('^_src/docs/', '', md_path).split('/')
+    slug = _parse_title(tokens.pop())
+    try:
+        year = int(tokens[0])
+        month = int(tokens[1])
+        return _create_blog_html_file(slug, year, month, wiki=wiki)
+    except ValueError:
+        return _create_other_html_file(tokens, slug)
+
+
+def _create_other_html_file(tokens, slug):
+    dir_ = Path('./' + '/'.join([x.lower() for x in tokens]) + '/{}/'.format(slug.lower()))
+    if not dir_.exists():
+        dir_.mkdir(parents=True)
+        print('created dir: {}'.format(dir_.absolute()))
+    file_ = dir_ / 'index.html'
+    return '{}'.format(file_.absolute())
+
+
+def _create_blog_html_file(slug, year, month, wiki=False):
     if wiki:
         dir_ = Path('./wiki/{:04d}/{:02d}/{}/'.format(year, month, slug.lower()))
     else:
@@ -57,11 +80,9 @@ def get_title_with_markdown_format(md_file):
 
 
 def make_html(md_file, wiki=False, use_br=False):
-    strings = md_file.split('/')
-    slug = _parse_title(strings[-1])
+    file_html = create_html_file(md_file, wiki=wiki)
+    slug = _parse_title(md_file.split('/')[-1])
     title = get_title_with_markdown_format(md_file) or slug
-    month = int(strings[-2])
-    year = int(strings[-3])
     with open(md_file, 'r') as f:
         content = f.read()
         result = re.findall(r'^[^\n]*\n==*\n', content)
@@ -75,7 +96,6 @@ def make_html(md_file, wiki=False, use_br=False):
         'is_wiki': wiki,
     }
     html = render_to_string('article.html', context)
-    file_html = _create_html_file(slug, year, month, wiki=wiki)
     with open(file_html, 'w') as f:
         f.write(html)
     print('html generated: {}'.format(file_html))

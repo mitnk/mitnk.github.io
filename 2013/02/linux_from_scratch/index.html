@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>Linux From Scratch</title>
+  <title>Lfs - 打造自己的Linux</title>
 </head>
 <body>
 
@@ -16,10 +17,16 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">Linux From Scratch</h1>
+        <h1 class="entry-title">Lfs - 打造自己的Linux</h1>
         <div class="entry-content">
             <p>近段时间我花了一些时间，按LFS-7.2的指南成功地打造出了自己的LFS系统。</p>
-<p>LFS (Linux From Scratch) [1] 是一个教你如何全部从源代码一步步打造你自己的Linux系统的开源项目。由Gerard Beekmans创建于1999年。参过LFS你可以学到： 1) Linux内部是如何工作的 2) 只安装自己需要的软件或服务 3) LFS非常灵活 4) 系统更加安全，因为每一个软件都是你从源码编译出来的。</p>
+<p>LFS (Linux From Scratch) [1] 是一个教你如何全部从源代码一步步打造你自己的Linux系统的开源项目。由Gerard Beekmans创建于1999年。LFS的特点：</p>
+<ul>
+<li>了解Linux内部是如何工作的</li>
+<li>只安装自己需要的软件或服务</li>
+<li>非常灵活</li>
+<li>系统更加安全，因为每一个软件都是你从源码编译出来的。</li>
+</ul>
 <p>安装其它的大多数Linux发行版只需要一个小时左右，而按这本书创建出一个LFS则要久很多：第一次做的话，大概要花24小时左右（可不包括吃饭睡觉）</p>
 <p>首先你得有个<strong>宿主Linux系统</strong></p>
 <p>我的主机是EPC 1015pw，双核（四线程）上网本（这款相对老点的本本应该是上网本中的战斗机），系统用的是Arch Linux + Xfce4。</p>

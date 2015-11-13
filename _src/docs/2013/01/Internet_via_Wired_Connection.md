@@ -1,3 +1,6 @@
+Config Wired Connection on Arch Linux
+=====================================
+
 Short answer: Run `sudo dhcpcd`.
 
 Original Investigating Article

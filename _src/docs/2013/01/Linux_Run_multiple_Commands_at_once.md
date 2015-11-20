@@ -4,6 +4,8 @@
 在Linux下，我们常常会执行一系列的命令来完成某件事。通常我们一个命令一个命令地输入，
 在等到前一个命令完成了，我们再输入后一个命令。
 
+（这里讲的是BASH）
+
 其实我们可以用分号 ; 来一次执行多个命令。比如
 
     :::bash
@@ -24,3 +26,6 @@
     time { ./configure && make && make install; }
 
 注意最后一条命令后面有个分号。
+
+[1] [Command grouping](http://mywiki.wooledge.org/BashGuide/CompoundCommands#Command_grouping)  
+[2] [http://guide.bash.academy/](http://guide.bash.academy/)

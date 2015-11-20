@@ -3,11 +3,12 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>Linux Run Multiple Commands At Once</title>
+  <title>在Linux上执行多个命令</title>
 </head>
 <body>
 
@@ -16,19 +17,20 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">Linux Run Multiple Commands At Once</h1>
+        <h1 class="entry-title">在Linux上执行多个命令</h1>
         <div class="entry-content">
-            <p>在Linux下，我们常常会执行一系列的命令来完成某件事。通常我们一个命令一个命令地输入，在等到前一个命令完成了，我们再输入后一个命令。</p>
+            <p>在Linux下，我们常常会执行一系列的命令来完成某件事。通常我们一个命令一个命令地输入，
+在等到前一个命令完成了，我们再输入后一个命令。</p>
 <p>其实我们可以用分号 ; 来一次执行多个命令。比如</p>
-<div class="highlight"><pre><span class="nb">cd</span>; ls
+<div class="highlight"><pre><span class="nb">cd</span><span class="p">;</span> ls
 </pre></div>
 <p>这条命令是cd到HOME目录下，然后执行ls命令。</p>
 <p>还有一种方法是用两个 &amp; 号，即： <code>&amp;&amp;</code>。比如：</p>
 <div class="highlight"><pre>./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install
 </pre></div>
-<p>与用分号的区别是，如果前一个命令执行失败了（返回值不是0），那么后一条命令就不会执行。</p>
+<p>和用分号的区别是，如果前一个命令执行失败了（返回值不是0），那么后一条命令就不会执行。</p>
 <p>给多条命令计时：</p>
-<div class="highlight"><pre><span class="nb">time</span> <span class="o">{</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install; <span class="o">}</span>
+<div class="highlight"><pre><span class="nb">time</span> <span class="o">{</span> ./configure <span class="o">&amp;&amp;</span> make <span class="o">&amp;&amp;</span> make install<span class="p">;</span> <span class="o">}</span>
 </pre></div>
 <p>注意最后一条命令后面有个分号。</p>
         </div>

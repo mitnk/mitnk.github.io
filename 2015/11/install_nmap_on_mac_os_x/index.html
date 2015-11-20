@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
+
+  <title>在Mac Os X上安装Nmap</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">在Mac Os X上安装Nmap</h1>
+        <div class="entry-content">
+            <p><a href="https://nmap.org/">nmap</a>是一个网络（端口）扫描工具。最基本的用途是这样的：</p>
+<div class="highlight"><pre><span class="nv">$ </span>nmap mitnk.com
+
+Starting Nmap 7.00 <span class="o">(</span> https://nmap.org <span class="o">)</span> at 2015-11-20 09:32 CST
+Nmap scan report <span class="k">for</span> mitnk.com <span class="o">(</span>212.47.241.150<span class="o">)</span>
+Host is up <span class="o">(</span>0.30s latency<span class="o">)</span>.
+rDNS record <span class="k">for</span> 212.47.241.150: 150-241-47-212.rev.cloud.scaleway.com
+Not shown: <span class="m">997</span> closed ports
+PORT    STATE SERVICE
+22/tcp  open  ssh
+80/tcp  open  http
+443/tcp open  https
+
+Nmap <span class="k">done</span>: <span class="m">1</span> IP address <span class="o">(</span><span class="m">1</span> host up<span class="o">)</span> scanned in 49.03 seconds
+</pre></div>
+<p>今天nmap出了7.0版本，然后从官方网站下载了源码进行安装。 本来很简单的
+<code>./configure &amp;&amp; make</code> 就可以了。但因为我系统上的几个小问题，没有成功。</p>
+<p>原因有两个</p>
+<ol>
+<li>我想编辑nmap时enable通过brew安装的openssl</li>
+<li>系统的 gcc 被我替换成了最新的5.2.0，而nmap在用一个参数已经有存在了</li>
+</ol>
+<p>用<code>brew info openssl</code>查看openssl的信息</p>
+<div class="highlight"><pre><span class="nv">$ </span>brew info openssl
+
+...
+Generally there are no consequences of this <span class="k">for</span> you. If you build your
+own software and it requires this formula, you<span class="err">'</span>ll need to add to your
+build variables:
+
+    LDFLAGS:  -L/usr/local/opt/openssl/lib
+    CPPFLAGS: -I/usr/local/opt/openssl/include
+</pre></div>
+<p>然后告诉make我们要用 <code>/usr/bin/gcc</code> 而不是 <code>/usr/local/bin/gcc</code></p>
+<div class="highlight"><pre><span class="nv">$ CC</span><span class="o">=</span>/usr/bin/gcc <span class="nv">LDFLAGS</span><span class="o">=</span><span class="s2">"-L/usr/local/opt/openssl/lib"</span> <span class="nv">CPPFLAGS</span><span class="o">=</span><span class="s2">"-I/usr/local/opt/openssl/include"</span> ./configure
+<span class="nv">$ </span>make
+<span class="nv">$ </span>make install
+</pre></div>
+<p>如果你当前用户对 <code>/usr/local</code> 没有写限制的话，最后一行要改为 <code>sudo make install</code>。</p>
+        </div>
+    </article>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

@@ -139,6 +139,10 @@ Valgrind also does memory leaks:
 
 This is typically slower, so you might not want to run it every time.
 
+## Unit Testing
+
+Use [GLib](https://developer.gnome.org/glib/)''s Test framework to do unit testing.
+
 ## Documentation
 
 - Doxygen

@@ -20,7 +20,9 @@
         <h1 class="entry-title">为Nginx手动获取Let'S Encrypt的免费SSL证书</h1>
         <div class="entry-content">
             <p><strong>更新</strong>:</p>
-<p>2015-12-12 针对LE开始公测进行相应更新。</p>
+<p>2015-12-12 针对LE开始公测进行相应更新<br/>
+2015-11-xx 初始版本，针对LE内测  </p>
+<hr/>
 <p>随着大众越来越关注隐私问题，HTTPS应用得越来越广泛。国外大站基本全部
 HTTPS了，但国内情况还差很多。很多大厂的网站（如阿里的域名管理页面）还
 没有启用HTTPS。</p>
@@ -36,7 +38,7 @@ Let's Encrypt 宣布要推出永久免费非营利性的SSL证书。
 SSL证书市场或者SSL证书历史。</p>
 <p>记录一下手动为Nginx Host的网站获取LE证书的步骤。</p>
 <h2>为Nignx手动获取Let's Encrypt的SSL证书</h2>
-<p>Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只需要执行一个命令，几个交互，
+<p>Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只需要执行一个命令，
 一切都搞定。但现阶段（至少对Nginx来说）还没有达到这个程度。
 所以这里只记录了如何只从LE拿到所需的各个证书文件，然后手动应用这些文件。</p>
 <p>1) <strong>安装letsencrypt客户端</strong></p>

@@ -8,7 +8,7 @@
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>使用 Let's Encrypt 免费SSL证书</title>
+  <title>为Nginx手动获取Let'S Encrypt的免费SSL证书</title>
 </head>
 <body>
 
@@ -17,9 +17,11 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">使用 Let's Encrypt 免费SSL证书</h1>
+        <h1 class="entry-title">为Nginx手动获取Let'S Encrypt的免费SSL证书</h1>
         <div class="entry-content">
-            <p>随着大众越来越关注隐私问题，HTTPS应用得越来越广泛。国外大站基本全部
+            <p><strong>更新</strong>:</p>
+<p>2015-12-12 针对LE开始公测进行相应更新。</p>
+<p>随着大众越来越关注隐私问题，HTTPS应用得越来越广泛。国外大站基本全部
 HTTPS了，但国内情况还差很多。很多大厂的网站（如阿里的域名管理页面）还
 没有启用HTTPS。</p>
 <p>现在市面上的单域名的SSL证书已经很便宜了，比如Namecheap旗下的
@@ -32,11 +34,7 @@ Let's Encrypt 宣布要推出永久免费非营利性的SSL证书。
 首页呆了很长时间。Let's Encrypt是由EFF、Mozilla等公司赞助的一个非营利SSL证书颁发机构。
 虽然可能比不上 Wikipedia，但不出意外这个机构在以后会变得非常非常有名。她的出现基本改变了
 SSL证书市场或者SSL证书历史。</p>
-<p>过了整整一年，Let's Encrypt终于进行了封测阶段。前两天收到了
-<a href="https://letsencrypt.org/">Let's Encrypt</a> 的内测邀请。有兴趣的可以
-<a href="https://docs.google.com/a/letsencrypt.org/forms/d/15Ucm4A20y2rf9gySCTXD6yoLG6Tba7AwYgglV7CKHmM">在这里</a>
-申请内测。</p>
-<p>经过折腾终于将两个域名都归于HTTPS之下。记录下获取SSL证书的过程。</p>
+<p>记录一下手动为Nginx Host的网站获取LE证书的步骤。</p>
 <h2>为Nignx手动获取Let's Encrypt的SSL证书</h2>
 <p>Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只需要执行一个命令，几个交互，
 一切都搞定。但现阶段（至少对Nginx来说）还没有达到这个程度。
@@ -62,14 +60,11 @@ SSL证书市场或者SSL证书历史。</p>
 $ sudo nginx -s reload
 </pre></div>
 <p>3) <strong>获取SSL证书</strong></p>
-<p>确保你已经收到内测邀请，并且域名 <code>your-domain.com</code> 在白名单之内，
-然后打开两个console；在Console1中输入以下命令：</p>
+<p>打开两个console；在Console1中输入以下命令：</p>
 <div class="highlight"><pre><span class="nv">$ </span><span class="nb">source</span> .local/share/letsencrypt/bin/activate
 <span class="o">(</span>letsencrypt<span class="o">)</span> <span class="nv">$ </span>sudo .local/share/letsencrypt/bin/letsencrypt <span class="se">\</span>
-    --agree-dev-preview <span class="se">\</span>
     -d your-domain.com <span class="se">\</span>
     -d www.your-domain.com <span class="se">\</span>
-    --server https://acme-v01.api.letsencrypt.org/directory <span class="se">\</span>
     -a manual <span class="se">\</span>
     certonly
 </pre></div>
@@ -94,7 +89,8 @@ When you ready, type Enter Key to continue
 <p>现在LE还不稳定，有各种问题。我遇到最多的问题就是 <code>Error creating new authz</code>。
 这个是LE Server的问题，貌似只对某些Name Server有此问题。</p>
 <p>我的 .COM 域名没有遇到这个问题，但 .WANG 域名遇到了。然后我将 Name Server从
-阿里万网的 hichina.com 换成 NameCheap 的 FreeDNS 后成功拿到 SSL 证书。</p>
+阿里万网的 hichina.com 换成 NameCheap 的
+<a href="https://www.namecheap.com/domains/freedns.aspx">FreeDNS</a> 后成功拿到 SSL 证书。</p>
 <p>如果还是不行的话，只能等LE那边修正这个问题了。</p>
 <p>5) <strong> 成功拿到SSL证书，设置Nginx </strong></p>
 <p>成功之后，你的SSL证书默认会在 <code>/etc/letsencrypt</code> 下面，

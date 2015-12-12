@@ -1,5 +1,9 @@
-使用 Let's Encrypt 免费SSL证书
-=============================
+为NGINX手动获取Let's Encrypt的免费SSL证书
+=========================================
+
+**更新**:
+
+2015-12-12 针对LE开始公测进行相应更新。
 
 
 随着大众越来越关注隐私问题，HTTPS应用得越来越广泛。国外大站基本全部
@@ -17,13 +21,7 @@ Let's Encrypt 宣布要推出永久免费非营利性的SSL证书。
 虽然可能比不上 Wikipedia，但不出意外这个机构在以后会变得非常非常有名。她的出现基本改变了
 SSL证书市场或者SSL证书历史。
 
-过了整整一年，Let's Encrypt终于进行了封测阶段。前两天收到了
-[Let's Encrypt](https://letsencrypt.org/) 的内测邀请。有兴趣的可以
-[在这里](https://docs.google.com/a/letsencrypt.org/forms/d/15Ucm4A20y2rf9gySCTXD6yoLG6Tba7AwYgglV7CKHmM)
-申请内测。
-
-经过折腾终于将两个域名都归于HTTPS之下。记录下获取SSL证书的过程。
-
+记录一下手动为Nginx Host的网站获取LE证书的步骤。
 
 为Nignx手动获取Let's Encrypt的SSL证书
 -------------------------------------
@@ -66,16 +64,13 @@ Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只�
 
 3) **获取SSL证书**
 
-确保你已经收到内测邀请，并且域名 `your-domain.com` 在白名单之内，
-然后打开两个console；在Console1中输入以下命令：
+打开两个console；在Console1中输入以下命令：
 
     :::bash
     $ source .local/share/letsencrypt/bin/activate
     (letsencrypt) $ sudo .local/share/letsencrypt/bin/letsencrypt \
-        --agree-dev-preview \
         -d your-domain.com \
         -d www.your-domain.com \
-        --server https://acme-v01.api.letsencrypt.org/directory \
         -a manual \
         certonly
 
@@ -109,7 +104,8 @@ Let's Encrypt的一个愿景是HTTPS/SSL设置完全自动化。就是说你只�
 这个是LE Server的问题，貌似只对某些Name Server有此问题。
 
 我的 .COM 域名没有遇到这个问题，但 .WANG 域名遇到了。然后我将 Name Server从
-阿里万网的 hichina.com 换成 NameCheap 的 FreeDNS 后成功拿到 SSL 证书。
+阿里万网的 hichina.com 换成 NameCheap 的
+[FreeDNS](https://www.namecheap.com/domains/freedns.aspx) 后成功拿到 SSL 证书。
 
 如果还是不行的话，只能等LE那边修正这个问题了。
 

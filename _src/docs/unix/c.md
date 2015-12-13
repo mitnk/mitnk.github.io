@@ -1,5 +1,5 @@
-C - Compile Make Debug and Document
-===================================
+Notes on C Language
+===================
 
 ## Link libraries when compiling
 
@@ -401,7 +401,119 @@ If you need a copy of an array, you can still do it on one line:
 
 ### malloc and Memory-Twiddling
 
+The easiest way to avoid bugs related to malloc is not to use malloc.
+Historically, we needed malloc for all sorts of string manipulations;
+we needed malloc to deal with arrays for which length had to be set
+at runtime, which is pretty common; is also largely obsolete.
 
+
+    :::c
+    int *i = malloc(sizeof(int)); // right
+    *i = 23; // right
+    int *i = 23; // wrong
+
+    // valid snippet
+    inti = 13;
+    int*j = &i;
+    int*k = j;
+    *j = 12;
+
+
+### All the Pointer Arithmetic You Need to Know
+
+
+Declare a pointer `double *p`, `p[1]` is exactly equivalent to `*(p+1)`.
+
+- Declare arrays either via the explicit pointer form,
+    `double *p` or the static/automatic form, `double p[100]`
+- In either case, the nth array item is `p[n]`. Don’t forget that
+    the first item is zero, not one; it can be referred to
+    with the special form `p[0] == *p`
+- If you need the address of the nth element (not its actual value),
+    use the ampersand: `&p[n]`. Of course, the zeroth pointer is
+    just `&p[0] == p`
+
+The fact that p++ means “step to the next pointer”
+
+    :::c
+    #include <stdio.h>
+
+    int main(){
+        char *A[] = {"one", "two", "three", NULL};
+        for (char **s = A; *s != NULL; ++s) {
+            printf("elmt: %s\n", *s);
+        }
+    }
+
+Base-plus-offset thinking doesn’t give us much payoff in terms of cute
+syntactic tricks, but it does explain a lot about how C works.
+In fact, consider the struct. Given:
+
+    :::c
+    typedef struct {
+        int a, b;
+        double c, d;
+    } abcd_s;
+    abcd_s list[3];
+
+As a mental model, you can think of list as our base, and `list[0].b`
+is just far enough past that to refer to `b`. That is, given that the
+location of list is the integer `(size_t)&list`, `b` might be located at
+`(size_t)&list + sizeof(int)`; and so `list[2].d` would be at the position
+`(size_t)&list + 6*sizeof(int) + 5*sizeof(double)`. Under this thinking,
+a struct is much like an array, except the elements have names instead of
+numbers and are of different types and sizes.
+
+It’s not quite correct, because of alignment: the system may decide that
+the data needs to be in chunks of a certain size, so fields may have extra
+space at the end so that the next field begins at the right point, and the
+struct may have padding at its end so that a list of structs is
+appropriately aligned [C99 and C11 §6.7.2.1(15) and (17)]. The header
+`stddef.h` defines the `offsetof` macro, which makes the base-plus-offset
+thinking accurate again: `list[2].d` really is at
+`(size_t)&list + 2*sizeof(abcd_s) + offsetof(abcd_s, d)`.
+
+By the way, there can’t be padding at the beginning of a struct,
+so `list[2].a` is at `(size_t)&list+ 2*sizeof(abcd_s)`.
+
+
+### Typedef as a teaching tool
+
+    :::c
+    #include <stdio.h>
+    typedef char* string;
+
+    int main(){
+        string A[] = {"one", "two", "three", NULL};
+        for (string *s = A; *s != NULL; ++s) {
+            printf("elmt: %s\n", *s);
+        }
+    }
+
+Typedefs save the day when dealing with pointers to functions. If you have
+a function with a header like:
+
+    :::c
+    double a_fn(int, int); // a declaration
+
+then just add a star (and parens to resolve precedence) to describe a
+pointer to this type of function:
+
+    :::c
+    double (*a_fn_type)(int, int); // a type: pointer-to-function
+
+Then put typedef in front of that to define a type:
+
+    :::c
+    typedef double (*a_fn_type)(int, int); // a typedef for a pointer to function
+
+Now you can use it as a type like any other, such as to declare a
+function that takes another function as input:
+
+    :::c
+    double apply_a_fn(a_fn_type f, int first_in, int second_in) {
+        return f(first_in, second_in);
+    }
 
 --------------
 

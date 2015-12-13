@@ -8,7 +8,7 @@
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>C - Compile Make Debug And Document</title>
+  <title>Notes On C Language</title>
 </head>
 <body>
 
@@ -17,7 +17,7 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">C - Compile Make Debug And Document</h1>
+        <h1 class="entry-title">Notes On C Language</h1>
         <div class="entry-content">
             <h2>Link libraries when compiling</h2>
 <p>To use a library, you have to tell the compiler that you will be
@@ -349,6 +349,96 @@ to the array, not a copy of the data in the array.</p>
 <span class="p">}</span>
 </pre></div>
 <h3>malloc and Memory-Twiddling</h3>
+<p>The easiest way to avoid bugs related to malloc is not to use malloc.
+Historically, we needed malloc for all sorts of string manipulations;
+we needed malloc to deal with arrays for which length had to be set
+at runtime, which is pretty common; is also largely obsolete.</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="o">*</span><span class="n">i</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="k">sizeof</span><span class="p">(</span><span class="kt">int</span><span class="p">));</span> <span class="c1">// right</span>
+<span class="o">*</span><span class="n">i</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// right</span>
+<span class="kt">int</span> <span class="o">*</span><span class="n">i</span> <span class="o">=</span> <span class="mi">23</span><span class="p">;</span> <span class="c1">// wrong</span>
+
+<span class="c1">// valid snippet</span>
+<span class="n">inti</span> <span class="o">=</span> <span class="mi">13</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">*</span><span class="n">j</span> <span class="o">=</span> <span class="o">&amp;</span><span class="n">i</span><span class="p">;</span>
+<span class="kt">int</span><span class="o">*</span><span class="n">k</span> <span class="o">=</span> <span class="n">j</span><span class="p">;</span>
+<span class="o">*</span><span class="n">j</span> <span class="o">=</span> <span class="mi">12</span><span class="p">;</span>
+</pre></div>
+<h3>All the Pointer Arithmetic You Need to Know</h3>
+<p>Declare a pointer <code>double *p</code>, <code>p[1]</code> is exactly equivalent to <code>*(p+1)</code>.</p>
+<ul>
+<li>Declare arrays either via the explicit pointer form,
+    <code>double *p</code> or the static/automatic form, <code>double p[100]</code></li>
+<li>In either case, the nth array item is <code>p[n]</code>. Don’t forget that
+    the first item is zero, not one; it can be referred to
+    with the special form <code>p[0] == *p</code></li>
+<li>If you need the address of the nth element (not its actual value),
+    use the ampersand: <code>&amp;p[n]</code>. Of course, the zeroth pointer is
+    just <code>&amp;p[0] == p</code></li>
+</ul>
+<p>The fact that p++ means “step to the next pointer”</p>
+<div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="kt">char</span> <span class="o">*</span><span class="n">A</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"one"</span><span class="p">,</span> <span class="s">"two"</span><span class="p">,</span> <span class="s">"three"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+    <span class="k">for</span> <span class="p">(</span><span class="kt">char</span> <span class="o">**</span><span class="n">s</span> <span class="o">=</span> <span class="n">A</span><span class="p">;</span> <span class="o">*</span><span class="n">s</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="o">++</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"elmt: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>Base-plus-offset thinking doesn’t give us much payoff in terms of cute
+syntactic tricks, but it does explain a lot about how C works.
+In fact, consider the struct. Given:</p>
+<div class="highlight"><pre><span class="k">typedef</span> <span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">;</span>
+    <span class="kt">double</span> <span class="n">c</span><span class="p">,</span> <span class="n">d</span><span class="p">;</span>
+<span class="p">}</span> <span class="n">abcd_s</span><span class="p">;</span>
+<span class="n">abcd_s</span> <span class="n">list</span><span class="p">[</span><span class="mi">3</span><span class="p">];</span>
+</pre></div>
+<p>As a mental model, you can think of list as our base, and <code>list[0].b</code>
+is just far enough past that to refer to <code>b</code>. That is, given that the
+location of list is the integer <code>(size_t)&amp;list</code>, <code>b</code> might be located at
+<code>(size_t)&amp;list + sizeof(int)</code>; and so <code>list[2].d</code> would be at the position
+<code>(size_t)&amp;list + 6*sizeof(int) + 5*sizeof(double)</code>. Under this thinking,
+a struct is much like an array, except the elements have names instead of
+numbers and are of different types and sizes.</p>
+<p>It’s not quite correct, because of alignment: the system may decide that
+the data needs to be in chunks of a certain size, so fields may have extra
+space at the end so that the next field begins at the right point, and the
+struct may have padding at its end so that a list of structs is
+appropriately aligned [C99 and C11 §6.7.2.1(15) and (17)]. The header
+<code>stddef.h</code> defines the <code>offsetof</code> macro, which makes the base-plus-offset
+thinking accurate again: <code>list[2].d</code> really is at
+<code>(size_t)&amp;list + 2*sizeof(abcd_s) + offsetof(abcd_s, d)</code>.</p>
+<p>By the way, there can’t be padding at the beginning of a struct,
+so <code>list[2].a</code> is at <code>(size_t)&amp;list+ 2*sizeof(abcd_s)</code>.</p>
+<h3>Typedef as a teaching tool</h3>
+<div class="highlight"><pre><span class="cp">#include &lt;stdio.h&gt;</span>
+<span class="k">typedef</span> <span class="kt">char</span><span class="o">*</span> <span class="n">string</span><span class="p">;</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">(){</span>
+    <span class="n">string</span> <span class="n">A</span><span class="p">[]</span> <span class="o">=</span> <span class="p">{</span><span class="s">"one"</span><span class="p">,</span> <span class="s">"two"</span><span class="p">,</span> <span class="s">"three"</span><span class="p">,</span> <span class="nb">NULL</span><span class="p">};</span>
+    <span class="k">for</span> <span class="p">(</span><span class="n">string</span> <span class="o">*</span><span class="n">s</span> <span class="o">=</span> <span class="n">A</span><span class="p">;</span> <span class="o">*</span><span class="n">s</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">;</span> <span class="o">++</span><span class="n">s</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"elmt: %s</span><span class="se">\n</span><span class="s">"</span><span class="p">,</span> <span class="o">*</span><span class="n">s</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
+</pre></div>
+<p>Typedefs save the day when dealing with pointers to functions. If you have
+a function with a header like:</p>
+<div class="highlight"><pre><span class="kt">double</span> <span class="nf">a_fn</span><span class="p">(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span> <span class="c1">// a declaration</span>
+</pre></div>
+<p>then just add a star (and parens to resolve precedence) to describe a
+pointer to this type of function:</p>
+<div class="highlight"><pre><span class="kt">double</span> <span class="p">(</span><span class="o">*</span><span class="n">a_fn_type</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span> <span class="c1">// a type: pointer-to-function</span>
+</pre></div>
+<p>Then put typedef in front of that to define a type:</p>
+<div class="highlight"><pre><span class="k">typedef</span> <span class="nf">double</span> <span class="p">(</span><span class="o">*</span><span class="n">a_fn_type</span><span class="p">)(</span><span class="kt">int</span><span class="p">,</span> <span class="kt">int</span><span class="p">);</span> <span class="c1">// a typedef for a pointer to function</span>
+</pre></div>
+<p>Now you can use it as a type like any other, such as to declare a
+function that takes another function as input:</p>
+<div class="highlight"><pre><span class="kt">double</span> <span class="nf">apply_a_fn</span><span class="p">(</span><span class="n">a_fn_type</span> <span class="n">f</span><span class="p">,</span> <span class="kt">int</span> <span class="n">first_in</span><span class="p">,</span> <span class="kt">int</span> <span class="n">second_in</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
 <hr/>
 <p>Note from: <a href="http://www.amazon.com/gp/product/1491903899/">21st Century C: C Tips from the New School</a></p>
         </div>

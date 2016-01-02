@@ -8,7 +8,7 @@
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>为Nginx手动获取Let'S Encrypt的免费SSL证书</title>
+  <title>在Nginx中使用Let's Encrypt 免费SSL证书</title>
 </head>
 <body>
 
@@ -17,11 +17,16 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">为Nginx手动获取Let'S Encrypt的免费SSL证书</h1>
+        <h1 class="entry-title">在Nginx中使用Let's Encrypt 免费SSL证书</h1>
         <div class="entry-content">
             <p><strong>更新</strong>:</p>
-<p>2015-12-12 针对LE开始公测进行相应更新<br/>
+<p>2016-01-02 Fork代码并简化了操作<br/>
+2015-12-12 针对LE开始公测进行相应更新<br/>
 2015-11-xx 初始版本，针对LE内测  </p>
+<hr/>
+<p>Fork了官方的客户端做了个更加省事的，请参考以下仓库README说明：</p>
+<p><a href="https://github.com/mitnk/letsencrypt">https://github.com/mitnk/letsencrypt</a></p>
+<p>本文以下内容依然有效，不过推荐用上面这个仓库。</p>
 <hr/>
 <p>随着大众越来越关注隐私问题，HTTPS应用得越来越广泛。国外大站基本全部
 HTTPS了，但国内情况还差很多。很多大厂的网站（如阿里的域名管理页面）还

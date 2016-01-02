@@ -1,4 +1,4 @@
-为NGINX手动获取Let's Encrypt的免费SSL证书
+NGINX安装Let's Encrypt免费SSL证书
 =========================================
 
 **更新**:

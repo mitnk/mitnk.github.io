@@ -1,3 +1,6 @@
+Erlang语言初识
+=============
+
 之前从<a href="http://www.cnblogs.com/lidaobing/">李道兵</a>、<a href="http://blog.codingnow.com/">云风</a>、<a href="http://www.douban.com/people/hongqn/">洪强宁</a>那里听到过Erlang语言  
 对其没有任何概念，除了知道它是一门编程语言  
 春节几天假里花了点时间学习了一下  

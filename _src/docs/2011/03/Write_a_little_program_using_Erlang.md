@@ -1,3 +1,6 @@
+一个简单的Erlang程序
+===================
+
 前几天同事为应聘自动化测试的同学出了 <a href="http://projecteuler.net/index.php?section=problems&id=9">projecteuler 上面的一道题</a>：  
 一个直角三角形三个边 a b c 之和为 1000  
 且 a b c 皆为整数  
@@ -36,7 +39,7 @@
 
 句3即为列表推导
 
-注：句2为一个方便的函数定义，类似Python语言中的 <a href="http://diveintopython.org/power_of_introspection/lambda_functions.html">lambda 函数</a>  
+注：句2为一个方便的函数定义，类似Python语言中的 <a href="http://www.diveintopython.net/power_of_introspection/lambda_functions.html">lambda 函数</a>  
 Out 一下，给个例子  
 
     :::erl

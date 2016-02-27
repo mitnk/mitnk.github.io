@@ -67,7 +67,7 @@ A Simple TCP Server
 
     start() ->
         {ok, Listen} = gen_tcp:listen(2345,
-                                      [binary, {packet, 4},
+                                      [binary, {packet, 0},
                                       {reuseaddr, true},
                                       {active, true}]),
         {ok, Socket} = gen_tcp:accept(Listen),
@@ -76,54 +76,47 @@ A Simple TCP Server
 
     loop(Socket) ->
         receive
+            {tcp, Socket, <<"bye\r\n">>} ->
+                gen_tcp:send(Socket, <<"bye\r\n">>),
+                gen_tcp:close(Socket),
+                ok;
             {tcp, Socket, Bin} ->
                 io:format("Server received binary = ~p~n", [Bin]),
-                Str = binary_to_term(Bin),
-                io:format("server (unpacked) ~p~n", [Str]),
-                Reply = {ok, "I got it.", Str},
-                io:format("Server replying = ~p~n", [Reply]),
-                gen_tcp:send(Socket, term_to_binary(Reply)),
+                Prefix = <<"you said: ">>,
+                Reply = <<Prefix/binary, Bin/binary>>,
+                gen_tcp:send(Socket, Reply),
                 loop(Socket);
-            {tcp_close, Socket} ->
-                io:format("Server socket closed~n")
+            {tcp_closed, Socket} ->
+                io:format("client closed~n");
+            X ->
+                io:format("Got Unexpected Data: ~p ~n", [X])
         end.
-
 
 This is the simplest of servers that illustrates how to package and encode the application data. It accepts a request, computes a reply, sends the reply, and terminates.
 
-Client:
+P.S. Use `telnet` to test this server.
+
+Client in Erlang:
 
     :::erlang
     -module(nano_client).
     -export([connect/1]).
 
     connect(Str) ->
-        {ok, Socket} = gen_tcp:connect("localhost", 2345, [binary, {packet, 4}]),
-        ok = gen_tcp:send(Socket, term_to_binary(Str)),
+        {ok, Socket} = gen_tcp:connect("localhost", 2345, [binary, {packet, 0}]),
+        ok = gen_tcp:send(Socket, Str),
         receive
             {tcp, Socket, Bin} ->
                 io:format("Client received binary = ~p~n", [Bin]),
-                Val = binary_to_term(Bin),
-                io:format("Client result = ~p~n", [Val]),
                 gen_tcp:close(Socket)
         end.
 
 
-Test:
+Run server first, then use client to test it:
 
     :::erl
-    1> nano_client:connect("To test our code, we'll run both the client and the server on the same machine").
-    Client received binary = <<131,104,3,100,0,2,111,107,107,0,9,73,32,103,111,116,
-                           32,105,116,46,107,0,78,84,111,32,116,101,115,116,32,
-                           111,117,114,32,99,111,100,101,44,32,119,101,39,108,
-                           108,32,114,117,110,32,98,111,116,104,32,116,104,101,
-                           32,99,108,105,101,110,116,32,97,110,100,32,116,104,
-                           101,32,115,101,114,118,101,114,32,111,110,32,116,
-                           104,101,32,115,97,109,101,32,109,97,99,104,105,110,
-                           101>>
-    Client result = {ok,"I got it.",
-                    "To test our code, we'll run both the client and the server on the same machine"}
-    ok
+    1> nano_client:connect("Hello from nano client").
+
 
 **A Parallel Server**
 

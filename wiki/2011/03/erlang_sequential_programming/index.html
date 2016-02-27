@@ -3,6 +3,7 @@
 <head>
   <meta charset="utf-8">
   <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
@@ -24,10 +25,12 @@
 <span class="go">14</span>
 </pre></div>
 <p>Uses base 16 and base 32 notation</p>
-<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2#111</span> <span class="o">*</span> <span class="mi">10#3</span>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2#111</span> <span class="o">*</span> <span class="mi">10#3</span><span class="p">.</span>
 <span class="go">21</span>
 <span class="gp">2&gt;</span> <span class="mi">16#cafe</span> <span class="o">*</span> <span class="mi">32#sugar</span><span class="p">.</span>
 <span class="go">1577682511434</span>
+<span class="gp">3&gt;</span> <span class="mi">36#z</span><span class="p">.</span>  <span class="c">%% 36, 10 + 26, is the biggest</span>
+<span class="go">35</span>
 </pre></div>
 <p><strong>2.6 Variables</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">1234567</span><span class="p">.</span>

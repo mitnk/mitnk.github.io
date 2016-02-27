@@ -38,10 +38,19 @@ def add(title):
 
 
 def create_html_file(md_path, wiki=False):
-    if not md_path.startswith('_src/docs/'):
-        raise ValueError('Must put md files under _src/docs/ '
-                         'and run scripts under project\' root dir')
-    tokens = re.sub('^_src/docs/', '', md_path).split('/')
+    if wiki:
+        target_dir = '_src/wiki/'
+    else:
+        target_dir = '_src/docs/'
+
+    if not md_path.startswith(target_dir):
+        raise ValueError(
+            'Must put md files under {} '
+            'and run scripts under project\'s root dir'.format(
+                target_dir,
+        ))
+
+    tokens = re.sub('^{}'.format(target_dir), '', md_path).split('/')
     slug = _parse_title(tokens.pop())
     try:
         year = int(tokens[0])
@@ -111,7 +120,10 @@ def find_md_file_list(wiki=False):
     return md_list
 
 
-def compile(md_file, wiki=False, use_br=False):
+def compile_to_html(md_file, wiki=False, use_br=False):
+    if '_src/wiki/' in md_file:
+        wiki = True
+
     if md_file == 'all':
         md_list = find_md_file_list(wiki)
         for f in md_list:
@@ -178,26 +190,12 @@ if __name__ == '__main__':
     parser = argparse.ArgumentParser(description='Article Maker')
     parser.add_argument('--add', '-a')
     parser.add_argument('--compile', '-c')
+    parser.add_argument('--wiki', action='store_true', default=False)
     parser.add_argument('--use_br', action='store_true')
     args = parser.parse_args()
 
     if args.add:
         args = parser.parse_args()
         add(args.add)
-        exit(0)
     elif args.compile:
-        compile(args.compile, use_br=args.use_br)
-        exit(0)
-
-    exit(0)
-    import sys
-    if sys.argv[1].lower() == 'addwiki':
-        title = ' '.join(sys.argv[2:])
-        add(title)
-    elif sys.argv[1].lower() == 'compilewiki':
-        title = ' '.join(sys.argv[2:])
-        compile(title, wiki=True)
-    elif sys.argv[1].lower() == 'generatesitemap':
-        generatesitemap()
-    else:
-        raise NotImplementedError()
+        compile_to_html(args.compile, wiki=args.wiki, use_br=args.use_br)

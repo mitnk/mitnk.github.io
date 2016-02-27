@@ -11,10 +11,12 @@ Chapter 2 Getting Started
 Uses base 16 and base 32 notation
 
     :::erl
-    1> 2#111 * 10#3
+    1> 2#111 * 10#3.
     21
     2> 16#cafe * 32#sugar.
     1577682511434
+    3> 36#z.  %% 36, 10 + 26, is the biggest
+    35
 
 **2.6 Variables**
 

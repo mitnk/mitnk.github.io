@@ -19,12 +19,11 @@
     <article itemtype="http://schema.org/Blog">
         <h1 class="entry-title">Erlang Sequential Programming</h1>
         <div class="entry-content">
-            <h2>Chapter 2 Getting Started</h2>
-<p><strong>2.5 Simple Integer Arithmetic</strong></p>
+            <p><strong>Simple Integer Arithmetic</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2</span> <span class="o">+</span> <span class="mi">3</span> <span class="o">*</span> <span class="mi">4</span><span class="p">.</span>
 <span class="go">14</span>
 </pre></div>
-<p>Uses base 16 and base 32 notation</p>
+<p><strong>Base 16 and base 32 notation</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">2#111</span> <span class="o">*</span> <span class="mi">10#3</span><span class="p">.</span>
 <span class="go">21</span>
 <span class="gp">2&gt;</span> <span class="mi">16#cafe</span> <span class="o">*</span> <span class="mi">32#sugar</span><span class="p">.</span>
@@ -32,7 +31,7 @@
 <span class="gp">3&gt;</span> <span class="mi">36#z</span><span class="p">.</span>  <span class="c">%% 36, 10 + 26, is the biggest</span>
 <span class="go">35</span>
 </pre></div>
-<p><strong>2.6 Variables</strong></p>
+<p><strong>Variables</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">1234567</span><span class="p">.</span>
 <span class="go">1234567</span>
 <span class="gp">2&gt;</span> <span class="nv">X</span><span class="p">.</span>
@@ -42,7 +41,7 @@
 <span class="gp">4&gt;</span> <span class="nv">X</span> <span class="o">=</span> <span class="mi">1234</span><span class="p">.</span>
 <span class="gt">** exception error: no match of right hand side value 1234</span>
 </pre></div>
-<p><strong>2.7 Floating-Point Numbers</strong></p>
+<p><strong>Floating-Point Numbers</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="mi">5</span> <span class="o">/</span> <span class="mi">3</span><span class="p">.</span>
 <span class="go">1.66667</span>
 <span class="gp">2&gt;</span> <span class="mi">4</span> <span class="o">/</span> <span class="mi">2</span><span class="p">.</span>
@@ -54,16 +53,40 @@
 <span class="gp">5&gt;</span> <span class="mi">4</span> <span class="ow">div</span> <span class="mi">2</span><span class="p">.</span>
 <span class="go">2</span>
 </pre></div>
-<p><strong>2.8 Atoms</strong></p>
+<p><strong>Boolean and Comparison</strong></p>
+<div class="highlight"><pre><span class="gp">7&gt;</span> <span class="mi">5</span> <span class="o">=:=</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span>
+<span class="go">false</span>
+<span class="gp">8&gt;</span> <span class="mi">5</span> <span class="o">==</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">9&gt;</span> <span class="mi">5</span> <span class="o">/=</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span>
+<span class="go">false</span>
+<span class="gp">10&gt;</span> <span class="mi">5</span> <span class="o">=/=</span> <span class="mi">5</span><span class="p">.</span><span class="mi">0</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">11&gt;</span> <span class="n">true</span> <span class="ow">and</span> <span class="n">false</span><span class="p">.</span>
+<span class="go">false</span>
+<span class="gp">12&gt;</span> <span class="n">true</span> <span class="ow">or</span> <span class="n">false</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">14&gt;</span> <span class="n">true</span> <span class="ow">xor</span> <span class="n">false</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">15&gt;</span> <span class="ow">not</span> <span class="n">false</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">16&gt;</span> <span class="mi">1</span> <span class="o">&gt;=</span> <span class="mi">1</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">17&gt;</span> <span class="mi">1</span> <span class="o">=&lt;</span> <span class="mi">1</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">18&gt;</span> <span class="mi">1</span> <span class="o">&lt;</span> <span class="n">false</span><span class="p">.</span>
+<span class="go">true</span>
+<span class="gp">19&gt;</span> <span class="c">% number &lt; atom &lt; reference &lt; fun &lt; port &lt; pid &lt; tuple &lt; list &lt; bit string</span>
+</pre></div>
+<p><strong>Atoms</strong></p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">hello</span><span class="p">.</span>
 <span class="go">hello</span>
 </pre></div>
-<p>Like code:</p>
+<p>Like <code>define</code> in C:</p>
 <div class="highlight"><pre><span class="cp">#define NULL 0</span>
 </pre></div>
-<p>in C programming Language.</p>
-<p>Atoms start with lowercase letters, followed by a sequence of alphanumeric chars or the _ or @ sign.</p>
-<p>Atoms can also be quoted with <code>'</code> char, e.g. 'Name', '+', 'Hello', or 'a'</p>
+<p>Atoms start with lowercase letters, followed by a sequence of alphanumeric chars or the _ or @ sign.
+Atoms can also be quoted with <code>'</code> char, e.g. 'Name', '+', 'Hello', or 'a'</p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="n">'Name'</span><span class="p">.</span>
 <span class="go">'Name'</span>
 <span class="gp">2&gt;</span> <span class="n">'a'</span><span class="p">.</span>
@@ -71,7 +94,7 @@
 <span class="gp">3&gt;</span> <span class="n">'a'</span> <span class="o">==</span> <span class="n">a</span><span class="p">.</span>
 <span class="go">true</span>
 </pre></div>
-<p><strong>2.9 Tuples</strong></p>
+<p><strong>Tuples</strong></p>
 <p>Like struct in C:</p>
 <div class="highlight"><pre><span class="k">struct</span> <span class="n">point</span> <span class="p">{</span>
   <span class="kt">int</span> <span class="n">x</span><span class="p">;</span>
@@ -116,8 +139,21 @@
 <span class="go">[1,3,5,7,9]</span>
 <span class="gp">8&gt;</span> <span class="p">{</span><span class="nv">H1</span><span class="p">,</span> <span class="nv">H2</span><span class="p">,</span> <span class="nv">T</span><span class="p">}</span>
 <span class="go">{1, 3, [5,7,9]}</span>
+<span class="gp">9&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">++</span> <span class="p">[</span><span class="mi">4</span><span class="p">,</span> <span class="mi">5</span><span class="p">].</span>
+<span class="go">[1,2,3,4,5]</span>
+<span class="gp">10&gt;</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]</span> <span class="o">--</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">].</span>
+<span class="go">[3]</span>
+<span class="gp">19&gt;</span> <span class="nb">hd</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span>
+<span class="go">1</span>
+<span class="gp">20&gt;</span> <span class="nb">tl</span><span class="p">([</span><span class="mi">1</span><span class="p">,</span> <span class="mi">2</span><span class="p">,</span> <span class="mi">3</span><span class="p">]).</span>
+<span class="go">[2,3]</span>
+<span class="gp">21&gt;</span> <span class="p">[</span><span class="mi">2</span><span class="o">*</span><span class="nv">N</span> <span class="p">||</span> <span class="nv">N</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">]].</span>
+<span class="go">[2,4,6,8]</span>
+<span class="gp">22&gt;</span> <span class="p">[</span><span class="nv">X</span> <span class="p">||</span> <span class="nv">X</span> <span class="o">&lt;-</span> <span class="p">[</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">6</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">8</span><span class="p">,</span><span class="mi">9</span><span class="p">,</span><span class="mi">10</span><span class="p">],</span> <span class="nv">X</span> <span class="ow">rem</span> <span class="mi">2</span> <span class="o">=:=</span> <span class="mi">0</span><span class="p">].</span>
+<span class="go">[2,4,6,8,10]</span>
 </pre></div>
-<p><strong>2.11 Strings</strong></p>
+<p>built-in functions (BIFs) are usually functions that could not be implemented in pure Erlang.</p>
+<p><strong>Strings</strong></p>
 <p>There are no strings in Erlang. They are the list of integers.</p>
 <div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Name</span> <span class="o">=</span> <span class="s">"Hello"</span><span class="p">.</span>
 <span class="go">"Hello"</span>
@@ -131,6 +167,72 @@
 <span class="go">115</span>
 <span class="gp">2&gt;</span> <span class="p">[</span><span class="nv">I</span><span class="o">-</span><span class="mi">32</span><span class="p">,</span><span class="sc">$u</span><span class="p">,</span><span class="sc">$r</span><span class="p">,</span><span class="sc">$p</span><span class="p">,</span><span class="sc">$r</span><span class="p">,</span><span class="sc">$i</span><span class="p">,</span><span class="sc">$s</span><span class="p">,</span><span class="sc">$e</span><span class="p">].</span>
 <span class="go">"Surprise"</span>
+</pre></div>
+<p><strong>Bit Syntax</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="nv">Color</span> <span class="o">=</span> <span class="mi">16#F09A29</span><span class="p">.</span>
+<span class="go">15768105</span>
+<span class="gp">2&gt;</span> <span class="nv">Pixel</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="nv">Color</span><span class="p">:</span><span class="mi">24</span><span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;240,154,41&gt;&gt;</span>
+<span class="gp">3&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">R</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span> <span class="nv">G</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span> <span class="nv">B</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nv">Pixel</span><span class="p">.</span>
+<span class="go">&lt;&lt;240,154,41&gt;&gt;</span>
+<span class="gp">4&gt;</span> <span class="nv">R</span><span class="p">.</span>
+<span class="go">240</span>
+<span class="gp">5&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">R1</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span> <span class="p">_</span><span class="o">/</span><span class="n">binary</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nv">Pixel</span><span class="p">.</span>
+<span class="go">&lt;&lt;240,154,41&gt;&gt;</span>
+<span class="gp">6&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">R2</span><span class="p">:</span><span class="mi">16</span><span class="p">,</span> <span class="p">_</span><span class="o">/</span><span class="n">binary</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="nv">Pixel</span><span class="p">.</span>
+<span class="go">&lt;&lt;240,154,41&gt;&gt;</span>
+<span class="gp">7&gt;</span> <span class="nv">R2</span><span class="p">.</span>
+<span class="go">61594</span>
+<span class="gp">18&gt;</span> <span class="nv">R2</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="mi">240</span><span class="p">,</span><span class="mi">154</span><span class="o">&gt;&gt;</span><span class="p">.</span>  <span class="c">% R2 is an integer, not a binary.</span>
+<span class="gt">** exception error: no match of right hand side value &lt;&lt;240,154&gt;&gt;</span>
+<span class="gp">20&gt;</span> <span class="nb">is_binary</span><span class="p">(</span><span class="nv">R2</span><span class="p">).</span>
+<span class="go">false</span>
+<span class="gp">21&gt;</span> <span class="nb">is_integer</span><span class="p">(</span><span class="nv">R2</span><span class="p">).</span>
+<span class="go">true</span>
+<span class="gp">19&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">R2</span><span class="p">:</span><span class="mi">16</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="mi">240</span><span class="p">,</span><span class="mi">154</span><span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;240,154&gt;&gt;</span>
+<span class="gp">8&gt;</span> <span class="nb">binary_to_list</span><span class="p">(</span><span class="nv">R2</span><span class="p">).</span>
+<span class="go">[240,154]</span>
+
+<span class="gt">**More Binary Stuff**</span>
+<span class="gp">1&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">Port1</span><span class="p">:</span><span class="mi">16</span><span class="o">/</span><span class="n">integer</span><span class="o">-</span><span class="n">signed</span><span class="o">-</span><span class="n">big</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;1,2&gt;&gt;</span>
+<span class="gp">2&gt;</span> <span class="nv">Port1</span><span class="p">.</span>
+<span class="go">258</span>
+<span class="gp">3&gt;</span> <span class="o">&lt;&lt;</span><span class="nv">Port2</span><span class="p">:</span><span class="mi">16</span><span class="o">/</span><span class="n">integer</span><span class="o">-</span><span class="n">signed</span><span class="o">-</span><span class="n">little</span><span class="o">&gt;&gt;</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;1,2&gt;&gt;</span>
+<span class="gp">4&gt;</span> <span class="nv">Port2</span><span class="p">.</span>
+<span class="go">513</span>
+</pre></div>
+<p>Type: integer | float | binary | bytes | bitstring | bits | utf8 | utf16 | utf32
+Signedness: signed | unsigned
+Endianness: big | little | native</p>
+<p>The standard binary operations (shifting bits to left and right,
+binary 'and', 'or', 'xor', or 'not') also exist in Erlang.
+Just use the functions bsl (Bit Shift Left), bsr (Bit Shift Right),
+band, bor, bxor, and bnot. e.g. <code>2#00100 = 2#00010 bsl 1.</code></p>
+<p>One could parse TCP segments with code like this:</p>
+<div class="highlight"><pre><span class="go">&lt;&lt;SourcePort:16, DestinationPort:16,</span>
+<span class="go">  AckNumber:32,</span>
+<span class="go">  DataOffset:4, _Reserved:4, Flags:8, WindowSize:16,</span>
+<span class="go">  CheckSum: 16, UrgentPointer:16,</span>
+<span class="go">  Payload/binary&gt;&gt; = SomeBinary.</span>
+</pre></div>
+<p><strong>Binary Comprehensions</strong></p>
+<div class="highlight"><pre><span class="gp">1&gt;</span> <span class="p">[</span> <span class="nv">X</span> <span class="p">||</span> <span class="o">&lt;&lt;</span><span class="nv">X</span><span class="o">&gt;&gt;</span> <span class="o">&lt;=</span> <span class="o">&lt;&lt;</span><span class="mi">1</span><span class="p">,</span><span class="mi">2</span><span class="p">,</span><span class="mi">3</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">5</span><span class="o">&gt;&gt;</span><span class="p">,</span> <span class="nv">X</span> <span class="ow">rem</span> <span class="mi">2</span> <span class="o">==</span> <span class="mi">0</span><span class="p">].</span>
+<span class="go">[2,4]</span>
+<span class="gp">2&gt;</span> <span class="nv">Pixels</span> <span class="o">=</span> <span class="o">&lt;&lt;</span><span class="mi">213</span><span class="p">,</span><span class="mi">45</span><span class="p">,</span><span class="mi">132</span><span class="p">,</span><span class="mi">64</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">76</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">0</span><span class="p">,</span><span class="mi">234</span><span class="p">,</span><span class="mi">32</span><span class="p">,</span><span class="mi">15</span><span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;213,45,132,64,76,32,76,0,0,234,32,15&gt;&gt;</span>
+<span class="gp">3&gt;</span> <span class="nv">RGB</span> <span class="o">=</span> <span class="p">[{</span><span class="nv">R</span><span class="p">,</span><span class="nv">G</span><span class="p">,</span><span class="nv">B</span><span class="p">}</span> <span class="p">||</span> <span class="o">&lt;&lt;</span><span class="nv">R</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nv">G</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nv">B</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;&gt;</span> <span class="o">&lt;=</span> <span class="nv">Pixels</span><span class="p">].</span>
+<span class="go">[{213,45,132},{64,76,32},{76,0,0},{234,32,15}]</span>
+<span class="gp">4&gt;</span> <span class="o">&lt;&lt;</span> <span class="o">&lt;&lt;</span><span class="nv">R</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nv">G</span><span class="p">:</span><span class="mi">8</span><span class="p">,</span><span class="nv">B</span><span class="p">:</span><span class="mi">8</span><span class="o">&gt;&gt;</span> <span class="p">||</span> <span class="p">{</span><span class="nv">R</span><span class="p">,</span><span class="nv">G</span><span class="p">,</span><span class="nv">B</span><span class="p">}</span> <span class="o">&lt;-</span> <span class="nv">RGB</span> <span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;213,45,132,64,76,32,76,0,0,234,32,15&gt;&gt;</span>
+<span class="gp">5&gt;</span> <span class="o">&lt;&lt;</span> <span class="o">&lt;&lt;</span><span class="p">(</span><span class="nv">X</span><span class="o">+</span><span class="mi">1</span><span class="p">)</span><span class="o">/</span><span class="n">integer</span><span class="o">&gt;&gt;</span> <span class="p">||</span> <span class="o">&lt;&lt;</span><span class="nv">X</span><span class="o">&gt;&gt;</span> <span class="o">&lt;=</span> <span class="o">&lt;&lt;</span><span class="mi">3</span><span class="p">,</span><span class="mi">7</span><span class="p">,</span><span class="mi">5</span><span class="p">,</span><span class="mi">4</span><span class="p">,</span><span class="mi">7</span><span class="o">&gt;&gt;</span> <span class="o">&gt;&gt;</span><span class="p">.</span>
+<span class="go">&lt;&lt;4,8,6,5,8&gt;&gt;</span>
+</pre></div>
+<p>Via: <a href="http://learnyousomeerlang.com/starting-out-for-real#bit-syntax">http://learnyousomeerlang.com/starting-out-for-real#bit-syntax</a></p>
+<p><strong>Get Help</strong></p>
+<div class="highlight"><pre><span class="go">$ erl -man lists</span>
 </pre></div>
 <h2>Chapter 3 Sequential Programming</h2>
 <p><strong>3.1 Modules</strong></p>

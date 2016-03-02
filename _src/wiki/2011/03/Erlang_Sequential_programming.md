@@ -1,14 +1,14 @@
-Chapter 2 Getting Started
--------------------------
+Erlang Sequential Programming
+=============================
 
-**2.5 Simple Integer Arithmetic**
+
+**Simple Integer Arithmetic**
 
     :::erl
     1> 2 + 3 * 4.
     14
 
-
-Uses base 16 and base 32 notation
+**Base 16 and base 32 notation**
 
     :::erl
     1> 2#111 * 10#3.
@@ -18,7 +18,7 @@ Uses base 16 and base 32 notation
     3> 36#z.  %% 36, 10 + 26, is the biggest
     35
 
-**2.6 Variables**
+**Variables**
 
     :::erl
     1> X = 1234567.
@@ -30,7 +30,7 @@ Uses base 16 and base 32 notation
     4> X = 1234.
     ** exception error: no match of right hand side value 1234
 
-**2.7 Floating-Point Numbers**
+**Floating-Point Numbers**
 
     :::erl
     1> 5 / 3.
@@ -44,21 +44,46 @@ Uses base 16 and base 32 notation
     5> 4 div 2.
     2
 
-**2.8 Atoms**
+**Boolean and Comparison**
+
+    :::erl
+    7> 5 =:= 5.0.
+    false
+    8> 5 == 5.0.
+    true
+    9> 5 /= 5.0.
+    false
+    10> 5 =/= 5.0.
+    true
+    11> true and false.
+    false
+    12> true or false.
+    true
+    14> true xor false.
+    true
+    15> not false.
+    true
+    16> 1 >= 1.
+    true
+    17> 1 =< 1.
+    true
+    18> 1 < false.
+    true
+    19> % number < atom < reference < fun < port < pid < tuple < list < bit string
+
+
+**Atoms**
 
     :::erl
     1> hello.
     hello
 
-Like code:
+Like `define` in C:
 
     :::c
     #define NULL 0
 
-in C programming Language.
-
 Atoms start with lowercase letters, followed by a sequence of alphanumeric chars or the _ or @ sign.
-
 Atoms can also be quoted with `'` char, e.g. 'Name', '+', 'Hello', or 'a'
 
     :::erl
@@ -69,8 +94,7 @@ Atoms can also be quoted with `'` char, e.g. 'Name', '+', 'Hello', or 'a'
     3> 'a' == a.
     true
 
-
-**2.9 Tuples**
+**Tuples**
 
 Like struct in C:
 
@@ -125,9 +149,22 @@ The number of elements is said to be the size of the tuple.
     [1,3,5,7,9]
     8> {H1, H2, T}
     {1, 3, [5,7,9]}
+    9> [1, 2, 3] ++ [4, 5].
+    [1,2,3,4,5]
+    10> [1, 2, 3] -- [1, 2].
+    [3]
+    19> hd([1, 2, 3]).
+    1
+    20> tl([1, 2, 3]).
+    [2,3]
+    21> [2*N || N <- [1,2,3,4]].
+    [2,4,6,8]
+    22> [X || X <- [1,2,3,4,5,6,7,8,9,10], X rem 2 =:= 0].
+    [2,4,6,8,10]
 
+built-in functions (BIFs) are usually functions that could not be implemented in pure Erlang.
 
-**2.11 Strings**
+**Strings**
 
 There are no strings in Erlang. They are the list of integers.
 
@@ -146,6 +183,83 @@ Dollar syntax
     115
     2> [I-32,$u,$r,$p,$r,$i,$s,$e].
     "Surprise"
+
+**Bit Syntax**
+
+    :::erl
+    1> Color = 16#F09A29.
+    15768105
+    2> Pixel = <<Color:24>>.
+    <<240,154,41>>
+    3> <<R:8, G:8, B:8>> = Pixel.
+    <<240,154,41>>
+    4> R.
+    240
+    5> <<R1:8, _/binary>> = Pixel.
+    <<240,154,41>>
+    6> <<R2:16, _/binary>> = Pixel.
+    <<240,154,41>>
+    7> R2.
+    61594
+    18> R2 = <<240,154>>.  % R2 is an integer, not a binary.
+    ** exception error: no match of right hand side value <<240,154>>
+    20> is_binary(R2).
+    false
+    21> is_integer(R2).
+    true
+    19> <<R2:16>> = <<240,154>>.
+    <<240,154>>
+    8> binary_to_list(R2).
+    [240,154]
+
+    **More Binary Stuff**
+    1> <<Port1:16/integer-signed-big>> = <<1,2>>.
+    <<1,2>>
+    2> Port1.
+    258
+    3> <<Port2:16/integer-signed-little>> = <<1,2>>.
+    <<1,2>>
+    4> Port2.
+    513
+
+Type: integer | float | binary | bytes | bitstring | bits | utf8 | utf16 | utf32
+Signedness: signed | unsigned
+Endianness: big | little | native
+
+The standard binary operations (shifting bits to left and right,
+binary 'and', 'or', 'xor', or 'not') also exist in Erlang.
+Just use the functions bsl (Bit Shift Left), bsr (Bit Shift Right),
+band, bor, bxor, and bnot. e.g. `2#00100 = 2#00010 bsl 1.`
+
+One could parse TCP segments with code like this:
+
+    :::erl
+    <<SourcePort:16, DestinationPort:16,
+      AckNumber:32,
+      DataOffset:4, _Reserved:4, Flags:8, WindowSize:16,
+      CheckSum: 16, UrgentPointer:16,
+      Payload/binary>> = SomeBinary.
+
+**Binary Comprehensions**
+
+    :::erl
+    1> [ X || <<X>> <= <<1,2,3,4,5>>, X rem 2 == 0].
+    [2,4]
+    2> Pixels = <<213,45,132,64,76,32,76,0,0,234,32,15>>.
+    <<213,45,132,64,76,32,76,0,0,234,32,15>>
+    3> RGB = [{R,G,B} || <<R:8,G:8,B:8>> <= Pixels].
+    [{213,45,132},{64,76,32},{76,0,0},{234,32,15}]
+    4> << <<R:8,G:8,B:8>> || {R,G,B} <- RGB >>.
+    <<213,45,132,64,76,32,76,0,0,234,32,15>>
+    5> << <<(X+1)/integer>> || <<X>> <= <<3,7,5,4,7>> >>.
+    <<4,8,6,5,8>>
+
+Via: [http://learnyousomeerlang.com/starting-out-for-real#bit-syntax](http://learnyousomeerlang.com/starting-out-for-real#bit-syntax)
+
+**Get Help**
+
+    :::erl
+    $ erl -man lists
 
 
 Chapter 3 Sequential Programming

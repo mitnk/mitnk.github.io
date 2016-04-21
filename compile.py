@@ -56,7 +56,7 @@ def create_html_file(md_path, wiki=False):
         year = int(tokens[0])
         month = int(tokens[1])
         return _create_blog_html_file(slug, year, month, wiki=wiki)
-    except ValueError:
+    except (IndexError, ValueError):
         return _create_other_html_file(tokens, slug)
 
 

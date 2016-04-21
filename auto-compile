@@ -19,13 +19,12 @@ FILE_REQUIREMENTS="./requirements.txt"
 
 
 if [ ! -d $VENV_PATH ]; then
-  printf "Creating virtual environment..."
-  pyvenv $VENV_PATH
+  printf "Creating virtual environment at $VENV_PATH"
+  pyvenv-3.5 $VENV_PATH
 
   if [ -f "${FILE_REQUIREMENTS}" ]; then
     while read p; do
-      $VENV_BIN/pip install -q $p
-      printf .
+      $VENV_BIN/pip install $p
     done < "${FILE_REQUIREMENTS}"
   else
     echo "Error: ${FILE_REQUIREMENTS} does not exist"

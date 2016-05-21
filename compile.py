@@ -13,7 +13,7 @@ import re
 def _parse_title(title):
     title = re.sub('[^-_a-zA-Z0-9. ]', '', title)
     title = re.sub('  *', ' ', title).strip()
-    title = re.sub(' ', '_', title)
+    title = re.sub(' ', '-', title)
     title = re.sub('\.md$', '', title, flags=re.IGNORECASE)
     return title
 
@@ -99,7 +99,7 @@ def make_html(md_file, wiki=False, use_br=False):
             content = content.replace(result[0], '')
     context = {
         'content': content,
-        'title': title.replace('_', ' ').title(),
+        'title': title.replace('[-_]', ' ').title(),
         'time_added': datetime.datetime.now(),
         'use_br': use_br,
         'is_wiki': wiki,
@@ -173,7 +173,7 @@ def generateindex():
     for item in result:
         obj = _Article()
         obj.url = item[1:].rstrip('index.html')
-        obj.title = ' '.join(item.split('/')[-2].split('_')).title()
+        obj.title = ' '.join(item.split('/')[-2].split('-')).title()
         article_list.append(obj)
 
     context = {

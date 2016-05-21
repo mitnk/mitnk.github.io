@@ -4,27 +4,22 @@ Python Decorators
 ## The Basics
 
 What you have to know about Python decorators is to understand the following
-code line by line. Note the `functools.wraps`.
+code line by line. Note the use of `functools.wraps`.
 
     :::python
     from functools import wraps
     import time
 
-
     def timeit(func):
-
         def wrapper(*args, **kwargs):
             print('starting {} args: {} kwargs: {}'.format(func, args, kwargs))
             t = time.time()
             result = func(*args, **kwargs)
             print('result: {} timed: {:.4f}s'.format(result, time.time() - t))
             return result
-
         return wrapper
 
-
     def timeit2(func):
-
         @wraps(func)
         def wrapper(*args, **kwargs):
             print('starting {} args: {} kwargs: {}'.format(func, args, kwargs))
@@ -32,9 +27,7 @@ code line by line. Note the `functools.wraps`.
             result = func(*args, **kwargs)
             print('result: {} timed: {:.4f}s'.format(result, time.time() - t))
             return result
-
         return wrapper
-
 
     @timeit
     def add(a, b):
@@ -42,13 +35,11 @@ code line by line. Note the `functools.wraps`.
         time.sleep(0.111)
         return a + b
 
-
     @timeit2
     def multiple(a, b=81):
         """Multiple two numbers"""
         time.sleep(0.123)
         return a * b
-
 
     add(23, 89)
     multiple(23)
@@ -58,7 +49,7 @@ code line by line. Note the `functools.wraps`.
     print(multiple.__name__)
     print(multiple.__doc__)
 
-The output:
+The outputs:
 
     :::bash
     starting <function add at 0x10150b8c8> args: (23, 89) kwargs: {}

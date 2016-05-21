@@ -21,25 +21,20 @@
         <div class="entry-content">
             <h2>The Basics</h2>
 <p>What you have to know about Python decorators is to understand the following
-code line by line. Note the <code>functools.wraps</code>.</p>
+code line by line. Note the use of <code>functools.wraps</code>.</p>
 <div class="highlight"><pre><span></span><span class="kn">from</span> <span class="nn">functools</span> <span class="kn">import</span> <span class="n">wraps</span>
 <span class="kn">import</span> <span class="nn">time</span>
 
-
 <span class="k">def</span> <span class="nf">timeit</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">'starting {} args: {} kwargs: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
         <span class="n">t</span> <span class="o">=</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">'result: {} timed: {:.4f}s'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">result</span>
-
     <span class="k">return</span> <span class="n">wrapper</span>
 
-
 <span class="k">def</span> <span class="nf">timeit2</span><span class="p">(</span><span class="n">func</span><span class="p">):</span>
-
     <span class="nd">@wraps</span><span class="p">(</span><span class="n">func</span><span class="p">)</span>
     <span class="k">def</span> <span class="nf">wrapper</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">):</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">'starting {} args: {} kwargs: {}'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">func</span><span class="p">,</span> <span class="n">args</span><span class="p">,</span> <span class="n">kwargs</span><span class="p">))</span>
@@ -47,9 +42,7 @@ code line by line. Note the <code>functools.wraps</code>.</p>
         <span class="n">result</span> <span class="o">=</span> <span class="n">func</span><span class="p">(</span><span class="o">*</span><span class="n">args</span><span class="p">,</span> <span class="o">**</span><span class="n">kwargs</span><span class="p">)</span>
         <span class="k">print</span><span class="p">(</span><span class="s1">'result: {} timed: {:.4f}s'</span><span class="o">.</span><span class="n">format</span><span class="p">(</span><span class="n">result</span><span class="p">,</span> <span class="n">time</span><span class="o">.</span><span class="n">time</span><span class="p">()</span> <span class="o">-</span> <span class="n">t</span><span class="p">))</span>
         <span class="k">return</span> <span class="n">result</span>
-
     <span class="k">return</span> <span class="n">wrapper</span>
-
 
 <span class="nd">@timeit</span>
 <span class="k">def</span> <span class="nf">add</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="p">):</span>
@@ -57,13 +50,11 @@ code line by line. Note the <code>functools.wraps</code>.</p>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.111</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">+</span> <span class="n">b</span>
 
-
 <span class="nd">@timeit2</span>
 <span class="k">def</span> <span class="nf">multiple</span><span class="p">(</span><span class="n">a</span><span class="p">,</span> <span class="n">b</span><span class="o">=</span><span class="mi">81</span><span class="p">):</span>
     <span class="sd">"""Multiple two numbers"""</span>
     <span class="n">time</span><span class="o">.</span><span class="n">sleep</span><span class="p">(</span><span class="mf">0.123</span><span class="p">)</span>
     <span class="k">return</span> <span class="n">a</span> <span class="o">*</span> <span class="n">b</span>
-
 
 <span class="n">add</span><span class="p">(</span><span class="mi">23</span><span class="p">,</span> <span class="mi">89</span><span class="p">)</span>
 <span class="n">multiple</span><span class="p">(</span><span class="mi">23</span><span class="p">)</span>
@@ -73,7 +64,7 @@ code line by line. Note the <code>functools.wraps</code>.</p>
 <span class="k">print</span><span class="p">(</span><span class="n">multiple</span><span class="o">.</span><span class="n">__name__</span><span class="p">)</span>
 <span class="k">print</span><span class="p">(</span><span class="n">multiple</span><span class="o">.</span><span class="n">__doc__</span><span class="p">)</span>
 </pre></div>
-<p>The output:</p>
+<p>The outputs:</p>
 <div class="highlight"><pre><span></span>starting &lt;<span class="k">function</span> add at 0x10150b8c8&gt; args: <span class="o">(</span>23, 89<span class="o">)</span> kwargs: <span class="o">{}</span>
 result: <span class="m">112</span> timed: 0.1147s
 starting &lt;<span class="k">function</span> multiple at 0x101578268&gt; args: <span class="o">(</span>23,<span class="o">)</span> kwargs: <span class="o">{}</span>

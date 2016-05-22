@@ -1,7 +1,7 @@
 Python Decorators
 =================
 
-## The Basics
+## 1. The Basics
 
 What you have to know about Python decorators is to understand the following
 code line by line. Note the use of `functools.wraps`.
@@ -61,62 +61,34 @@ The outputs:
     multiple
     Multiple two numbers
 
-## 2. Decorator on class
-
-Now we rewrite our code to be OO, new code looks like this:
+## 2. Class-based Decorators
 
     :::python
-    from functools import wraps
     import time
 
-    def timeit(func):
-        @wraps(func)
-        def wrapper(*args, **kwargs):
-            print('starting {} args: {} kwargs: {}'.format(func, args, kwargs))
+    class timeit:
+        def __init__(self, func):
+            self.func = func
+
+        def __call__(self, *args, **kwargs):
+            print('starting func call {}'.format(self.func))
             t = time.time()
-            result = func(*args, **kwargs)
-            print('result: {} timed: {:.4f}s'.format(result, time.time() - t))
+            result = self.func(*args, **kwargs)
+            print('timed {:.4f}'.format(time.time() - t))
             return result
-        return wrapper
 
-    class Calc(object):
-        """The calculator on two numbers"""
+    @timeit
+    def add(a, b):
+        return a + b
 
-        def __init__(self, a, b):
-            self.a = a
-            self.b = b
+    @timeit
+    def multiple(a, b):
+        return a * b
 
-        @timeit
-        def add(self):
-            """Add them"""
-            return self.a + self.b
+    print(add(2, 3))
+    print(multiple(2, 3))
 
-        @timeit
-        def multiple(self):
-            """Multiple them"""
-            return self.a * self.b
-
-
-    c = Calc(23, 89)
-    c.add()
-    c.multiple()
-
-    print(c)
-    print(c.__doc__)
-    print(c.add.__name__)
-
-And the outputs:
-
-    :::
-    starting <function add at 0x1006f0c80> args: (<__main__.Calc object at 0x1006f2750>,) kwargs: {}
-    result: 112 timed: 0.0000s
-    starting <function multiple at 0x1006f0d70> args: (<__main__.Calc object at 0x1006f2750>,) kwargs: {}
-    result: 2047 timed: 0.0000s
-    <__main__.Calc object at 0x1006f2750>
-    The calculator on two numbers
-    add
-
-## Decorators on class
+## 3. Decorators on Class
 
 Decorators can also work on class, though it is sort of weird.
 

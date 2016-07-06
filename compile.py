@@ -189,7 +189,7 @@ if __name__ == '__main__':
     import argparse
     parser = argparse.ArgumentParser(description='Article Maker')
     parser.add_argument('--add', '-a')
-    parser.add_argument('--compile', '-c')
+    parser.add_argument('--file-to-compile', '-f')
     parser.add_argument('--wiki', action='store_true', default=False)
     parser.add_argument('--use_br', action='store_true')
     args = parser.parse_args()
@@ -197,5 +197,5 @@ if __name__ == '__main__':
     if args.add:
         args = parser.parse_args()
         add(args.add)
-    elif args.compile:
-        compile_to_html(args.compile, wiki=args.wiki, use_br=args.use_br)
+    elif args.file_to_compile:
+        compile_to_html(args.file_to_compile, wiki=args.wiki, use_br=args.use_br)

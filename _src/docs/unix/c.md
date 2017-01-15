@@ -515,6 +515,77 @@ function that takes another function as input:
         return f(first_in, second_in);
     }
 
+## Inessential C Syntax
+
+**Don’t Bother Explicitly Returning from `main`**
+
+### Set Array Size at Runtime
+
+Old way:
+
+    :::c
+    pthread_t *threads;
+    int thread_count;
+    thread_count = atoi(argv[1]);
+    threads = malloc(thread_count * sizeof(pthread_t));
+    ...
+    free(threads);
+
+Can be replaced with:
+
+    :::c
+    int thread_count = atoi(argv[1]);
+    pthread_t threads[thread_count];
+
+In the 1970s and 1980s, malloc returned a char* pointer and had to
+be cast (unless you were allocating a string), with a form like:
+
+    :::c
+    //don't bother with this sort of redundancy:
+    double* list = (double*) malloc(list_length * sizeof(double));
+
+You don’t have to do this anymore, because malloc now gives you a void
+pointer, which the compiler will comfortably autocast to any pointer type.
+
+    :::c
+    int use_parameters(void *params_in){
+        // Effectively casting pointer-to-NULL
+        // to a pointer-to-param_struct.
+        param_struct *params = params_in;
+        ...
+    }
+
+### Enums and Strings
+
+Enums are a good idea that went bad.
+
+There are reasons for using enums: sometimes you have an array that
+makes no sense as a struct but that nonetheless requires named elements,
+and when doing kernel- level work, giving names to bit patterns is essential.
+But in cases where enums are used to indicate a short list of options or
+a short list of error codes, a single character or a short string can
+serve the purpose without cluttering up the namespace or users’ memory.
+
+So, to revise the common wisdom on goto, it is generally harmful but
+is a common present-day idiom for cleaning up in case of different kinds
+of errors, and it is often cleaner than the alternatives.
+
+### Deprecate Float
+
+use double instead of float, and for intermediate values in calculations,
+it doesn’t hurt to use long double.
+
+There are several functions available to parse the numeric value of
+a string of text. The most popular are atoi and atof
+(ASCII-to-int and ASCII-to-float). The safer alternative is using
+`strtol` and `strtod`.
+
+
+## Important C Syntax that Textbooks Often Do Not Cover
+
+
+
+
 --------------
 
 Note from: [21st Century C: C Tips from the New School](http://www.amazon.com/gp/product/1491903899/)

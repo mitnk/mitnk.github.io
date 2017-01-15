@@ -439,6 +439,54 @@ function that takes another function as input:</p>
     <span class="k">return</span> <span class="n">f</span><span class="p">(</span><span class="n">first_in</span><span class="p">,</span> <span class="n">second_in</span><span class="p">);</span>
 <span class="p">}</span>
 </pre></div>
+<h2>Inessential C Syntax</h2>
+<p><strong>Don’t Bother Explicitly Returning from <code>main</code></strong></p>
+<h3>Set Array Size at Runtime</h3>
+<p>Old way:</p>
+<div class="highlight"><pre><span class="kt">pthread_t</span> <span class="o">*</span><span class="n">threads</span><span class="p">;</span>
+<span class="kt">int</span> <span class="n">thread_count</span><span class="p">;</span>
+<span class="n">thread_count</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="n">threads</span> <span class="o">=</span> <span class="n">malloc</span><span class="p">(</span><span class="n">thread_count</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">pthread_t</span><span class="p">));</span>
+<span class="p">...</span>
+<span class="n">free</span><span class="p">(</span><span class="n">threads</span><span class="p">);</span>
+</pre></div>
+<p>Can be replaced with:</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="n">thread_count</span> <span class="o">=</span> <span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]);</span>
+<span class="kt">pthread_t</span> <span class="n">threads</span><span class="p">[</span><span class="n">thread_count</span><span class="p">];</span>
+</pre></div>
+<p>In the 1970s and 1980s, malloc returned a char* pointer and had to
+be cast (unless you were allocating a string), with a form like:</p>
+<div class="highlight"><pre><span class="c1">//don't bother with this sort of redundancy:</span>
+<span class="kt">double</span><span class="o">*</span> <span class="n">list</span> <span class="o">=</span> <span class="p">(</span><span class="kt">double</span><span class="o">*</span><span class="p">)</span> <span class="n">malloc</span><span class="p">(</span><span class="n">list_length</span> <span class="o">*</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">double</span><span class="p">));</span>
+</pre></div>
+<p>You don’t have to do this anymore, because malloc now gives you a void
+pointer, which the compiler will comfortably autocast to any pointer type.</p>
+<div class="highlight"><pre><span class="kt">int</span> <span class="nf">use_parameters</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="n">params_in</span><span class="p">){</span>
+    <span class="c1">// Effectively casting pointer-to-NULL</span>
+    <span class="c1">// to a pointer-to-param_struct.</span>
+    <span class="n">param_struct</span> <span class="o">*</span><span class="n">params</span> <span class="o">=</span> <span class="n">params_in</span><span class="p">;</span>
+    <span class="p">...</span>
+<span class="p">}</span>
+</pre></div>
+<h3>Enums and Strings</h3>
+<p>Enums are a good idea that went bad.</p>
+<p>There are reasons for using enums: sometimes you have an array that
+makes no sense as a struct but that nonetheless requires named elements,
+and when doing kernel- level work, giving names to bit patterns is essential.
+But in cases where enums are used to indicate a short list of options or
+a short list of error codes, a single character or a short string can
+serve the purpose without cluttering up the namespace or users’ memory.</p>
+<p>So, to revise the common wisdom on goto, it is generally harmful but
+is a common present-day idiom for cleaning up in case of different kinds
+of errors, and it is often cleaner than the alternatives.</p>
+<h3>Deprecate Float</h3>
+<p>use double instead of float, and for intermediate values in calculations,
+it doesn’t hurt to use long double.</p>
+<p>There are several functions available to parse the numeric value of
+a string of text. The most popular are atoi and atof
+(ASCII-to-int and ASCII-to-float). The safer alternative is using
+<code>strtol</code> and <code>strtod</code>.</p>
+<h2>Important C Syntax that Textbooks Often Do Not Cover</h2>
 <hr/>
 <p>Note from: <a href="http://www.amazon.com/gp/product/1491903899/">21st Century C: C Tips from the New School</a></p>
         </div>

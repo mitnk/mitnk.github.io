@@ -14,7 +14,7 @@ One for fun, one for learning Rust. (BTW,
 [xonsh](https://github.com/xonsh/xonsh) is a must-try if you love
 Python)
 
-![A Cicada Shell](/media/img/2017/04/cicada-shell.jpg)
+<img alt="A Cicada Shell" src="/media/img/2017/04/cicada-shell.jpg" style="height: 360px;" />
 
 After several weekends and vacations, the
 [cicada](https://github.com/mitnk/cicada) shell was born and ready

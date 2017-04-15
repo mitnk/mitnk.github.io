@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
+
+  <title>Write A Shell In Rust</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Write A Shell In Rust</h1>
+        <div class="entry-content">
+            <p>Rust programming language is getting popular for quite a while. My
+first try on Rust is when I wanted to rewrite
+<a href="https://github.com/mitnk/lightsocks">lightsocks</a>, a tool similar to
+<a href="https://shadowsocks.org">shadowsocks</a>. It's not a smooth experience
+because 1) <code>select()</code> is not yet natively supported and 2) I felt
+Rust programming is too much depends on crates.</p>
+<p>Then after using <a href="http://xon.sh">xonsh</a> for a while, I've become
+interested in writting a shell. And I decide to write one in Rust.
+One for fun, one for learning Rust. (BTW,
+<a href="https://github.com/xonsh/xonsh">xonsh</a> is a must-try if you love
+Python)</p>
+<p><img alt="A Cicada Shell" src=""/></p>
+<p>After several weekends and vacations, the
+<a href="https://github.com/mitnk/cicada">cicada</a> shell was born and ready
+for real use.</p>
+<p>During the journey, I find writting Rust is quite fun. The cost of
+"Zero-cost Abstraction" on programmers are a bit annoying, but I'm
+getting used to it. The crates are quite lovely. I treat them as
+the std libraries in Python. They work very well with <code>cargo</code> tool.
+The Rust comunity is very good and gave me a lot of helps along the way.</p>
+        </div>
+    </article>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

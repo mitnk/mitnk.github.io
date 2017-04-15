@@ -14,7 +14,7 @@ One for fun, one for learning Rust. (BTW,
 [xonsh](https://github.com/xonsh/xonsh) is a must-try if you love
 Python)
 
-![A Cicada Shell](/media/img/2017/04/cicada-shell.jpg) [1]
+![A Cicada Shell](/media/img/2017/04/cicada-shell.jpg)
 
 After several weekends and vacations, the
 [cicada](https://github.com/mitnk/cicada) shell was born and ready
@@ -26,4 +26,4 @@ getting used to it. The crates are quite lovely. I treat them as
 the std libraries in Python. They work very well with `cargo` tool.
 The Rust comunity is very good and gave me a lot of helps along the way.
 
-[1] via https://www.pinterest.com/pin/554435404110738142/
+[1] image via https://www.pinterest.com/pin/554435404110738142/

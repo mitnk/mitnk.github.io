@@ -21,24 +21,26 @@
         <div class="entry-content">
             <p>大家应该都知道<br/>
 Nginx的通常角色是被用作反向代理<br/>
-你可能觉得你大概知道它是什么意思<br/>
-但你有对它的精切定义吗？<br/>
-但什么是反向代理？<br/>
-与普通代理或正向代理有何不同呢？  </p>
+你肯定<strong>大概</strong>知道它是什么意思<br/>
+什么是正向代理？<br/>
+什么是反向代理？<br/>
+你能试着给出精准定义吗？  </p>
 <h2>（正向）代理</h2>
-<p>正向代理是代理以你（client）的身份访问目标机器<br/>
-Proxy代表的是你（client）<br/>
-对于目标机器来说，他并不知道你的存在<br/>
-而对你（client）来说你即知道Proxy也知道目标机器<br/>
+<p>正向代理中的代理（Proxy）是以你（Client）的身份访问目标机器<br/>
+Proxy代表的是你（Client）<br/>
+对于目标机器来说<br/>
+它并不知道你的存在，而只知道是Proxy在请求资源<br/>
+而对你（Client）来说，你即知道Proxy也知道目标机器<br/>
 一个例子是你用一个国外HTTP代理访问Facebook网站  </p>
 <h2>反向代理</h2>
 <p>反向代理从字面就可以大概知晓<br/>
-是反着做代理的<br/>
+是反着为目标机器做代理的<br/>
 对于你（Client）来说<br/>
 你并不知道（或无从知道）目标机器的存在<br/>
 你访问的资源都像是Proxy本身直接提供的<br/>
 Proxy代表的是目标机器（群）<br/>
 像Nginx、HAProxy都是反向代理的例子  </p>
+<p>[1] <a href="http://stackoverflow.com/questions/224664/">http://stackoverflow.com/questions/224664/difference-between-proxy-server-and-reverse-proxy-server</a></p>
         </div>
     </article>
 </div>

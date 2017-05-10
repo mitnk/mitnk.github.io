@@ -1,3 +1,6 @@
+APUE Note - File I/O
+====================
+
 Notes of [APUE](https://www.amazon.com/Advanced-Programming-UNIX-Environment-3rd/dp/0321637739)
 
 Most file I/O can be performed using only five functions: open, read, write,
@@ -21,6 +24,7 @@ by the kernel.
 Because a successful call to lseek returns the new file offset, we can
 seek zero bytes from the current position to determine the current offset:
 
+    :::c
     off_t    currpos;
     currpos = lseek(fd, 0, SEEK_CUR);
 
@@ -28,6 +32,7 @@ This technique can also be used to determine if a file is capable of seeking.
 If the file descriptor refers to a pipe, FIFO, or socket, lseek sets errno
 to ESPIPE and returns −1.
 
+    :::c
     #include <stdio.h>
     #include <unistd.h>
 
@@ -49,6 +54,7 @@ Test:
 
 ### Copy a file - using only read and write
 
+    :::c
     #include <stdio.h>
     #include <unistd.h>
 
@@ -103,6 +109,7 @@ delayed write.
 
 The fcntl function can change the properties of a file that is already open.
 
+    :::c
     #include <stdio.h>
     #include <stdlib.h>
     #include <unistd.h>

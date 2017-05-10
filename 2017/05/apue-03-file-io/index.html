@@ -8,7 +8,7 @@
   <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
   <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
 
-  <title>Apue-03-File-Io</title>
+  <title>Apue Note - File I/O</title>
 </head>
 <body>
 
@@ -17,7 +17,7 @@
         
 <div class="entry">
     <article itemtype="http://schema.org/Blog">
-        <h1 class="entry-title">Apue-03-File-Io</h1>
+        <h1 class="entry-title">Apue Note - File I/O</h1>
         <div class="entry-content">
             <p>Notes of <a href="https://www.amazon.com/Advanced-Programming-UNIX-Environment-3rd/dp/0321637739">APUE</a></p>
 <p>Most file I/O can be performed using only five functions: open, read, write,
@@ -34,23 +34,23 @@ by the kernel.</p>
 <h2>lseek Function</h2>
 <p>Because a successful call to lseek returns the new file offset, we can
 seek zero bytes from the current position to determine the current offset:</p>
-<div class="highlight"><pre><span></span>off_t    currpos;
-currpos = lseek(fd, 0, SEEK_CUR);
+<div class="highlight"><pre><span></span><span class="kt">off_t</span>    <span class="n">currpos</span><span class="p">;</span>
+<span class="n">currpos</span> <span class="o">=</span> <span class="n">lseek</span><span class="p">(</span><span class="n">fd</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_CUR</span><span class="p">);</span>
 </pre></div>
 <p>This technique can also be used to determine if a file is capable of seeking.
 If the file descriptor refers to a pipe, FIFO, or socket, lseek sets errno
 to ESPIPE and returns −1.</p>
-<div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
-#include &lt;unistd.h&gt;
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
 
-int
-main(void) {
-    if (lseek(STDIN_FILENO, 0, SEEK_CUR) == -1) {
-        printf("cannot seek\n");
-    } else {
-        printf("seek ok\n");
-    }
-}
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">lseek</span><span class="p">(</span><span class="n">STDIN_FILENO</span><span class="p">,</span> <span class="mi">0</span><span class="p">,</span> <span class="n">SEEK_CUR</span><span class="p">)</span> <span class="o">==</span> <span class="o">-</span><span class="mi">1</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"cannot seek</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span> <span class="k">else</span> <span class="p">{</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"seek ok</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 <p>Test:</p>
 <div class="highlight"><pre><span></span>$ ./a.out &lt; /etc/passwd
@@ -59,19 +59,19 @@ $ cat &lt; /etc/passwd | ./a.out
 cannot seek
 </pre></div>
 <h3>Copy a file - using only read and write</h3>
-<div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
-#include &lt;unistd.h&gt;
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
 
-#define BUFFSIZE 4096
+<span class="cp">#define BUFFSIZE 4096</span>
 
-int
-main(void) {
-    int n;
-    char buf[BUFFSIZE];
-    while ((n = read(0, buf, BUFFSIZE)) &gt; 0) {
-        write(1, buf, n);
-    }
-}
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">void</span><span class="p">)</span> <span class="p">{</span>
+    <span class="kt">int</span> <span class="n">n</span><span class="p">;</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">BUFFSIZE</span><span class="p">];</span>
+    <span class="k">while</span> <span class="p">((</span><span class="n">n</span> <span class="o">=</span> <span class="n">read</span><span class="p">(</span><span class="mi">0</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">BUFFSIZE</span><span class="p">))</span> <span class="o">&gt;</span> <span class="mi">0</span><span class="p">)</span> <span class="p">{</span>
+        <span class="n">write</span><span class="p">(</span><span class="mi">1</span><span class="p">,</span> <span class="n">buf</span><span class="p">,</span> <span class="n">n</span><span class="p">);</span>
+    <span class="p">}</span>
+<span class="p">}</span>
 </pre></div>
 <p>Test:</p>
 <div class="highlight"><pre><span></span>$ cc 03-03-copy.c
@@ -99,44 +99,44 @@ buffers and queued for writing to disk at some later time. This is called
 delayed write.</p>
 <h2>fcntl Function</h2>
 <p>The fcntl function can change the properties of a file that is already open.</p>
-<div class="highlight"><pre><span></span>#include &lt;stdio.h&gt;
-#include &lt;stdlib.h&gt;
-#include &lt;unistd.h&gt;
-#include &lt;fcntl.h&gt;
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;stdlib.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;unistd.h&gt;</span><span class="cp"></span>
+<span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
 
-int
-main(int argc, char *argv[])
-{
-    int val;
-    if (argc != 2)
-        printf("usage: a.out &lt;descriptor#&gt;\n");
-    val = fcntl(atoi(argv[1]), F_GETFL, 0);
-    switch (val &amp; O_ACCMODE) {
-        case O_RDONLY:
-            printf("read only");
-            break;
-        case O_WRONLY:
-            printf("write only");
-            break;
-        case O_RDWR:
-            printf("read write");
-            break;
-        default:
-            printf("unknown access mode\n");
-    }
-    if (val &amp; O_APPEND)
-        printf(", append");
-    if (val &amp; O_NONBLOCK)
-        printf(", nonblocking");
-    if (val &amp; O_SYNC)
-        printf(", synchronous writes");
-#if !defined(_POSIX_C_SOURCE) &amp;&amp; defined(O_FSYNC) &amp;&amp; (O_FSYNC != O_SYNC)
-    if (val &amp; O_FSYNC)
-        printf(", synchronous writes");
-#endif
-    putchar('\n');
-    exit(0);
-}
+<span class="kt">int</span>
+<span class="nf">main</span><span class="p">(</span><span class="kt">int</span> <span class="n">argc</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="n">argv</span><span class="p">[])</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">val</span><span class="p">;</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">argc</span> <span class="o">!=</span> <span class="mi">2</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">"usage: a.out &lt;descriptor#&gt;</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="n">val</span> <span class="o">=</span> <span class="n">fcntl</span><span class="p">(</span><span class="n">atoi</span><span class="p">(</span><span class="n">argv</span><span class="p">[</span><span class="mi">1</span><span class="p">]),</span> <span class="n">F_GETFL</span><span class="p">,</span> <span class="mi">0</span><span class="p">);</span>
+    <span class="k">switch</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">O_ACCMODE</span><span class="p">)</span> <span class="p">{</span>
+        <span class="k">case</span> <span class="nl">O_RDONLY</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"read only"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">O_WRONLY</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"write only"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">case</span> <span class="nl">O_RDWR</span><span class="p">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"read write"</span><span class="p">);</span>
+            <span class="k">break</span><span class="p">;</span>
+        <span class="k">default</span><span class="o">:</span>
+            <span class="n">printf</span><span class="p">(</span><span class="s">"unknown access mode</span><span class="se">\n</span><span class="s">"</span><span class="p">);</span>
+    <span class="p">}</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">O_APPEND</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">", append"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">O_NONBLOCK</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">", nonblocking"</span><span class="p">);</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">O_SYNC</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">", synchronous writes"</span><span class="p">);</span>
+<span class="cp">#if !defined(_POSIX_C_SOURCE) &amp;&amp; defined(O_FSYNC) &amp;&amp; (O_FSYNC != O_SYNC)</span>
+    <span class="k">if</span> <span class="p">(</span><span class="n">val</span> <span class="o">&amp;</span> <span class="n">O_FSYNC</span><span class="p">)</span>
+        <span class="n">printf</span><span class="p">(</span><span class="s">", synchronous writes"</span><span class="p">);</span>
+<span class="cp">#endif</span>
+    <span class="n">putchar</span><span class="p">(</span><span class="sc">'\n'</span><span class="p">);</span>
+    <span class="n">exit</span><span class="p">(</span><span class="mi">0</span><span class="p">);</span>
+<span class="p">}</span>
 </pre></div>
 <p>Test:</p>
 <div class="highlight"><pre><span></span>$ cc 03-04-fcntl.c

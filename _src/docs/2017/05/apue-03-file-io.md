@@ -7,9 +7,9 @@ ISO C, but are part of POSIX.1.
 
 ## File Descriptors
 
-To the kernel, all open files are referred to by file descriptors
-- non-negative integer. When we open an existing file or create a new file,
-the kernel returns a file descriptor to the process. 
+To the kernel, all open files are referred to by file
+descriptors - non-negative integer. When we open an existing file or
+create a new file, the kernel returns a file descriptor to the process.
 
 ## close function
 

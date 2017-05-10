@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta http-equiv="content-type" content="text/html; charset=utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <link rel="shortcut icon" href="/media/favicon.ico" type="image/x-icon" />
+  <link type="text/css" rel="stylesheet" href="/media/css/pygments.css" />
+  <link type="text/css" rel="stylesheet" href="/media/css/article.css" />
+
+  <title>Apue Note - Standard I/O Library</title>
+</head>
+<body>
+
+<div id="wrapper">
+    <div id="content">
+        
+<div class="entry">
+    <article itemtype="http://schema.org/Blog">
+        <h1 class="entry-title">Apue Note - Standard I/O Library</h1>
+        <div class="entry-content">
+            <p>Notes of <a href="https://www.amazon.com/Advanced-Programming-UNIX-Environment-3rd/dp/0321637739">APUE</a></p>
+<p>With the standard I/O library, the discussion centers on streams. When we
+open or create a file with the standard I/O library, we say that we have
+associated a stream with the file.</p>
+<h2>Buffering</h2>
+<p>The goal of the buffering provided by the standard I/O library is to use
+the minimum number of <code>read</code> and <code>write</code> calls.</p>
+<p>With setbuf, we can turn buffering on or off.</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">void</span> <span class="nf">setbuf</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">fp</span><span class="p">,</span> <span class="kt">char</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">buf</span><span class="p">);</span>
+</pre></div>
+<h2>Opening a Stream</h2>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">FILE</span> <span class="o">*</span><span class="nf">fopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">type</span><span class="p">);</span>
+<span class="kt">FILE</span> <span class="o">*</span><span class="nf">freopen</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">pathname</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">type</span><span class="p">,</span>
+              <span class="kt">FILE</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">fp</span><span class="p">);</span>
+<span class="kt">FILE</span> <span class="o">*</span><span class="nf">fdopen</span><span class="p">(</span><span class="kt">int</span> <span class="n">fd</span><span class="p">,</span> <span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">type</span><span class="p">);</span>
+</pre></div>
+<h2>Reading and Writing a Stream</h2>
+<p>Three functions allow us to read one character at a time.</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">getc</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">fgetc</span><span class="p">(</span><span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">getchar</span><span class="p">(</span><span class="kt">void</span><span class="p">);</span>
+</pre></div>
+<p>The difference between <code>getc</code> and <code>fgetc</code> is that getc can be implemented as
+a macro, whereas fgetc cannot be implemented as a macro. This means
+three things.</p>
+<ul>
+<li>The argument to getc should not be an expression with side effects,
+  because it could be evaluated more than once.</li>
+<li>Since fgetc is guaranteed to be a function, we can take its address.
+  This allows us to pass the address of fgetc as an argument to another function.</li>
+<li>Calls to fgetc probably take longer than calls to getc,
+  as it usually takes more time to call a function.</li>
+</ul>
+<h3>Output Functions</h3>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">putc</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">fputc</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="p">,</span> <span class="kt">FILE</span> <span class="o">*</span><span class="n">fp</span><span class="p">);</span>
+<span class="kt">int</span> <span class="nf">putchar</span><span class="p">(</span><span class="kt">int</span> <span class="n">c</span><span class="p">);</span>
+</pre></div>
+<h2>Line-at-a-Time I/O</h2>
+<p>Line-at-a-time input is provided by the two functions, <code>fgets</code> and <code>gets</code>.
+Line-at-a-time output is provided by <code>fputs</code> and <code>puts</code>.</p>
+<h2>Standard I/O Efficiency</h2>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">int</span> <span class="n">c</span><span class="p">;</span>
+    <span class="k">while</span> <span class="p">((</span><span class="n">c</span> <span class="o">=</span> <span class="n">getc</span><span class="p">(</span><span class="n">stdin</span><span class="p">))</span> <span class="o">!=</span> <span class="n">EOF</span><span class="p">)</span>
+        <span class="n">putc</span><span class="p">(</span><span class="n">c</span><span class="p">,</span> <span class="n">stdout</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>with reads/writes lines</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="cp">#define MAXLINE 4096</span>
+
+<span class="kt">int</span> <span class="nf">main</span><span class="p">()</span>
+<span class="p">{</span>
+    <span class="kt">char</span> <span class="n">buf</span><span class="p">[</span><span class="n">MAXLINE</span><span class="p">];</span>
+    <span class="k">while</span> <span class="p">(</span><span class="n">fgets</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">MAXLINE</span><span class="p">,</span> <span class="n">stdin</span><span class="p">)</span> <span class="o">!=</span> <span class="nb">NULL</span><span class="p">)</span>
+        <span class="n">fputs</span><span class="p">(</span><span class="n">buf</span><span class="p">,</span> <span class="n">stdout</span><span class="p">);</span>
+<span class="p">}</span>
+</pre></div>
+<p>After testing, we’ve learned that the standard I/O library is not much slower
+than calling the read and write functions directly.</p>
+<h2>Binary I/O</h2>
+<p>The following two functions are provided for binary I/O.</p>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;stdio.h&gt;</span><span class="cp"></span>
+<span class="kt">size_t</span> <span class="nf">fread</span><span class="p">(</span><span class="kt">void</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nobj</span><span class="p">,</span>
+             <span class="kt">FILE</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">fp</span><span class="p">);</span>
+<span class="kt">size_t</span> <span class="nf">fwrite</span><span class="p">(</span><span class="k">const</span> <span class="kt">void</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">ptr</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">size</span><span class="p">,</span> <span class="kt">size_t</span> <span class="n">nobj</span><span class="p">,</span>
+              <span class="kt">FILE</span> <span class="o">*</span><span class="kr">restrict</span> <span class="n">fp</span><span class="p">);</span>
+</pre></div>
+<p>These functions have two common uses:</p>
+<div class="highlight"><pre><span></span><span class="cm">/* to write elements 2 through 5 of a floating-point array */</span>
+<span class="kt">float</span> <span class="n">data</span><span class="p">[</span><span class="mi">10</span><span class="p">];</span>
+<span class="n">fwrite</span><span class="p">(</span><span class="o">&amp;</span><span class="n">data</span><span class="p">[</span><span class="mi">2</span><span class="p">],</span> <span class="k">sizeof</span><span class="p">(</span><span class="kt">float</span><span class="p">),</span> <span class="mi">4</span><span class="p">,</span> <span class="n">fp</span><span class="p">);</span>
+
+<span class="cm">/* Read or write a structure */</span>
+<span class="k">struct</span> <span class="p">{</span>
+    <span class="kt">short</span>  <span class="n">count</span><span class="p">;</span>
+    <span class="kt">long</span>   <span class="n">total</span><span class="p">;</span>
+    <span class="kt">char</span>   <span class="n">name</span><span class="p">[</span><span class="n">NAMESIZE</span><span class="p">];</span>
+<span class="p">}</span> <span class="n">item</span><span class="p">;</span>
+<span class="n">fwrite</span><span class="p">(</span><span class="o">&amp;</span><span class="n">item</span><span class="p">,</span> <span class="k">sizeof</span><span class="p">(</span><span class="n">item</span><span class="p">),</span> <span class="mi">1</span><span class="p">,</span> <span class="n">fp</span><span class="p">);</span>
+</pre></div>
+<p>A fundamental problem with binary I/O is that it can be used to read only
+data that has been written on the same system.</p>
+<h2>Positioning a Stream</h2>
+<p>TBC.</p>
+        </div>
+    </article>
+</div>
+
+    </div>
+</div>
+
+<script type="text/javascript">
+  var _gaq = _gaq || [];
+  _gaq.push(['_setAccount', 'UA-18137446-1']);
+  _gaq.push(['_setDomainName', '.mitnk.com']);
+  _gaq.push(['_trackPageview']);
+
+  (function() {
+    var ga = document.createElement('script'); ga.type = 'text/javascript'; ga.async = true;
+    ga.src = ('https:' == document.location.protocol ? 'https://ssl' : 'http://www') + '.google-analytics.com/ga.js';
+    var s = document.getElementsByTagName('script')[0]; s.parentNode.insertBefore(ga, s);
+  })();
+</script>
+
+</body>
+</html>

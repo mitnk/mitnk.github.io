@@ -14,6 +14,19 @@ To the kernel, all open files are referred to by file
 descriptors - non-negative integer. When we open an existing file or
 create a new file, the kernel returns a file descriptor to the process.
 
+## open/creat Functions
+
+    :::c
+    #include <fcntl.h>
+    int open(const char *path, int oflag, ... /* mode_t mode */ );
+    int creat(const char *path, mode_t mode);
+    /* Both return: file descriptor if OK, −1 on error */
+
+Note that `creat` is equivalent to
+
+    :::c
+    open(path, O_WRONLY | O_CREAT | O_TRUNC, mode);
+
 ## close function
 
 When a process terminates, all of its open files are closed automatically

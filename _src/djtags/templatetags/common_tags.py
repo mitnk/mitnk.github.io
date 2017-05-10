@@ -26,7 +26,7 @@ def pygments_markdown(content):
                 lexer_name = "text"
             lexer = lexers.get_lexer_by_name(lexer_name, stripnl=True, encoding='utf-8')
             highlighted = highlight(txt, lexer, _formatter)
-            div_code = BeautifulSoup(highlighted).div
+            div_code = BeautifulSoup(highlighted, 'html.parser').div
             if not div_code:
                 return content
             pre.replace_with(div_code)

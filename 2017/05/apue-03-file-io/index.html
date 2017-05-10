@@ -28,6 +28,15 @@ ISO C, but are part of POSIX.1.</p>
 <p>To the kernel, all open files are referred to by file
 descriptors - non-negative integer. When we open an existing file or
 create a new file, the kernel returns a file descriptor to the process.</p>
+<h2>open/creat Functions</h2>
+<div class="highlight"><pre><span></span><span class="cp">#include</span> <span class="cpf">&lt;fcntl.h&gt;</span><span class="cp"></span>
+<span class="kt">int</span> <span class="nf">open</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="kt">int</span> <span class="n">oflag</span><span class="p">,</span> <span class="p">...</span> <span class="cm">/* mode_t mode */</span> <span class="p">);</span>
+<span class="kt">int</span> <span class="nf">creat</span><span class="p">(</span><span class="k">const</span> <span class="kt">char</span> <span class="o">*</span><span class="n">path</span><span class="p">,</span> <span class="kt">mode_t</span> <span class="n">mode</span><span class="p">);</span>
+<span class="cm">/* Both return: file descriptor if OK, −1 on error */</span>
+</pre></div>
+<p>Note that <code>creat</code> is equivalent to</p>
+<div class="highlight"><pre><span></span><span class="n">open</span><span class="p">(</span><span class="n">path</span><span class="p">,</span> <span class="n">O_WRONLY</span> <span class="o">|</span> <span class="n">O_CREAT</span> <span class="o">|</span> <span class="n">O_TRUNC</span><span class="p">,</span> <span class="n">mode</span><span class="p">);</span>
+</pre></div>
 <h2>close function</h2>
 <p>When a process terminates, all of its open files are closed automatically
 by the kernel.</p>

@@ -140,8 +140,10 @@ delayed write.</p>
 </pre></div>
 <p>Test:</p>
 <div class="highlight"><pre><span></span>$ cc 03-04-fcntl.c
-$ ./a.out 0 &lt; /dev/tty read only
-$ ./a.out 1 &gt; temp.foo $ cat temp.foo
+$ ./a.out 0 &lt; /dev/tty
+read only
+$ ./a.out 1 &gt; temp.foo
+$ cat temp.foo
 write only
 </pre></div>
 <h2>ioctl Function</h2>

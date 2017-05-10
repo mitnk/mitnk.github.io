@@ -152,8 +152,10 @@ The fcntl function can change the properties of a file that is already open.
 Test:
 
     $ cc 03-04-fcntl.c
-    $ ./a.out 0 < /dev/tty read only
-    $ ./a.out 1 > temp.foo $ cat temp.foo
+    $ ./a.out 0 < /dev/tty
+    read only
+    $ ./a.out 1 > temp.foo
+    $ cat temp.foo
     write only
 
 
